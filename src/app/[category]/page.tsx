@@ -1,0 +1,113 @@
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import { Masthead } from "@/components/Masthead";
+import { CategoryNav } from "@/components/CategoryNav";
+import { Footer } from "@/components/Footer";
+import { ProposalRow } from "@/components/ProposalRow";
+import {
+  CATEGORIES,
+  categoryByCode,
+  proposalsByCategory,
+  STATUSES,
+} from "@/lib/proposals";
+
+export function generateStaticParams() {
+  return CATEGORIES.map((c) => ({ category: c.code.toLowerCase() }));
+}
+
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ category: string }>;
+}) {
+  const { category } = await params;
+  const cat = categoryByCode(category);
+  if (!cat) return notFound();
+
+  const list = proposalsByCategory(cat.code);
+  const counts = STATUSES.map((s) => ({
+    status: s,
+    n: list.filter((p) => p.status === s).length,
+  }));
+
+  return (
+    <>
+      <Masthead />
+      <CategoryNav active={cat.code} />
+      <main className="mx-auto max-w-[1180px] px-6 lg:px-10 pt-12 pb-12">
+        <section className="grid grid-cols-12 gap-10 pb-10 border-b border-rule">
+          <div className="col-span-12 md:col-span-9">
+            <div className="flex items-baseline gap-3 mb-3">
+              <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-accent">
+                {cat.code}
+              </span>
+              <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
+                {String(list.length).padStart(2, "0")} proposals
+              </span>
+            </div>
+            <h1
+              className="font-display font-semibold text-ink leading-[0.98] tracking-[-0.035em]"
+              style={{ fontSize: "clamp(2.4rem, 5.4vw, 4rem)" }}
+            >
+              {cat.full}
+            </h1>
+            <p className="mt-5 max-w-[55ch] text-[17px] leading-[1.6] text-ink-soft font-display italic">
+              {cat.blurb}
+            </p>
+          </div>
+          <aside className="col-span-12 md:col-span-3 md:border-l md:border-rule md:pl-8">
+            <div className="kicker mb-3">Status breakdown</div>
+            <ul className="space-y-1.5">
+              {counts.map(({ status, n }) => (
+                <li
+                  key={status}
+                  className="flex items-center justify-between font-mono text-[12px]"
+                >
+                  <span className="text-ink-soft uppercase tracking-[0.12em]">
+                    {status}
+                  </span>
+                  <span
+                    className={`tabular-nums ${
+                      n > 0 ? "text-ink" : "text-ink-faint/50"
+                    }`}
+                  >
+                    {String(n).padStart(2, "0")}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        </section>
+
+        <section className="pt-10">
+          <div className="flex items-end justify-between mb-4">
+            <div className="kicker">All {cat.label}</div>
+            <Link
+              href="/submit"
+              className="font-mono text-[11px] uppercase tracking-[0.14em] link-underline"
+            >
+              Submit a {cat.code} →
+            </Link>
+          </div>
+          <div>
+            {list.length === 0 ? (
+              <p className="py-12 font-display italic text-ink-soft">
+                No proposals in this section yet. Submit the first one.
+              </p>
+            ) : (
+              list.map((p, i) => (
+                <ProposalRow
+                  key={`${p.category}-${p.number}`}
+                  proposal={p}
+                  index={i}
+                  showCategory={false}
+                />
+              ))
+            )}
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
+}
