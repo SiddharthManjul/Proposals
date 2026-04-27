@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Monad Proposals
 
-## Getting Started
+A working archive of community proposals, debate, and decisions for the Monad ecosystem. Forum-style platform with five proposal categories, threaded discussion, and an editorial-archive aesthetic.
 
-First, run the development server:
+## Categories
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+| Code   | Full name                         | Scope                                                          |
+| ------ | --------------------------------- | -------------------------------------------------------------- |
+| `BIP`  | Blitz Improvement Proposals       | Changes to the Monad Blitz one-day hackathon series.           |
+| `CIP`  | Content Improvement Proposals     | Docs, tutorials, translations, podcasts, public writing.       |
+| `EIP`  | Event Idea Proposals              | Conferences, demo nights, retreats, side stages.               |
+| `CMIP` | Community Improvement Proposals   | Norms, governance, mentorship, moderation.                     |
+| `PIP`  | Product Improvement Proposals     | Explorer, RPC, starter kits, wallet flows, the docs site.      |
+
+## Stack
+
+- **Next.js 16.2.4** (App Router, Turbopack, React 19)
+- **TypeScript** in strict mode
+- **Tailwind v4** with `@theme inline` design tokens
+- **next/font** — Space Grotesk (display) + Ubuntu (body) self-hosted
+- Static generation for every route (proposal pages prerendered via `generateStaticParams`)
+
+No backend yet. Proposals live in `src/lib/proposals.ts` as typed sample data; replace with a real source when one exists.
+
+## Design tokens
+
+Defined in `src/app/globals.css`:
+
+| Token       | Value                       | Use                              |
+| ----------- | --------------------------- | -------------------------------- |
+| `--paper`   | `#ffffff`                   | Background                       |
+| `--ink`     | `#281e32`                   | Body text                        |
+| `--accent`  | `#fe6601`                   | Headlines, status, accents       |
+| `--ink-soft`/`--ink-faint` | `#5b5263` / `#8b8390` | Secondary text, metadata |
+| `--rule`    | `rgba(40,30,50,0.12)`       | Hairline borders                 |
+| `--tint`    | `#faf7f2`                   | Hover/wash backgrounds           |
+
+Display font: **Space Grotesk**. Body font: **Ubuntu**. Mono: system mono for IDs and metadata.
+
+## Routes
+
+```
+/                       — masthead, featured, category strip, latest activity
+/[category]             — listing for one category (e.g. /bip, /cmip, /pip)
+/[category]/[slug]      — proposal detail with metadata, discussion, reply form
+/about                  — archive philosophy and house rules
+/submit                 — proposal submission form
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`[category]` accepts the lowercase code (`bip`, `cip`, `eip`, `cmip`, `pip`). 404 otherwise.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project layout
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/
+│   ├── layout.tsx              — root layout, fonts, global metadata
+│   ├── globals.css             — design tokens + editorial typographic styles
+│   ├── page.tsx                — homepage
+│   ├── about/page.tsx
+│   ├── submit/page.tsx
+│   └── [category]/
+│       ├── page.tsx            — category index
+│       └── [slug]/page.tsx     — proposal detail
+├── components/
+│   ├── Masthead.tsx            — top nameplate with issue/date line
+│   ├── CategoryNav.tsx         — sticky horizontal section nav
+│   ├── ProposalRow.tsx         — list-row for the archive feed
+│   ├── StatusPill.tsx          — Draft / Discussion / Last Call / Accepted / …
+│   ├── CommentThread.tsx       — threaded discussion (1 level deep)
+│   └── Footer.tsx              — colophon and section links
+└── lib/
+    └── proposals.ts            — types, sample proposals, helpers
+```
 
-## Learn More
+## Local development
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+npm run dev          # http://localhost:3000
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Other scripts:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run build        # production build (next build)
+npm run start        # serve the production build
+npm run lint         # eslint
+```
 
-## Deploy on Vercel
+## Adding a proposal
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+While there's no backend, edit `src/lib/proposals.ts` and append to the `PROPOSALS` array. Required fields:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```ts
+{
+  number: 5,
+  category: "BIP",
+  slug: "kebab-case-slug",
+  title: "A specific verb. A specific noun.",
+  abstract: "Two or three sentences.",
+  status: "Draft" | "Discussion" | "Last Call" | "Accepted" | "Implemented" | "Rejected" | "Living",
+  author: "Full Name",
+  authorHandle: "handle.eth",
+  posted: "2026-04-09",
+  updated: "2026-04-22",
+  readingMinutes: 6,
+  body: [{ heading?, paragraphs?, list?, pullquote? }, ...],
+  discussion: [{ id, author, handle, date, body, replies? }, ...],
+}
+```
+
+Routes regenerate automatically — `generateStaticParams` reads from this array.
+
+## Editorial conventions
+
+- Titles use specific verbs and nouns. No "empower", no "revolutionize".
+- Abstracts state the problem and the proposed change. They don't sell.
+- Rejected proposals stay in the archive — the reasoning matters more than the verdict.
+- Author voice is preserved. Editors copy-edit, they don't rewrite.
+- Discussion is threaded one level deep on purpose.
+
+## Roadmap
+
+- Real persistence layer (DB + auth) once the team is ready.
+- Markdown body rendering for user-submitted proposals.
+- Search and filtering across categories.
+- RSS / Atom feed of new proposals and status changes.
