@@ -4,31 +4,28 @@ import { CategoryNav } from "@/components/CategoryNav";
 import { Footer } from "@/components/Footer";
 import { ProposalRow } from "@/components/ProposalRow";
 import { StatusPill } from "@/components/StatusPill";
-import {
-  CATEGORIES,
-  PROPOSALS,
-  STATUSES,
-  proposalRef,
-  shortDate,
-} from "@/lib/proposals";
+import { CATEGORIES, STATUSES, proposalRef, shortDate } from "@/lib/proposals";
+import { listProposalsSortedByUpdated } from "@/db/queries";
 
-export default function HomePage() {
-  const sorted = [...PROPOSALS].sort(
-    (a, b) => new Date(b.updated).getTime() - new Date(a.updated).getTime()
-  );
+export const dynamic = "force-dynamic";
+
+export default async function HomePage() {
+  const sorted = await listProposalsSortedByUpdated();
+
+  if (sorted.length === 0) {
+    return <EmptyState />;
+  }
+
   const featured = sorted[0];
   const rest = sorted.slice(1);
 
-  const liveCount = PROPOSALS.filter(
+  const liveCount = sorted.filter(
     (p) => p.status === "Discussion" || p.status === "Last Call"
   ).length;
-  const totalReplies = PROPOSALS.reduce(
+  const totalReplies = sorted.reduce(
     (n, p) =>
       n +
-      p.discussion.reduce(
-        (m, c) => m + 1 + (c.replies?.length ?? 0),
-        0
-      ),
+      p.discussion.reduce((m, c) => m + 1 + (c.replies?.length ?? 0), 0),
     0
   );
 
@@ -49,7 +46,7 @@ export default function HomePage() {
             <dl className="mt-6 space-y-3 font-mono text-[12px] uppercase tracking-[0.12em]">
               <div className="flex justify-between">
                 <dt className="text-ink-faint">Open proposals</dt>
-                <dd className="text-ink tabular-nums">{PROPOSALS.length}</dd>
+                <dd className="text-ink tabular-nums">{sorted.length}</dd>
               </div>
               <div className="flex justify-between">
                 <dt className="text-ink-faint">In discussion</dt>
@@ -113,7 +110,7 @@ export default function HomePage() {
             </p>
             <ul className="border-t border-rule">
               {CATEGORIES.map((cat) => {
-                const count = PROPOSALS.filter(
+                const count = sorted.filter(
                   (p) => p.category === cat.code
                 ).length;
                 return (
@@ -194,6 +191,44 @@ export default function HomePage() {
             </Link>
           </aside>
         </section>
+      </main>
+      <Footer />
+    </>
+  );
+}
+
+function EmptyState() {
+  return (
+    <>
+      <Masthead />
+      <CategoryNav />
+      <main className="mx-auto max-w-360 px-6 lg:px-10 pt-20 pb-16 text-center">
+        <div className="kicker mb-3 justify-center">The archive is empty</div>
+        <h1
+          className="font-display font-semibold text-ink leading-[0.98] tracking-[-0.035em] mx-auto max-w-[18ch]"
+          style={{ fontSize: "clamp(2.4rem, 5.4vw, 4rem)" }}
+        >
+          Nothing here <span className="text-accent">yet</span>.
+        </h1>
+        <p className="mt-6 mx-auto max-w-[55ch] text-[17px] leading-[1.6] text-ink-soft font-display italic">
+          Submit the first proposal, or run{" "}
+          <code className="font-mono text-[14px]">npm run db:seed</code> to load
+          the sample archive.
+        </p>
+        <div className="mt-10 flex items-center justify-center gap-3">
+          <Link
+            href="/submit"
+            className="bg-accent text-paper px-6 py-3 font-mono text-[12px] uppercase tracking-[0.16em] hover:bg-accent-deep transition-colors"
+          >
+            Submit a proposal →
+          </Link>
+          <Link
+            href="/about"
+            className="border border-rule px-6 py-3 font-mono text-[12px] uppercase tracking-[0.16em] hover:bg-tint transition-colors"
+          >
+            About the archive
+          </Link>
+        </div>
       </main>
       <Footer />
     </>
