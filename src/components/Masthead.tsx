@@ -6,7 +6,7 @@ export function Masthead() {
   return (
     <header className="border-b border-rule">
       <div className="border-t-[3px] border-accent" />
-      <div className="mx-auto max-w-[1180px] px-6 lg:px-10">
+      <div className="mx-auto max-w-[1440px] px-6 lg:px-10">
         <div className="flex items-center justify-between pt-3 pb-2 text-[11px] uppercase tracking-[0.16em] text-ink-faint font-mono">
           <span>{ISSUE_DATE}</span>
           <span className="hidden sm:inline">
@@ -20,15 +20,16 @@ export function Masthead() {
         <div className="flex flex-col items-center pt-7 pb-6 text-center">
           <Link href="/" className="block group">
             <h1
-              className="font-display font-semibold text-ink leading-[0.95] tracking-[-0.04em]"
+              className="font-blanka text-ink leading-[0.95]"
               style={{ fontSize: "clamp(2.6rem, 6vw, 4.6rem)" }}
             >
-              Monad <span className="text-accent">Proposals</span>
+              Norvyx <span className="text-accent">Proposals</span>
             </h1>
           </Link>
           <p className="mt-3 max-w-2xl font-display italic text-[15px] md:text-base text-ink-soft">
             An archive of ideas, debate, and decisions from the people building
-            on, around, and for Monad.
+            the next layer of the web — starting with Web3, then AI, deeptech,
+            and the domains that come next.
           </p>
         </div>
       </div>

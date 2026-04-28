@@ -17,9 +17,9 @@ const ubuntu = Ubuntu({
 });
 
 export const metadata: Metadata = {
-  title: "Monad Proposals — An archive of community ideas, debate, and decisions",
+  title: "Norvyx Proposals — An archive of ideas, debate, and decisions for the builders' web",
   description:
-    "A working archive of Blitz, Content, Event, Community, and Product proposals from the Monad ecosystem.",
+    "A working archive of Content, Event, Community, and Product proposals — starting with Web3, expanding into AI, deeptech, and beyond.",
 };
 
 export default function RootLayout({

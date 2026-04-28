@@ -8,7 +8,7 @@ export default function SubmitPage() {
     <>
       <Masthead />
       <CategoryNav />
-      <main className="mx-auto max-w-[1180px] px-6 lg:px-10 pt-12 pb-16">
+      <main className="mx-auto max-w-[1440px] px-6 lg:px-10 pt-12 pb-16">
         <header className="grid grid-cols-12 gap-10 pb-10 border-b border-rule">
           <div className="col-span-12 md:col-span-9">
             <div className="kicker mb-3">Submit a proposal</div>
@@ -31,7 +31,7 @@ export default function SubmitPage() {
             <form className="space-y-8">
               <div>
                 <div className="kicker mb-3">Step 01 — Category</div>
-                <div className="grid grid-cols-1 sm:grid-cols-5 border border-rule">
+                <div className="grid grid-cols-1 sm:grid-cols-4 border border-rule">
                   {CATEGORIES.map((c, i) => (
                     <label
                       key={c.code}
@@ -71,7 +71,7 @@ export default function SubmitPage() {
                   className="block w-full bg-paper border-b border-rule focus:border-accent outline-none py-3 text-[1.4rem] font-display tracking-[-0.01em]"
                 />
                 <p className="mt-2 text-[12px] text-ink-faint italic">
-                  Good: &ldquo;Reserve a Tooling track at every Blitz.&rdquo;{" "}
+                  Good: &ldquo;Human-readable names in block explorers.&rdquo;{" "}
                   Bad: &ldquo;Empower the next generation of builders.&rdquo;
                 </p>
               </div>

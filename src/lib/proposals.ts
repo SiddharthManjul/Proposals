@@ -1,4 +1,4 @@
-export type Category = "BIP" | "CIP" | "EIP" | "CMIP" | "PIP";
+export type Category = "CIP" | "EIP" | "CMIP" | "PIP";
 
 export type Status =
   | "Draft"
@@ -48,13 +48,6 @@ export const CATEGORIES: {
   blurb: string;
 }[] = [
   {
-    code: "BIP",
-    label: "BIPs",
-    full: "Blitz Improvement Proposals",
-    blurb:
-      "Changes to how Monad Blitz — the one-day hackathon series — is run, judged, and supported between cities.",
-  },
-  {
     code: "CIP",
     label: "CIPs",
     full: "Content Improvement Proposals",
@@ -80,7 +73,7 @@ export const CATEGORIES: {
     label: "PIPs",
     full: "Product Improvement Proposals",
     blurb:
-      "First-party tools and surfaces: explorer, RPC, starter kits, wallet flows, the documentation site itself.",
+      "Tools and surfaces builders depend on: explorers, RPC, starter kits, wallet flows, documentation sites.",
   },
 ];
 
@@ -94,279 +87,7 @@ export const STATUSES: Status[] = [
   "Living",
 ];
 
-const lorem = (s: string[]) => s;
-
 export const PROPOSALS: Proposal[] = [
-  {
-    number: 1,
-    category: "BIP",
-    slug: "standardize-blitz-judging-rubric",
-    title: "Standardize the Blitz judging rubric across cities",
-    abstract:
-      "Each Blitz currently invents its own scoring sheet the night before. Teams who travel between cities cannot calibrate, and judges quietly disagree on what 'shipped' means. This proposal locks in a four-axis rubric and lets organizers add one local axis on top.",
-    status: "Discussion",
-    author: "Reema Khan",
-    authorHandle: "reema.eth",
-    posted: "2026-04-09",
-    updated: "2026-04-22",
-    readingMinutes: 6,
-    body: [
-      {
-        paragraphs: [
-          "The first three Blitz events used wildly different rubrics. Bangalore weighted technical novelty at 50%. Lisbon weighted demo polish at 40%. Seoul didn't publish weights at all and asked judges to vote on a five-star scale. Teams who travelled to multiple events had to rebuild their pitch each time, and at least two judges reported being unsure whether they were rating the idea or the prototype.",
-          "A standard rubric isn't about flattening taste. It's about giving judges a shared vocabulary so disagreements happen on substance rather than on what 'fit' means.",
-        ],
-      },
-      {
-        heading: "Specification",
-        paragraphs: [
-          "Every Blitz must publish, before submissions open, a scoring sheet built from the four mandatory axes below. Organizers may add at most one local axis (for example, an event whose theme is 'consumer onboarding' may add a fifth axis weighted up to 15%).",
-        ],
-        list: [
-          "Working code (30%) — what runs end-to-end, on-chain, in front of judges, without staging tricks.",
-          "Idea quality (30%) — is the problem real, is the wedge defensible, would a builder want to keep working on this Monday morning.",
-          "Craft (20%) — interface, copy, latency, the small choices that show care.",
-          "Story (20%) — can the team explain in two minutes why this exists.",
-        ],
-      },
-      {
-        heading: "Why these weights",
-        paragraphs: [
-          "Working code and idea quality are tied because the failure mode at hackathons swings between two extremes — beautiful slideware with no repo, and impressive plumbing for a problem nobody has. Splitting them 30/30 forces both to clear a bar.",
-          "Craft sits at 20% because most one-day projects will be rough, and we don't want to punish teams who chose to ship the unsexy half. Story sits at 20% because builders who can't articulate the wedge tend to abandon the project on Monday.",
-        ],
-        pullquote:
-          "Standardization isn't about flattening taste. It's about giving judges a shared vocabulary so disagreements happen on substance.",
-      },
-      {
-        heading: "Open questions",
-        list: [
-          "Should the local axis cap be 10% or 15%? Lisbon organizers want more room.",
-          "Do we publish judge weights or only aggregate scores?",
-          "Should there be a separate prize for projects that score below average on Story but above average on Working Code? (i.e. the 'quiet shippers' carve-out).",
-        ],
-      },
-    ],
-    discussion: [
-      {
-        id: "c1",
-        author: "Tomás Reyes",
-        handle: "treyes",
-        date: "2026-04-10",
-        body: "I co-organized Lisbon and the 40% on demo polish was a mistake we already corrected internally. Happy to have it written down. One concern: a 15% local axis is too small for events with a strong vertical theme — we lose the ability to actually weight the thing the event is about.",
-        replies: [
-          {
-            id: "c1r1",
-            author: "Reema Khan",
-            handle: "reema.eth",
-            date: "2026-04-10",
-            body: "Fair. I'd accept 20% if we cap the number of local axes at one and require organizers to publish the rationale a week before submissions open.",
-          },
-        ],
-      },
-      {
-        id: "c2",
-        author: "Hyojin Park",
-        handle: "hyojin",
-        date: "2026-04-11",
-        body: "Seoul didn't publish weights because we couldn't agree on them in time. A standard rubric would have saved us a 2am argument. +1.",
-      },
-      {
-        id: "c3",
-        author: "Devon Maher",
-        handle: "dev.maher",
-        date: "2026-04-15",
-        body: "I'd push back on the Story axis. Some teams are non-native English speakers and we keep penalizing them for accents disguised as 'clarity'. If we keep it, judges need explicit guidance to score on substance, not delivery.",
-      },
-    ],
-  },
-  {
-    number: 2,
-    category: "BIP",
-    slug: "tooling-track-every-blitz",
-    title: "Reserve a Tooling track at every Blitz",
-    abstract:
-      "Hackathon submissions skew toward consumer demos because they look better on stage. Tooling — debuggers, indexers, fixtures, test harnesses — is what later builders quietly depend on. A reserved track ensures it doesn't get out-shouted.",
-    status: "Accepted",
-    author: "Tomás Reyes",
-    authorHandle: "treyes",
-    posted: "2026-03-22",
-    updated: "2026-04-04",
-    readingMinutes: 4,
-    body: [
-      {
-        paragraphs: [
-          "Every Blitz so far has produced two or three pieces of tooling that other teams quietly forked the next month. None of them won. They were not even shortlisted, because consumer demos polish better in twelve hours than tooling does.",
-          "This proposal does not change overall judging. It carves out one of the four podium spots for the highest-scoring tooling submission, judged against the same rubric. If no tooling submission clears the threshold, the spot returns to the general pool.",
-        ],
-      },
-      {
-        heading: "What counts as tooling",
-        list: [
-          "Indexers, query layers, schema introspection.",
-          "Local development frameworks, fixtures, mock RPC.",
-          "Observability — tracing, profiling, gas analysis.",
-          "Editor tooling, CLI wrappers, test harnesses.",
-          "Anything where the user is another builder, not an end user.",
-        ],
-      },
-    ],
-    discussion: [
-      {
-        id: "c1",
-        author: "Anik Dasgupta",
-        handle: "anik",
-        date: "2026-03-23",
-        body: "Strong yes. I judged Bangalore and the indexer that came out of that weekend is now used by four teams I know of. It got fifth.",
-      },
-      {
-        id: "c2",
-        author: "Marcie Olsen",
-        handle: "marcie",
-        date: "2026-03-25",
-        body: "I'd want the 'no submission, spot returns' rule explicit on the website, otherwise people will assume there's always a tooling winner and dilute the bar.",
-      },
-    ],
-  },
-  {
-    number: 3,
-    category: "BIP",
-    slug: "post-event-capital-pool",
-    title: "Post-event capital pool for the top three projects",
-    abstract:
-      "Most Blitz winners abandon the project within four weeks. The bottleneck is rarely conviction — it's the gap between hackathon prize and pre-seed. A small, fast follow-on check, decided by the same judges within ten days, would close it.",
-    status: "Discussion",
-    author: "Anik Dasgupta",
-    authorHandle: "anik",
-    posted: "2026-04-14",
-    updated: "2026-04-26",
-    readingMinutes: 5,
-    body: [
-      {
-        paragraphs: [
-          "We surveyed 38 teams who placed top three across the last four Blitz events. Twenty-six had stopped working on the project within a month. When asked why, the most common answer was not 'lost interest' — it was 'I had to go back to my job and I couldn't justify two more weeks unpaid'.",
-          "Hackathon prize money is structured as recognition. It's small, taxed as income in most jurisdictions, and arrives weeks after the event. It does not function as runway. A post-event capital pool, structured as a SAFE on standard terms, would.",
-        ],
-      },
-      {
-        heading: "Mechanism",
-        list: [
-          "Each Blitz reserves a capital pool — proposed size: $75k per event, drawn from the events budget.",
-          "Top three teams are eligible. They opt in within seven days.",
-          "Standard SAFE: $20k–$25k each, post-money, on a shared template published in advance.",
-          "Decision made by the same judging panel within ten days. No additional pitch, no additional deck.",
-        ],
-      },
-      {
-        heading: "Risks",
-        paragraphs: [
-          "The obvious risk is selection: judges optimize for what looks good on stage and we end up with a portfolio of demos. The mitigation is that every check is small enough that a miss costs less than running a single conference booth.",
-          "The non-obvious risk is reputational. If the foundation is seen as the easy first check, it crowds out angels who would otherwise underwrite better terms. The carve-out: only the top three are eligible, and only at events; no rolling program.",
-        ],
-      },
-    ],
-    discussion: [
-      {
-        id: "c1",
-        author: "Sasha Volkov",
-        handle: "sasha.v",
-        date: "2026-04-15",
-        body: "I'd push back on $75k per event. That's a $300k/year line item before counting venue, food, travel. Let's pilot one event first.",
-      },
-      {
-        id: "c2",
-        author: "Reema Khan",
-        handle: "reema.eth",
-        date: "2026-04-16",
-        body: "Pilot makes sense. I'd add: publish the SAFE template a month before the event so teams can have it reviewed by counsel before they decide to opt in.",
-      },
-      {
-        id: "c3",
-        author: "Felix Brand",
-        handle: "felixb",
-        date: "2026-04-20",
-        body: "Counter-proposal: instead of a SAFE, do an unconditional grant ($15k, no equity). Equity at this stage is messy and the foundation isn't set up to be a cap-table participant.",
-      },
-    ],
-  },
-  {
-    number: 4,
-    category: "BIP",
-    slug: "mentor-sla-small-cities",
-    title: "Mentor sign-up SLAs for small-city Blitz events",
-    abstract:
-      "Small-city Blitz events systematically run short on mentors. This is a coordination problem, not a goodwill one. A pre-published SLA — minimum hours, response time, refund of travel if commitment lapses — would fix it.",
-    status: "Draft",
-    author: "Hyojin Park",
-    authorHandle: "hyojin",
-    posted: "2026-04-21",
-    updated: "2026-04-24",
-    readingMinutes: 3,
-    body: [
-      {
-        paragraphs: [
-          "This is a draft. The intent is to start a conversation, not to lock in numbers yet. Feedback below is welcome.",
-          "Small-city events struggle because mentors signal interest without committing. Hub cities don't have this problem because mentors are local; small cities depend on travelers, and travelers cancel.",
-        ],
-      },
-      {
-        heading: "Sketch",
-        list: [
-          "Mentors commit to a minimum block (e.g. 4 hours over Saturday).",
-          "Travel is reimbursed only if the commitment is met or cancelled with 14 days' notice.",
-          "Organizers publish the mentor list one week before the event. No anonymous mentors.",
-          "If three or more mentors drop within 7 days of the event, the foundation is on the hook to backfill.",
-        ],
-      },
-    ],
-    discussion: [
-      {
-        id: "c1",
-        author: "Anita Joseph",
-        handle: "anita.j",
-        date: "2026-04-22",
-        body: "Naming mentors publicly is the most important line in here. Half the no-shows are people who never planned to come and signed up for the badge.",
-      },
-    ],
-  },
-  {
-    number: 5,
-    category: "BIP",
-    slug: "remote-teams-alongside-in-person",
-    title: "Allow remote teams to submit alongside in-person",
-    abstract:
-      "A remote track was rejected last cycle. This is a softer alternative: remote teams compete in a parallel bracket, judged on the same rubric, but with separate prizes and explicit ineligibility for the in-person podium.",
-    status: "Last Call",
-    author: "Devon Maher",
-    authorHandle: "dev.maher",
-    posted: "2026-03-30",
-    updated: "2026-04-25",
-    readingMinutes: 4,
-    body: [
-      {
-        paragraphs: [
-          "The previous proposal failed because mixing remote and in-person teams created a fairness problem: in-person teams have mentor access, in-person teams have the rooftop dinner, in-person teams talk to judges in hallways. A remote team that wins the in-person bracket implicitly devalues the local event.",
-          "The compromise here is to keep them separate. Remote teams submit through the same form, are scored against the same rubric, but compete against each other and have a separate (smaller) prize pool. They are ineligible for the in-person podium and the capital pool, if BIP-3 passes.",
-        ],
-      },
-    ],
-    discussion: [
-      {
-        id: "c1",
-        author: "Casey Ng",
-        handle: "casey",
-        date: "2026-04-01",
-        body: "This is the right shape. Last call from me — happy to land it.",
-      },
-      {
-        id: "c2",
-        author: "Tomás Reyes",
-        handle: "treyes",
-        date: "2026-04-12",
-        body: "Agreed. One ask: publish the remote bracket prize pool on the same page as the in-person one, so it doesn't feel hidden.",
-      },
-    ],
-  },
   {
     number: 1,
     category: "CIP",
@@ -420,7 +141,7 @@ export const PROPOSALS: Proposal[] = [
     slug: "weekly-written-digest-rotating-authors",
     title: "A weekly written digest authored by a rotating community member",
     abstract:
-      "The current newsletter is written by the foundation's comms team. It reads like a foundation newsletter. A digest written by a different community member every week — paid, edited, but not house-styled — would be more honest and more read.",
+      "The current newsletter is written by a single comms team. It reads like a comms newsletter. A digest written by a different community member every week — paid, edited, but not house-styled — would be more honest and more read.",
     status: "Accepted",
     author: "Marcie Olsen",
     authorHandle: "marcie",
@@ -430,11 +151,11 @@ export const PROPOSALS: Proposal[] = [
     body: [
       {
         paragraphs: [
-          "Newsletters written by foundations sound like newsletters written by foundations. They cannot help it. The voice is institutional because the writer answers to an institution.",
+          "Newsletters written by a single team sound like newsletters written by a single team. They cannot help it. The voice is institutional because the writer answers to an institution.",
           "The proposal: pay a different community member each week to write the digest. They pick what to include, they write in their voice, and an editor (one person, part-time) does line-edits but does not change the take.",
         ],
         pullquote:
-          "Newsletters written by foundations sound like newsletters written by foundations. They cannot help it.",
+          "Newsletters written by a single team sound like newsletters written by a single team. They cannot help it.",
       },
       {
         heading: "Mechanics",
@@ -555,8 +276,8 @@ export const PROPOSALS: Proposal[] = [
   {
     number: 2,
     category: "EIP",
-    slug: "side-stage-token2049-small-builders",
-    title: "Side stage at Token2049 dedicated to small builders",
+    slug: "side-stage-conference-small-builders",
+    title: "Side stage at major conferences dedicated to small builders",
     abstract:
       "The main stage at large conferences is reserved for people with PR teams. A side stage — eight slots, twenty minutes each, no slides longer than three lines — would surface builders who actually ship.",
     status: "Discussion",
@@ -568,7 +289,7 @@ export const PROPOSALS: Proposal[] = [
     body: [
       {
         paragraphs: [
-          "The proposal is small in dollars and large in attention. Eight builders, twenty minutes each, two days. The slot is decided by an open call, not by who knows the foundation.",
+          "The proposal is small in dollars and large in attention. Eight builders, twenty minutes each, two days. The slot is decided by an open call, not by who knows the organizers.",
           "Constraint: no marketing slides. The talk is a demo or it's a reading from the codebase. This is enforced by the host, who has the floor to interrupt.",
         ],
       },
@@ -607,7 +328,7 @@ export const PROPOSALS: Proposal[] = [
       {
         paragraphs: [
           "Draft. Intentionally light on details until interest is gauged.",
-          "Rough shape: fifty invited builders, five days, somewhere remote and cheap, no press, no recording, no panels. A few prepared sessions; mostly unstructured time. Cost split between foundation and attendees on a sliding scale.",
+          "Rough shape: fifty invited builders, five days, somewhere remote and cheap, no press, no recording, no panels. A few prepared sessions; mostly unstructured time. Cost split between organizers and attendees on a sliding scale.",
         ],
       },
     ],
@@ -726,7 +447,7 @@ export const PROPOSALS: Proposal[] = [
     slug: "community-grants-committee-public-minutes",
     title: "A community-run grants committee with public minutes",
     abstract:
-      "Foundation-run grants are fast but opaque. A community-run committee — five rotating members, public minutes, capped check size — would be slower but legible. Both can coexist.",
+      "Closed-door grants are fast but opaque. A community-run committee — five rotating members, public minutes, capped check size — would be slower but legible. Both can coexist.",
     status: "Draft",
     author: "Ben Tashkov",
     authorHandle: "ben.t",
@@ -736,7 +457,7 @@ export const PROPOSALS: Proposal[] = [
     body: [
       {
         paragraphs: [
-          "Draft. This is intentionally not a replacement for the existing grants program — it's an addition with different tradeoffs.",
+          "Draft. This is intentionally not a replacement for any existing grants program — it's an addition with different tradeoffs.",
         ],
       },
       {
@@ -786,9 +507,9 @@ export const PROPOSALS: Proposal[] = [
     number: 1,
     category: "PIP",
     slug: "human-readable-names-explorer",
-    title: "Human-readable names in the explorer",
+    title: "Human-readable names in block explorers",
     abstract:
-      "Addresses are not memorable. Most other ecosystems solved this two years ago and we still surface 0x-prefixed hex everywhere a human will read it. This proposal lays out a minimal first version.",
+      "Addresses are not memorable. Most explorers still surface 0x-prefixed hex everywhere a human will read it. This proposal lays out a minimal first version of a name resolver an explorer can adopt.",
     status: "Last Call",
     author: "Simone Carter",
     authorHandle: "simonec",
@@ -798,26 +519,26 @@ export const PROPOSALS: Proposal[] = [
     body: [
       {
         paragraphs: [
-          "We are the only major chain whose explorer still shows 0x-prefixed hex by default. Every other ecosystem has solved this; we just haven't agreed on which name service to lean on.",
-          "This proposal is to ship a minimum viable name layer in the explorer first. Not a full name service — just a resolver that displays a human-readable name when one exists, with an obvious way to view the underlying address.",
+          "Most explorers still default to 0x-prefixed hex. Some ecosystems have shipped name layers; many haven't. The fragmentation is the problem — every explorer reinvents the wheel.",
+          "This proposal is a minimum viable name layer that any explorer can adopt. Not a full name service — just a resolver that displays a human-readable name when one exists, with an obvious way to view the underlying address.",
         ],
         pullquote:
-          "Most other ecosystems solved this two years ago. We still surface 0x-prefixed hex everywhere a human will read it.",
+          "Most explorers still surface 0x-prefixed hex everywhere a human will read it. We don't have to keep pretending that's normal.",
       },
       {
         heading: "Scope",
         list: [
-          "Resolver only, no registry. We index existing names from a list of approved providers.",
+          "Resolver only, no registry. Index existing names from a list of approved providers.",
           "Names always display with a small badge indicating the source provider.",
           "Hover or click reveals the underlying address. Copy-to-clipboard always copies the address, never the name.",
-          "Reserved namespace for the foundation and core team — addresses in this set always show their team name.",
+          "Reserved namespace for core protocol contracts — addresses in this set always show their canonical name.",
         ],
       },
       {
         heading: "Why a resolver, not a registry",
         paragraphs: [
-          "Building a registry creates obligations: governance, dispute resolution, brand-name squatting policy, the works. None of those are problems we want to take on first-party.",
-          "A resolver lets the existing name services compete on quality and lets us upgrade without locking in.",
+          "Building a registry creates obligations: governance, dispute resolution, brand-name squatting policy, the works. None of those are problems an explorer should take on first-party.",
+          "A resolver lets the existing name services compete on quality and lets the explorer upgrade without locking in.",
         ],
       },
     ],
@@ -827,7 +548,7 @@ export const PROPOSALS: Proposal[] = [
         author: "Yuki Tanaka",
         handle: "yuki",
         date: "2026-03-13",
-        body: "Strong yes on resolver-not-registry. The day we operate a registry is the day we start getting subpoenas.",
+        body: "Strong yes on resolver-not-registry. The day an explorer operates a registry is the day it starts getting subpoenas.",
       },
       {
         id: "c2",
@@ -849,7 +570,7 @@ export const PROPOSALS: Proposal[] = [
     number: 2,
     category: "PIP",
     slug: "wallet-onboarding-tutorial-starter-kit",
-    title: "Wallet onboarding tutorial in the docs starter kit",
+    title: "Wallet onboarding tutorial in the starter kit",
     abstract:
       "Most starter kits assume the user already has a wallet and funds. The first 90 seconds for a new builder is currently a self-guided expedition. A first-class tutorial would close the funnel.",
     status: "Accepted",
@@ -861,7 +582,7 @@ export const PROPOSALS: Proposal[] = [
     body: [
       {
         paragraphs: [
-          "We pulled funnel data on the docs starter kit. Of users who land on the 'first transaction' page without a wallet installed, 71% leave within four minutes. Of users who land with a wallet installed, 18% leave within four minutes.",
+          "We pulled funnel data on a representative starter kit. Of users who land on the 'first transaction' page without a wallet installed, 71% leave within four minutes. Of users who land with a wallet installed, 18% leave within four minutes.",
           "This proposal commissions a first-class onboarding tutorial — wallet install, testnet funds, first transaction — that lives at the start of the starter kit, not as a sidebar note three pages in.",
         ],
       },
@@ -880,9 +601,9 @@ export const PROPOSALS: Proposal[] = [
     number: 3,
     category: "PIP",
     slug: "native-batched-transactions-explorer",
-    title: "Native batched-transactions UI in the explorer",
+    title: "Native batched-transactions UI in block explorers",
     abstract:
-      "Batched transactions show up in the explorer as a wall of internal calls with no clear boundaries. A first-class batched view — collapsed by default, expandable per call — would make them legible without flattening detail.",
+      "Batched transactions show up in most explorers as a wall of internal calls with no clear boundaries. A first-class batched view — collapsed by default, expandable per call — would make them legible without flattening detail.",
     status: "Draft",
     author: "Yuki Tanaka",
     authorHandle: "yuki",
@@ -892,7 +613,7 @@ export const PROPOSALS: Proposal[] = [
     body: [
       {
         paragraphs: [
-          "Open batched transactions are unreadable today. They're rendered as a flat list of internal calls. There is no boundary between 'one logical operation' and 'next logical operation'.",
+          "Batched transactions are unreadable today. They're rendered as a flat list of internal calls. There is no boundary between 'one logical operation' and 'next logical operation'.",
           "Sketch: the explorer detects known batching contracts and groups internal calls into logical batches, each collapsible. Default view shows three or four labelled batches; expanding shows the calls underneath.",
         ],
       },
@@ -916,7 +637,7 @@ export const PROPOSALS: Proposal[] = [
       {
         paragraphs: [
           "The first wall a new builder hits is RPC provisioning. Most pick a free tier, sign up, paste a key, and lose twenty minutes to it. The lucky ones never come back.",
-          "A foundation-operated sandbox gateway — rate-limited, key-less, suitable only for tutorials and toy apps — would be enough to get someone through their first transaction. It would not be a production gateway.",
+          "A community-operated sandbox gateway — rate-limited, key-less, suitable only for tutorials and toy apps — would be enough to get someone through their first transaction. It would not be a production gateway.",
         ],
       },
       {

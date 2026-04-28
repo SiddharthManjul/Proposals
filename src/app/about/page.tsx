@@ -9,7 +9,7 @@ export default function AboutPage() {
     <>
       <Masthead />
       <CategoryNav />
-      <main className="mx-auto max-w-[1180px] px-6 lg:px-10 pt-12 pb-16">
+      <main className="mx-auto max-w-[1440px] px-6 lg:px-10 pt-12 pb-16">
         <article className="grid grid-cols-12 gap-10">
           <header className="col-span-12 pb-10 border-b border-rule">
             <div className="kicker mb-3">About the archive</div>
@@ -21,8 +21,10 @@ export default function AboutPage() {
               the open.
             </h1>
             <p className="mt-7 max-w-[60ch] text-[19px] leading-[1.55] text-ink-soft font-display italic">
-              Monad Proposals is where the people building on Monad write down
-              the things they want changed, and argue about them in public.
+              Norvyx Proposals is where builders across the next layers of the
+              web — Web3 first, then AI, deeptech, and the domains that follow
+              — write down the things they want changed, and argue about them
+              in public.
             </p>
           </header>
 
@@ -41,9 +43,27 @@ export default function AboutPage() {
               community letters page.
             </p>
 
+            <h2>Why this exists</h2>
+            <p>
+              We start with Web3, but not from the trading or speculation side.
+              The interesting work — the work people will still be using in ten
+              years — is the technology underneath: the protocols, the tools,
+              the developer experience, the patterns nobody has tried yet. The
+              skepticism around Web3 is mostly a reaction to its loudest
+              surface. The quieter half is where the actual ground is being
+              broken.
+            </p>
+            <p>
+              Norvyx is a home for that quieter half. The bias here is toward
+              ideas that haven't been built yet — not another prediction
+              market, not another DEX. AI, deeptech, and other domains will
+              join as the archive grows. The categories travel; the standard
+              for clarity does not.
+            </p>
+
             <h2>What lives here</h2>
             <p>
-              Five categories, all run on the same format. Each proposal has
+              Four categories, all run on the same format. Each proposal has
               an abstract, a body, a status, and a discussion thread. Authors
               are credited. Editors do not rewrite voice.
             </p>
@@ -82,7 +102,7 @@ export default function AboutPage() {
                 It is not an announcement channel. Nothing here is news.
               </li>
               <li>
-                It is not moderated by the foundation. Moderation is run by
+                It is not moderated by a single team. Moderation is run by
                 community members on a published rotation.
               </li>
             </ul>

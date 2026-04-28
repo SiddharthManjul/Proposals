@@ -43,7 +43,7 @@ export default async function ProposalPage({
     <>
       <Masthead />
       <CategoryNav active={cat.code} />
-      <main className="mx-auto max-w-[1180px] px-6 lg:px-10 pt-10 pb-16">
+      <main className="mx-auto max-w-360 px-6 lg:px-10 pt-10 pb-16">
         {/* Breadcrumb */}
         <nav className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint mb-8 flex items-center gap-2">
           <Link href="/" className="link-underline">
@@ -142,7 +142,7 @@ export default async function ProposalPage({
             <div className="mt-8 divider-dashed" />
             <div className="kicker mt-8 mb-3">Cite this proposal</div>
             <code className="block bg-tint p-3 text-[12px] leading-relaxed break-all">
-              monad-proposals.org/{cat.code.toLowerCase()}/{proposal.slug}
+              norvyx.org/proposals/{cat.code.toLowerCase()}/{proposal.slug}
             </code>
             <div className="kicker mt-8 mb-3">Filed under</div>
             <ul className="space-y-1.5">
@@ -178,7 +178,7 @@ export default async function ProposalPage({
             </div>
             <p className="font-display italic text-ink-soft text-[15px] max-w-[42ch]">
               Read first, then reply. Disagreement is welcome — performance
-              isn't.
+              isn&apos;t.
             </p>
           </div>
 

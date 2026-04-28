@@ -1,16 +1,17 @@
-# Monad Proposals
+# Norvyx Proposals
 
-A working archive of community proposals, debate, and decisions for the Monad ecosystem. Forum-style platform with five proposal categories, threaded discussion, and an editorial-archive aesthetic.
+A working archive of proposals, debate, and decisions for builders working on the next layers of the web. Forum-style platform with four proposal categories, threaded discussion, and an editorial-archive aesthetic.
+
+Norvyx is a home for builders across emerging domains. The archive starts with **Web3** — focused on the technology, not the trading — and will expand to **AI**, **deeptech**, and other domains over time. The bias is toward ideas that haven't been built yet: not another prediction market, not another DEX.
 
 ## Categories
 
 | Code   | Full name                         | Scope                                                          |
 | ------ | --------------------------------- | -------------------------------------------------------------- |
-| `BIP`  | Blitz Improvement Proposals       | Changes to the Monad Blitz one-day hackathon series.           |
 | `CIP`  | Content Improvement Proposals     | Docs, tutorials, translations, podcasts, public writing.       |
 | `EIP`  | Event Idea Proposals              | Conferences, demo nights, retreats, side stages.               |
 | `CMIP` | Community Improvement Proposals   | Norms, governance, mentorship, moderation.                     |
-| `PIP`  | Product Improvement Proposals     | Explorer, RPC, starter kits, wallet flows, the docs site.      |
+| `PIP`  | Product Improvement Proposals     | Explorers, RPC, starter kits, wallet flows, documentation.     |
 
 ## Stack
 
@@ -41,13 +42,13 @@ Display font: **Space Grotesk**. Body font: **Ubuntu**. Mono: system mono for ID
 
 ```
 /                       — masthead, featured, category strip, latest activity
-/[category]             — listing for one category (e.g. /bip, /cmip, /pip)
+/[category]             — listing for one category (e.g. /cip, /cmip, /pip)
 /[category]/[slug]      — proposal detail with metadata, discussion, reply form
 /about                  — archive philosophy and house rules
 /submit                 — proposal submission form
 ```
 
-`[category]` accepts the lowercase code (`bip`, `cip`, `eip`, `cmip`, `pip`). 404 otherwise.
+`[category]` accepts the lowercase code (`cip`, `eip`, `cmip`, `pip`). 404 otherwise.
 
 ## Project layout
 
@@ -95,7 +96,7 @@ While there's no backend, edit `src/lib/proposals.ts` and append to the `PROPOSA
 ```ts
 {
   number: 5,
-  category: "BIP",
+  category: "CIP",
   slug: "kebab-case-slug",
   title: "A specific verb. A specific noun.",
   abstract: "Two or three sentences.",
@@ -126,3 +127,4 @@ Routes regenerate automatically — `generateStaticParams` reads from this array
 - Markdown body rendering for user-submitted proposals.
 - Search and filtering across categories.
 - RSS / Atom feed of new proposals and status changes.
+- New domain expansions: AI, deeptech, and more — each as its own scoped section of the archive.

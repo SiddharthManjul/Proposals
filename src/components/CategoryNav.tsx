@@ -17,7 +17,7 @@ export function CategoryNav({ active }: Props) {
 
   return (
     <nav className="border-y border-rule bg-paper sticky top-0 z-20">
-      <div className="mx-auto max-w-[1180px] px-6 lg:px-10">
+      <div className="mx-auto max-w-[1440px] px-6 lg:px-10">
         <ul className="flex items-stretch overflow-x-auto -mx-6 px-6 lg:mx-0 lg:px-0">
           {items.map((item) => {
             const isActive =

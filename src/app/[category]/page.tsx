@@ -34,7 +34,7 @@ export default async function CategoryPage({
     <>
       <Masthead />
       <CategoryNav active={cat.code} />
-      <main className="mx-auto max-w-[1180px] px-6 lg:px-10 pt-12 pb-12">
+      <main className="mx-auto max-w-[1440px] px-6 lg:px-10 pt-12 pb-12">
         <section className="grid grid-cols-12 gap-10 pb-10 border-b border-rule">
           <div className="col-span-12 md:col-span-9">
             <div className="flex items-baseline gap-3 mb-3">

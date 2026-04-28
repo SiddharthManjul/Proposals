@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Blanka";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local("Blanka"),
+    url("https://fonts.cdnfonts.com/s/18915/Blanka-Regular.woff") format("woff");
+}
+
+.font-blanka {
+  font-family: "Blanka", var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
 :root {
   --paper: #ffffff;
   --ink: #281e32;
