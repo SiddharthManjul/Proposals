@@ -92,7 +92,8 @@ export const PROPOSALS: Proposal[] = [
     number: 1,
     category: "CIP",
     slug: "translate-docs-mandarin-korean-vietnamese-turkish",
-    title: "Translate the developer docs into Mandarin, Korean, Vietnamese, and Turkish",
+    title:
+      "Translate the developer docs into Mandarin, Korean, Vietnamese, and Turkish",
     abstract:
       "Half of the active builder community ships in a language that isn't their first. The current docs are English-only and translated unofficially in three GitHub forks. This proposal funds an official translation, on a shared CMS, with credited human translators.",
     status: "Implemented",
@@ -235,7 +236,8 @@ export const PROPOSALS: Proposal[] = [
     number: 1,
     category: "EIP",
     slug: "quarterly-open-house-team-office-hours",
-    title: "Quarterly Open House — 90 minutes of team office hours, on the record",
+    title:
+      "Quarterly Open House — 90 minutes of team office hours, on the record",
     abstract:
       "AMAs are theater. Office hours, on the record, with the same three or four people every quarter, would build the kind of accountability that AMAs only perform.",
     status: "Accepted",
@@ -661,7 +663,9 @@ export const PROPOSALS: Proposal[] = [
   },
 ];
 
-export function categoryByCode(code: string): (typeof CATEGORIES)[number] | undefined {
+export function categoryByCode(
+  code: string
+): (typeof CATEGORIES)[number] | undefined {
   return CATEGORIES.find((c) => c.code.toLowerCase() === code.toLowerCase());
 }
 
@@ -674,16 +678,17 @@ export function proposalsByCategory(code: Category): Proposal[] {
 export function getProposal(category: string, slug: string): Proposal | undefined {
   return PROPOSALS.find(
     (p) =>
-      p.category.toLowerCase() === category.toLowerCase() &&
-      p.slug === slug
+      p.category.toLowerCase() === category.toLowerCase() && p.slug === slug
   );
 }
 
-export function proposalRef(p: Proposal): string {
+export function proposalRef(p: { category: Category; number: number }): string {
   return `${p.category}-${String(p.number).padStart(3, "0")}`;
 }
 
-export function statusTone(status: Status): "neutral" | "live" | "settled" | "declined" {
+export function statusTone(
+  status: Status
+): "neutral" | "live" | "settled" | "declined" {
   switch (status) {
     case "Draft":
       return "neutral";
@@ -700,7 +705,7 @@ export function statusTone(status: Status): "neutral" | "live" | "settled" | "de
 }
 
 export function formatDate(iso: string): string {
-  const d = new Date(iso + "T00:00:00Z");
+  const d = new Date(iso.length === 10 ? `${iso}T00:00:00Z` : iso);
   return d.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -710,7 +715,7 @@ export function formatDate(iso: string): string {
 }
 
 export function shortDate(iso: string): string {
-  const d = new Date(iso + "T00:00:00Z");
+  const d = new Date(iso.length === 10 ? `${iso}T00:00:00Z` : iso);
   return d.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
