@@ -5,20 +5,11 @@ import { CategoryNav } from "@/components/CategoryNav";
 import { Footer } from "@/components/Footer";
 import { CommentThread } from "@/components/CommentThread";
 import { StatusPill } from "@/components/StatusPill";
-import {
-  PROPOSALS,
-  categoryByCode,
-  formatDate,
-  getProposal,
-  proposalRef,
-} from "@/lib/proposals";
+import { categoryByCode, formatDate, proposalRef } from "@/lib/proposals";
+import { getProposalBySlug, listProposals } from "@/db/queries";
+import { CommentForm } from "./CommentForm";
 
-export function generateStaticParams() {
-  return PROPOSALS.map((p) => ({
-    category: p.category.toLowerCase(),
-    slug: p.slug,
-  }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function ProposalPage({
   params,
@@ -27,17 +18,20 @@ export default async function ProposalPage({
 }) {
   const { category, slug } = await params;
   const cat = categoryByCode(category);
-  const proposal = getProposal(category, slug);
-  if (!cat || !proposal) return notFound();
+  if (!cat) return notFound();
+
+  const proposal = await getProposalBySlug(cat.code, slug);
+  if (!proposal) return notFound();
 
   const replyCount = proposal.discussion.reduce(
     (n, c) => n + 1 + (c.replies?.length ?? 0),
     0
   );
 
-  const related = PROPOSALS.filter(
-    (p) => p.category === proposal.category && p.slug !== proposal.slug
-  ).slice(0, 4);
+  const sameCategory = await listProposals({ category: cat.code });
+  const related = sameCategory
+    .filter((p) => p.slug !== proposal.slug)
+    .slice(0, 4);
 
   return (
     <>
@@ -183,59 +177,14 @@ export default async function ProposalPage({
           </div>
 
           <div className="mt-8">
-            <CommentThread comments={proposal.discussion} />
+            <CommentThread
+              comments={proposal.discussion}
+              category={cat.code}
+              slug={proposal.slug}
+            />
           </div>
 
-          {/* Reply form */}
-          <div className="mt-10 border border-rule p-6 md:p-8">
-            <div className="kicker mb-3">Add to the record</div>
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <label className="block">
-                  <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft">
-                    Your name
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="e.g. Reema Khan"
-                    className="mt-1 block w-full bg-paper border-b border-rule focus:border-accent outline-none py-2 text-[15px]"
-                  />
-                </label>
-                <label className="block">
-                  <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft">
-                    Handle
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="e.g. reema.eth"
-                    className="mt-1 block w-full bg-paper border-b border-rule focus:border-accent outline-none py-2 text-[15px]"
-                  />
-                </label>
-              </div>
-              <label className="block">
-                <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft">
-                  Reply
-                </span>
-                <textarea
-                  rows={6}
-                  placeholder="State your position. Cite specifics. Don't argue with the headline."
-                  className="mt-1 block w-full bg-paper border border-rule focus:border-accent outline-none p-3 text-[15px] leading-[1.6] resize-y"
-                />
-              </label>
-              <div className="flex items-center justify-between flex-wrap gap-3">
-                <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
-                  Replies are public, edited only for typos, and kept
-                  permanently
-                </p>
-                <button
-                  type="button"
-                  className="bg-accent text-paper px-6 py-3 font-mono text-[12px] uppercase tracking-[0.16em] hover:bg-accent-deep transition-colors"
-                >
-                  Post reply →
-                </button>
-              </div>
-            </form>
-          </div>
+          <CommentForm category={cat.code} slug={proposal.slug} />
         </section>
       </main>
       <Footer />
