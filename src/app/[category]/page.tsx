@@ -4,16 +4,10 @@ import { Masthead } from "@/components/Masthead";
 import { CategoryNav } from "@/components/CategoryNav";
 import { Footer } from "@/components/Footer";
 import { ProposalRow } from "@/components/ProposalRow";
-import {
-  CATEGORIES,
-  categoryByCode,
-  proposalsByCategory,
-  STATUSES,
-} from "@/lib/proposals";
+import { categoryByCode, STATUSES } from "@/lib/proposals";
+import { listProposals } from "@/db/queries";
 
-export function generateStaticParams() {
-  return CATEGORIES.map((c) => ({ category: c.code.toLowerCase() }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function CategoryPage({
   params,
@@ -24,7 +18,7 @@ export default async function CategoryPage({
   const cat = categoryByCode(category);
   if (!cat) return notFound();
 
-  const list = proposalsByCategory(cat.code);
+  const list = await listProposals({ category: cat.code });
   const counts = STATUSES.map((s) => ({
     status: s,
     n: list.filter((p) => p.status === s).length,
