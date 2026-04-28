@@ -1,11 +1,20 @@
-import type { Comment } from "@/lib/proposals";
+"use client";
+
+import { useState } from "react";
+
+import type { Category, Comment } from "@/lib/proposals";
 import { formatDate } from "@/lib/proposals";
+import { CommentForm } from "@/app/[category]/[slug]/CommentForm";
 
 type Props = {
   comments: Comment[];
+  category: Category;
+  slug: string;
 };
 
-export function CommentThread({ comments }: Props) {
+export function CommentThread({ comments, category, slug }: Props) {
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
+
   if (!comments.length) {
     return (
       <div className="py-12 text-center">
@@ -20,12 +29,33 @@ export function CommentThread({ comments }: Props) {
     <ol className="divide-y divide-rule">
       {comments.map((c, i) => (
         <li key={c.id} className="py-7">
-          <CommentItem comment={c} index={i + 1} />
+          <CommentItem
+            comment={c}
+            index={i + 1}
+            onReply={() => setReplyingTo(c.id === replyingTo ? null : c.id)}
+            isReplying={replyingTo === c.id}
+          />
+          {replyingTo === c.id && (
+            <div className="mt-4 md:pl-[16.6667%]">
+              <CommentForm
+                category={category}
+                slug={slug}
+                parentId={c.id}
+                onPosted={() => setReplyingTo(null)}
+                compact
+              />
+            </div>
+          )}
           {c.replies?.length ? (
             <ol className="mt-5 pl-6 border-l-2 border-accent/40 space-y-5">
               {c.replies.map((r, j) => (
                 <li key={r.id} className="pl-2">
-                  <CommentItem comment={r} index={i + 1} subIndex={j + 1} reply />
+                  <CommentItem
+                    comment={r}
+                    index={i + 1}
+                    subIndex={j + 1}
+                    reply
+                  />
                 </li>
               ))}
             </ol>
@@ -41,11 +71,15 @@ function CommentItem({
   index,
   subIndex,
   reply = false,
+  onReply,
+  isReplying,
 }: {
   comment: Comment;
   index: number;
   subIndex?: number;
   reply?: boolean;
+  onReply?: () => void;
+  isReplying?: boolean;
 }) {
   const ref = subIndex
     ? `${String(index).padStart(2, "0")}.${String(subIndex).padStart(2, "0")}`
@@ -71,17 +105,17 @@ function CommentItem({
         <p className={`text-[15.5px] leading-[1.7] text-ink ${reply ? "" : ""}`}>
           {comment.body}
         </p>
-        <div className="mt-3 flex items-center gap-4 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
-          <button type="button" className="hover:text-accent transition-colors">
-            Reply
-          </button>
-          <button type="button" className="hover:text-accent transition-colors">
-            Quote
-          </button>
-          <button type="button" className="hover:text-accent transition-colors">
-            Link
-          </button>
-        </div>
+        {!reply && onReply && (
+          <div className="mt-3 flex items-center gap-4 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
+            <button
+              type="button"
+              onClick={onReply}
+              className="hover:text-accent transition-colors"
+            >
+              {isReplying ? "Cancel" : "Reply"}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

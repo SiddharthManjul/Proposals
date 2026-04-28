@@ -12,9 +12,14 @@ export function Masthead() {
           <span className="hidden sm:inline">
             A working archive of community proposals
           </span>
-          <Link href="/submit" className="link-underline">
-            Submit a proposal →
-          </Link>
+          <span className="flex items-center gap-4">
+            <Link href="/admin" className="link-underline">
+              Admin
+            </Link>
+            <Link href="/submit" className="link-underline">
+              Submit a proposal →
+            </Link>
+          </span>
         </div>
         <div className="divider-dashed" />
         <div className="flex flex-col items-center pt-7 pb-6 text-center">
