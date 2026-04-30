@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { CATEGORIES, type Category } from "@/lib/proposals";
 import { parseBody } from "@/lib/parseBody";
+import { BodyPreview, PreviewTabs } from "@/components/BodyPreview";
 
 const READING_WORDS_PER_MIN = 220;
 
@@ -37,6 +38,7 @@ export function SubmitForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [issues, setIssues] = useState<{ path: string; message: string }[]>([]);
+  const [bodyMode, setBodyMode] = useState<"write" | "preview">("write");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -170,17 +172,32 @@ export function SubmitForm() {
 
       <div>
         <div className="kicker mb-3">Step 04 — Body</div>
-        <textarea
-          rows={14}
-          required
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-          placeholder={`The first paragraph reads like a lede.\n\n## Specification\n- Bullet one\n- Bullet two\n\n## Open questions\n\nA paragraph here.`}
-          className="block w-full bg-paper border border-rule focus:border-accent outline-none p-4 text-[15px] leading-[1.7] resize-y font-mono"
-        />
-        <p className="mt-2 text-[12px] text-ink-faint italic">
-          Use <code className="font-mono">## Heading</code> to start a section,{" "}
-          <code className="font-mono">- item</code> for lists, blank lines between paragraphs.
+        <PreviewTabs mode={bodyMode} onChange={setBodyMode} />
+        {bodyMode === "write" ? (
+          <textarea
+            rows={14}
+            required
+            value={body}
+            onChange={(e) => setBody(e.target.value)}
+            placeholder={`The first paragraph reads like a lede.\n\n## Specification\n- Bullet one\n- Bullet two\n\n## Open questions\n\nA paragraph here.`}
+            className="block w-full bg-paper border border-rule focus:border-accent outline-none p-4 text-[15px] leading-[1.7] resize-y font-mono"
+          />
+        ) : (
+          <BodyPreview body={body} />
+        )}
+        <p className="mt-2 text-[12px] text-ink-faint italic leading-[1.55]">
+          <span className="block">
+            Sections: <code className="font-mono not-italic">## Heading</code> ·
+            Lists: <code className="font-mono not-italic">- item</code> ·
+            Pullquote: <code className="font-mono not-italic">&gt; line</code> ·
+            Paragraphs split on blank lines.
+          </span>
+          <span className="block mt-1">
+            Inline: <code className="font-mono not-italic">**bold**</code>,{" "}
+            <code className="font-mono not-italic">*italic*</code>,{" "}
+            <code className="font-mono not-italic">`code`</code>,{" "}
+            <code className="font-mono not-italic">[label](https://url)</code>.
+          </span>
         </p>
       </div>
 
