@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const ISSUE_DATE = "Vol. I · No. 17 — April 2026";
+const ISSUE_DATE = "Vol. I · No. 18 — April 2026";
 
 export function Masthead() {
   return (
@@ -10,9 +10,12 @@ export function Masthead() {
         <div className="flex items-center justify-between pt-3 pb-2 text-[11px] uppercase tracking-[0.16em] text-ink-faint font-mono">
           <span>{ISSUE_DATE}</span>
           <span className="hidden sm:inline">
-            A working archive of community proposals
+            For builders, founders, and the investors who read them
           </span>
           <span className="flex items-center gap-4">
+            <Link href="/about" className="link-underline">
+              About
+            </Link>
             <Link href="/admin" className="link-underline">
               Admin
             </Link>
@@ -33,8 +36,8 @@ export function Masthead() {
           </Link>
           <p className="mt-3 max-w-2xl font-display italic text-[15px] md:text-base text-ink-soft">
             An archive of ideas, debate, and decisions from the people building
-            the next layer of the web — starting with Web3, then AI, deeptech,
-            and the domains that come next.
+            real companies — across tech, science, capital, and the slow work
+            in between.
           </p>
         </div>
       </div>

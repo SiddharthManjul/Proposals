@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import type { Category, Comment } from "@/lib/proposals";
 import { formatDate } from "@/lib/proposals";
+import { renderInline } from "@/lib/inlineMarkdown";
 import { CommentForm } from "@/app/[category]/[slug]/CommentForm";
 
 type Props = {
@@ -103,7 +104,7 @@ function CommentItem({
       </div>
       <div className="col-span-12 md:col-span-10">
         <p className={`text-[15.5px] leading-[1.7] text-ink ${reply ? "" : ""}`}>
-          {comment.body}
+          {renderInline(comment.body)}
         </p>
         {!reply && onReply && (
           <div className="mt-3 flex items-center gap-4 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">

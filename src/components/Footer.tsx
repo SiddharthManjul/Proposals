@@ -1,9 +1,19 @@
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/proposals";
+import { CapitalCard } from "./CapitalCard";
 
 export function Footer() {
   return (
-    <footer className="mt-20 border-t border-rule">
+    <>
+      <CapitalCard />
+      <FooterInner />
+    </>
+  );
+}
+
+function FooterInner() {
+  return (
+    <footer className="border-t border-rule">
       <div className="border-t-[3px] border-accent" />
       <div className="mx-auto max-w-[1440px] px-6 lg:px-10 py-12">
         <div className="grid grid-cols-12 gap-8">
@@ -12,8 +22,9 @@ export function Footer() {
               Norvyx <span className="text-accent">Proposals</span>
             </h3>
             <p className="mt-3 text-[14px] text-ink-soft max-w-[40ch] leading-relaxed">
-              An archive of proposals, debate, and decisions from the builders'
-              web. Edited by builders, hosted in the open, read on weekends.
+              An archive of proposals, debate, and decisions for the people
+              building real companies. Edited by builders, hosted in the open,
+              read on weekends.
             </p>
           </div>
           <div className="col-span-6 md:col-span-3">
