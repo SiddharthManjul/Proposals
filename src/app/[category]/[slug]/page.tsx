@@ -7,6 +7,7 @@ import { CommentThread } from "@/components/CommentThread";
 import { StatusPill } from "@/components/StatusPill";
 import { categoryByCode, formatDate, proposalRef } from "@/lib/proposals";
 import { getProposalBySlug, listProposals } from "@/db/queries";
+import { renderInline } from "@/lib/inlineMarkdown";
 import { CommentForm } from "./CommentForm";
 
 export const dynamic = "force-dynamic";
@@ -73,7 +74,7 @@ export default async function ProposalPage({
               {proposal.title}
             </h1>
             <p className="mt-7 max-w-[60ch] text-[19px] leading-[1.55] text-ink-soft font-display italic">
-              {proposal.abstract}
+              {renderInline(proposal.abstract)}
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
               <span>
@@ -102,19 +103,19 @@ export default async function ProposalPage({
                     const isFirst = i === 0 && j === 0;
                     return (
                       <p key={j} className={isFirst ? "dropcap" : undefined}>
-                        {p}
+                        {renderInline(p)}
                       </p>
                     );
                   })}
                   {section.list && (
                     <ul>
                       {section.list.map((li, j) => (
-                        <li key={j}>{li}</li>
+                        <li key={j}>{renderInline(li)}</li>
                       ))}
                     </ul>
                   )}
                   {section.pullquote && (
-                    <blockquote>{section.pullquote}</blockquote>
+                    <blockquote>{renderInline(section.pullquote)}</blockquote>
                   )}
                 </section>
               ))}
