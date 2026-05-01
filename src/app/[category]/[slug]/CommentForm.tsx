@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 import type { Category } from "@/lib/proposals";
+import { InlinePreview, PreviewTabs } from "@/components/BodyPreview";
 
 type Props = {
   category: Category;
@@ -21,6 +22,7 @@ export function CommentForm({ category, slug, parentId, onPosted, compact }: Pro
   const [body, setBody] = useState("");
   const [posting, setPosting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [mode, setMode] = useState<"write" | "preview">("write");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -103,21 +105,34 @@ export function CommentForm({ category, slug, parentId, onPosted, compact }: Pro
             />
           </label>
         </div>
-        <label className="block">
+        <div>
           <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft">
             {parentId ? "Your reply" : "Reply"}
           </span>
-          <textarea
-            rows={parentId ? 4 : 6}
-            required
-            minLength={2}
-            maxLength={5000}
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            placeholder="State your position. Cite specifics. Don't argue with the headline."
-            className="mt-1 block w-full bg-paper border border-rule focus:border-accent outline-none p-3 text-[15px] leading-[1.6] resize-y"
-          />
-        </label>
+          <div className="mt-1">
+            <PreviewTabs mode={mode} onChange={setMode} />
+            {mode === "write" ? (
+              <textarea
+                rows={parentId ? 4 : 6}
+                required
+                minLength={2}
+                maxLength={5000}
+                value={body}
+                onChange={(e) => setBody(e.target.value)}
+                placeholder="State your position. Cite specifics. Don't argue with the headline."
+                className="block w-full bg-paper border border-rule focus:border-accent outline-none p-3 text-[15px] leading-[1.6] resize-y"
+              />
+            ) : (
+              <InlinePreview body={body} />
+            )}
+          </div>
+          <p className="mt-1 text-[11px] text-ink-faint italic">
+            Inline: <code className="font-mono not-italic">**bold**</code>{" "}
+            <code className="font-mono not-italic">*italic*</code>{" "}
+            <code className="font-mono not-italic">`code`</code>{" "}
+            <code className="font-mono not-italic">[label](url)</code>
+          </p>
+        </div>
         {error && (
           <div className="border border-accent/60 bg-accent-wash p-3 text-[13px] text-ink">
             {error}
