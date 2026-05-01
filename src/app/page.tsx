@@ -38,9 +38,9 @@ export default async function HomePage() {
           <aside className="col-span-12 md:col-span-3 order-2 md:order-1">
             <div className="kicker mb-3">From the editors</div>
             <p className="font-display italic text-ink leading-normal text-[18px]">
-              This week: a quiet ship of human-readable names in block
-              explorers, a draft builders&apos; retreat, and the case for treating
-              Web3 as tech first.
+              The archive of record for founders thinking out loud, the
+              communities holding them up, and the investors quietly reading
+              before they reach out.
             </p>
             <div className="mt-6 divider-dashed" />
             <dl className="mt-6 space-y-3 font-mono text-[12px] uppercase tracking-[0.12em]">
