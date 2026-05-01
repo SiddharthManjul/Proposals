@@ -21,10 +21,9 @@ export default function AboutPage() {
               the open.
             </h1>
             <p className="mt-7 max-w-[60ch] text-[19px] leading-[1.55] text-ink-soft font-display italic">
-              Norvyx Proposals is where builders across the next layers of the
-              web — Web3 first, then AI, deeptech, and the domains that follow
-              — write down the things they want changed, and argue about them
-              in public.
+              Norvyx Proposals is where founders, the communities around them,
+              and the investors who read both write things down — and argue
+              about them in public, with their names attached.
             </p>
           </header>
 
@@ -45,20 +44,47 @@ export default function AboutPage() {
 
             <h2>Why this exists</h2>
             <p>
-              We start with Web3, but not from the trading or speculation side.
-              The interesting work — the work people will still be using in ten
-              years — is the technology underneath: the protocols, the tools,
-              the developer experience, the patterns nobody has tried yet. The
-              skepticism around Web3 is mostly a reaction to its loudest
-              surface. The quieter half is where the actual ground is being
-              broken.
+              Most of the work that builds a company never makes it onto a
+              deck. The framing of a problem, the rejected ideas, the
+              arguments with peers, the call to ship the unsexy half — that's
+              the part that compounds into judgment. It almost never ends up
+              written down anywhere a stranger could read it. This archive
+              exists to keep that half.
             </p>
             <p>
-              Norvyx is a home for that quieter half. The bias here is toward
-              ideas that haven't been built yet — not another prediction
-              market, not another DEX. AI, deeptech, and other domains will
-              join as the archive grows. The categories travel; the standard
-              for clarity does not.
+              The bias here is toward thinking that hasn't been productized
+              yet. Not another prediction market, not another launch
+              announcement, not another listicle. Tech, science, capital,
+              community — anywhere a real company is being assembled by
+              people willing to argue in public. Domain doesn't matter; the
+              standard for clarity does.
+            </p>
+
+            <h2>Who reads here</h2>
+            <p>
+              Three audiences, on purpose:
+            </p>
+            <ul>
+              <li>
+                <strong className="font-display">Founders</strong> writing in
+                public to sharpen an idea before — or instead of — building
+                a deck.
+              </li>
+              <li>
+                <strong className="font-display">Communities</strong> deciding
+                norms, picking events, debating how they treat each other and
+                what they teach.
+              </li>
+              <li>
+                <strong className="font-display">Investors</strong> who read
+                quietly. They don't comment for theatre. They reach out when
+                an author has said something specific and earned it.
+              </li>
+            </ul>
+            <p>
+              The archive is not a pitching surface. Authors who want to be
+              reachable can opt in to that on their profile; everyone else is
+              just here to think.
             </p>
 
             <h2>What lives here</h2>
