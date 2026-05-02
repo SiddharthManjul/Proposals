@@ -104,18 +104,39 @@ export default function AboutPage() {
 
             <h2>How statuses move</h2>
             <p>
-              A proposal starts as a <em>Draft</em>. It enters <em>Discussion</em>{" "}
-              when the author thinks the shape is roughly right and wants
-              feedback. It hits <em>Last Call</em> when discussion has settled
-              and the author is asking for objections. Then it becomes{" "}
-              <em>Accepted</em>, <em>Rejected</em>, or — for proposals that are
-              never finished — <em>Living</em>, meaning the document keeps
-              moving.
+              Status describes where the venture being proposed actually is —
+              not the editorial state of the document. Five stages:
             </p>
+            <ul>
+              <li>
+                <strong className="font-display">Idea.</strong> The thinking is
+                on the page; nothing is built yet.
+              </li>
+              <li>
+                <strong className="font-display">Execution.</strong> Building
+                it. Decisions are getting made and shipped into code, prose,
+                contracts, whatever the medium is.
+              </li>
+              <li>
+                <strong className="font-display">MVP.</strong> A first working
+                version is in front of real users. It barely works. That's the
+                point.
+              </li>
+              <li>
+                <strong className="font-display">PMF.</strong> Product-market
+                fit. The thing has found the people it's for and they keep
+                coming back without being asked.
+              </li>
+              <li>
+                <strong className="font-display">Production.</strong> Live, at
+                scale, no longer fragile. The interesting work shifts from
+                shipping to operating.
+              </li>
+            </ul>
             <p>
-              Acceptance is not implementation. <em>Implemented</em> is its own
-              status, and it gets used sparingly — only when the thing the
-              proposal asked for actually exists in the world.
+              An editor moves a proposal up the ladder as the author reports
+              progress. Statuses can move backward when reality demands it —
+              that's the archive doing its job.
             </p>
 
             <h2>What this archive is not</h2>
