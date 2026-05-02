@@ -15,7 +15,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
       "Translate the developer docs into Mandarin, Korean, Vietnamese, and Turkish",
     abstract:
       "Half of the active builder community ships in a language that isn't their first. The current docs are English-only and translated unofficially in three GitHub forks. This proposal funds an official translation, on a shared CMS, with credited human translators.",
-    status: "Implemented",
+    status: "Production",
     author: "Wei Lin",
     authorHandle: "weilin",
     posted: "2026-01-12",
@@ -62,7 +62,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     title: "A weekly written digest authored by a rotating community member",
     abstract:
       "The current newsletter is written by a single comms team. It reads like a comms newsletter. A digest written by a different community member every week — paid, edited, but not house-styled — would be more honest and more read.",
-    status: "Accepted",
+    status: "Execution",
     author: "Marcie Olsen",
     authorHandle: "marcie",
     posted: "2026-02-08",
@@ -104,7 +104,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     title: "Replace tutorial videos longer than 12 minutes with chaptered shorts",
     abstract:
       "Long-form tutorials get good completion rates from people who already know what they're doing. Beginners bounce at minute four and never come back. Splitting into 4–6 minute chaptered shorts lets people resume and skip without losing place.",
-    status: "Draft",
+    status: "Idea",
     author: "Joaquim Albuquerque",
     authorHandle: "joaquim",
     posted: "2026-04-19",
@@ -127,7 +127,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     title: "An 'RFC of the Month' highlight in the newsletter",
     abstract:
       "Most readers never visit this forum. A monthly highlight — one proposal, why it matters, what's still being argued — would route attention to the conversations that need it.",
-    status: "Discussion",
+    status: "Idea",
     author: "N. Hartwell",
     authorHandle: "n.hartwell",
     posted: "2026-04-12",
@@ -159,7 +159,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
       "Quarterly Open House — 90 minutes of team office hours, on the record",
     abstract:
       "AMAs are theater. Office hours, on the record, with the same three or four people every quarter, would build the kind of accountability that AMAs only perform.",
-    status: "Accepted",
+    status: "Execution",
     author: "Sasha Volkov",
     authorHandle: "sasha.v",
     posted: "2026-02-26",
@@ -201,7 +201,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     title: "Side stage at major conferences dedicated to small builders",
     abstract:
       "The main stage at large conferences is reserved for people with PR teams. A side stage — eight slots, twenty minutes each, no slides longer than three lines — would surface builders who actually ship.",
-    status: "Discussion",
+    status: "Idea",
     author: "Priya Subramanian",
     authorHandle: "priyas",
     posted: "2026-04-05",
@@ -239,7 +239,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     title: "Annual Builder's Retreat outside the conference circuit",
     abstract:
       "Conferences are sales floors. A retreat — fifty people, five days, no press, no recording — would be where the actual conversations happen.",
-    status: "Draft",
+    status: "Idea",
     author: "Felix Brand",
     authorHandle: "felixb",
     posted: "2026-04-23",
@@ -262,7 +262,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     title: "Monthly Demo Night hosted in five rotating cities",
     abstract:
       "Demo Night was a side project that worked. This proposal turns it into a recurring monthly event in five cities, with a shared budget, shared format, and local hosts.",
-    status: "Implemented",
+    status: "Production",
     author: "Casey Ng",
     authorHandle: "casey",
     posted: "2025-11-04",
@@ -285,7 +285,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     title: "Mentorship pairing for first-time builders",
     abstract:
       "First-time builders ask the same five questions in the same five threads. A short, time-bounded pairing program — three calls, no obligation after — would catch them earlier and lighter.",
-    status: "Accepted",
+    status: "Execution",
     author: "Anita Joseph",
     authorHandle: "anita.j",
     posted: "2026-02-14",
@@ -325,7 +325,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     title: "Refresh the Discord moderation handbook",
     abstract:
       "The current handbook predates the current community. It assumes a smaller, more technical audience, and three of its rules haven't been enforced in months. Better to rewrite than to keep ignoring.",
-    status: "Discussion",
+    status: "Idea",
     author: "D. Okafor",
     authorHandle: "d.okafor",
     posted: "2026-04-02",
@@ -369,7 +369,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     title: "A community-run grants committee with public minutes",
     abstract:
       "Closed-door grants are fast but opaque. A community-run committee — five rotating members, public minutes, capped check size — would be slower but legible. Both can coexist.",
-    status: "Draft",
+    status: "Idea",
     author: "Ben Tashkov",
     authorHandle: "ben.t",
     posted: "2026-04-18",
@@ -400,7 +400,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     title: "Retire the catch-all 'general' channel",
     abstract:
       "The proposal was to delete #general and force conversations into topic-specific channels. After two weeks of discussion the consensus was that this would be a net loss. Preserved as a record.",
-    status: "Rejected",
+    status: "Idea",
     author: "M. Aldrich",
     authorHandle: "maldrich",
     posted: "2026-03-08",
@@ -431,7 +431,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     title: "Human-readable names in block explorers",
     abstract:
       "Addresses are not memorable. Most explorers still surface 0x-prefixed hex everywhere a human will read it. This proposal lays out a minimal first version of a name resolver an explorer can adopt.",
-    status: "Last Call",
+    status: "Execution",
     author: "Simone Carter",
     authorHandle: "simonec",
     posted: "2026-03-11",
@@ -494,7 +494,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     title: "Wallet onboarding tutorial in the starter kit",
     abstract:
       "Most starter kits assume the user already has a wallet and funds. The first 90 seconds for a new builder is currently a self-guided expedition. A first-class tutorial would close the funnel.",
-    status: "Accepted",
+    status: "Execution",
     author: "Alex Petrov",
     authorHandle: "alexp",
     posted: "2026-02-19",
@@ -525,7 +525,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     title: "Native batched-transactions UI in block explorers",
     abstract:
       "Batched transactions show up in most explorers as a wall of internal calls with no clear boundaries. A first-class batched view — collapsed by default, expandable per call — would make them legible without flattening detail.",
-    status: "Draft",
+    status: "Idea",
     author: "Yuki Tanaka",
     authorHandle: "yuki",
     posted: "2026-04-17",
@@ -548,7 +548,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     title: "Public RPC gateway for sandbox testing",
     abstract:
       "Builders running tutorials currently have to provision their own RPC, which is a half-day distraction at the worst possible moment in their first week. A rate-limited public sandbox gateway would close that gap.",
-    status: "Discussion",
+    status: "Idea",
     author: "Hari Rao",
     authorHandle: "harir",
     posted: "2026-04-08",
