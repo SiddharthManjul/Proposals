@@ -19,7 +19,12 @@ const ubuntu = Ubuntu({
 export const metadata: Metadata = {
   title: "Norvyx Proposals — An archive of ideas, debate, and decisions for the builders' web",
   description:
-    "A working archive of Content, Event, Community, and Product proposals — starting with Web3, expanding into AI, deeptech, and beyond.",
+    "A working archive of Content, Event, Community, and Product proposals — for founders, the communities around them, and the investors who read them.",
+  icons: {
+    icon: [{ url: "/logo.png", type: "image/png" }],
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
