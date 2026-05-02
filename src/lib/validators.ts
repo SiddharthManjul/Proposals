@@ -2,13 +2,11 @@ import { z } from "zod";
 
 export const categorySchema = z.enum(["CIP", "EIP", "CMIP", "PIP"]);
 export const statusSchema = z.enum([
-  "Draft",
-  "Discussion",
-  "Last Call",
-  "Accepted",
-  "Implemented",
-  "Rejected",
-  "Living",
+  "Idea",
+  "Execution",
+  "MVP",
+  "PMF",
+  "Production",
 ]);
 
 export const proposalSectionSchema = z.object({
