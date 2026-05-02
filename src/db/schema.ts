@@ -23,13 +23,11 @@ export const categoryEnum = pgEnum("category", [
 ]);
 
 export const statusEnum = pgEnum("status", [
-  "Draft",
-  "Discussion",
-  "Last Call",
-  "Accepted",
-  "Implemented",
-  "Rejected",
-  "Living",
+  "Idea",
+  "Execution",
+  "MVP",
+  "PMF",
+  "Production",
 ]);
 
 export const proposals = pgTable(
@@ -41,7 +39,7 @@ export const proposals = pgTable(
     slug: varchar("slug", { length: 200 }).notNull(),
     title: text("title").notNull(),
     abstract: text("abstract").notNull(),
-    status: statusEnum("status").notNull().default("Draft"),
+    status: statusEnum("status").notNull().default("Idea"),
     author: text("author").notNull(),
     authorHandle: text("author_handle").notNull(),
     posted: timestamp("posted", { withTimezone: true })
