@@ -256,8 +256,9 @@ export function SubmitForm() {
 
       <div className="flex items-center justify-between flex-wrap gap-4 pt-4 border-t border-rule">
         <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint max-w-[40ch]">
-          Submitted as <em className="not-italic text-ink">Draft</em>. An editor can move
-          it through the workflow afterwards.
+          Submitted as <em className="not-italic text-ink">Idea</em>. An editor
+          moves it through Execution → MVP → PMF → Production as the venture
+          ships.
         </p>
         <div className="flex items-center gap-3">
           <button
