@@ -13,14 +13,12 @@ export function StatusPill({ status, size = "sm" }: Props) {
     live: "text-accent",
     neutral: "text-ink-soft",
     settled: "text-ink",
-    declined: "text-ink-faint line-through decoration-1",
   } as const;
 
   const dotByTone = {
     live: "bg-accent",
     neutral: "bg-ink-soft/50",
     settled: "bg-ink",
-    declined: "bg-ink-faint",
   } as const;
 
   const textSize = size === "md" ? "text-[12px]" : "text-[11px]";
