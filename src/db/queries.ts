@@ -171,7 +171,7 @@ export async function createProposal(input: {
         author: input.author,
         authorHandle: input.authorHandle,
         body: input.body,
-        status: input.status ?? "Draft",
+        status: input.status ?? "Idea",
         readingMinutes: input.readingMinutes ?? 3,
       })
       .returning();
