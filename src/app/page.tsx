@@ -4,7 +4,13 @@ import { CategoryNav } from "@/components/CategoryNav";
 import { Footer } from "@/components/Footer";
 import { ProposalRow } from "@/components/ProposalRow";
 import { StatusPill } from "@/components/StatusPill";
-import { CATEGORIES, STATUSES, proposalRef, shortDate } from "@/lib/proposals";
+import {
+  CATEGORIES,
+  STATUSES,
+  proposalRef,
+  shortDate,
+  type Status,
+} from "@/lib/proposals";
 import { listProposalsSortedByUpdated } from "@/db/queries";
 
 export const dynamic = "force-dynamic";
@@ -20,7 +26,7 @@ export default async function HomePage() {
   const rest = sorted.slice(1);
 
   const liveCount = sorted.filter(
-    (p) => p.status === "Discussion" || p.status === "Last Call"
+    (p) => p.status === "Execution" || p.status === "MVP"
   ).length;
   const totalReplies = sorted.reduce(
     (n, p) =>
@@ -162,7 +168,7 @@ export default async function HomePage() {
             </div>
           </div>
           <aside className="col-span-12 md:col-span-3 md:border-l md:border-rule md:pl-8">
-            <div className="kicker mb-3">Status legend</div>
+            <div className="kicker mb-3">Lifecycle</div>
             <ul className="space-y-3">
               {STATUSES.map((s) => (
                 <li
@@ -170,7 +176,7 @@ export default async function HomePage() {
                   className="flex items-start justify-between gap-3"
                 >
                   <StatusPill status={s} />
-                  <span className="text-[12px] text-ink-soft text-right max-w-[14ch]">
+                  <span className="text-[12px] text-ink-soft text-right max-w-[16ch]">
                     {legendFor(s)}
                   </span>
                 </li>
@@ -179,9 +185,8 @@ export default async function HomePage() {
             <div className="mt-10 divider-dashed" />
             <div className="kicker mt-8 mb-3">Reading the archive</div>
             <p className="text-[14px] text-ink-soft leading-[1.65]">
-              Every proposal lives at a stable URL. Discussion is threaded one
-              level deep. Decisions are kept even when rejected — the record
-              matters more than the verdict.
+              Every proposal lives at a stable URL. Status reflects where the
+              venture is, not where the document is.
             </p>
             <Link
               href="/about"
@@ -235,23 +240,18 @@ function EmptyState() {
   );
 }
 
-function legendFor(s: string): string {
+function legendFor(s: Status): string {
   switch (s) {
-    case "Draft":
-      return "Sketch, open for shape";
-    case "Discussion":
-      return "Live argument";
-    case "Last Call":
-      return "Closing soon";
-    case "Accepted":
-      return "Approved, not yet shipped";
-    case "Implemented":
-      return "Live in the world";
-    case "Rejected":
-      return "Closed, kept for record";
-    case "Living":
-      return "Continuously revised";
-    default:
-      return "";
+    case "Idea":
+      return "On the page, not built";
+    case "Execution":
+      return "Being built now";
+    case "MVP":
+      return "First version, real users";
+    case "PMF":
+      return "Found its audience";
+    case "Production":
+      return "Live, at scale";
   }
 }
+
