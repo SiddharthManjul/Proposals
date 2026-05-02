@@ -5,7 +5,6 @@ import Link from "next/link";
 
 import {
   CATEGORIES,
-  STATUSES,
   proposalRef,
   shortDate,
   type Category,
@@ -13,6 +12,7 @@ import {
   type Status,
 } from "@/lib/proposals";
 import { StatusPill } from "@/components/StatusPill";
+import { StatusSelect } from "@/components/StatusSelect";
 
 type SessionInfo = {
   authenticated: boolean;
@@ -90,23 +90,44 @@ export function AdminPanel() {
           body: JSON.stringify({ status }),
         }
       );
-      const data = await res.json();
+
+      // Read as text first so an empty / non-JSON response doesn't crash
+      // the client with "Unexpected end of JSON input".
+      const raw = await res.text();
+      let data: { error?: string; proposal?: Proposal } | null = null;
+      if (raw) {
+        try {
+          data = JSON.parse(raw);
+        } catch {
+          // body wasn't JSON — leave data null and use status text below
+        }
+      }
+
       if (!res.ok) {
-        setError(data.error ?? "Status update rejected.");
+        const message =
+          data?.error ??
+          (raw && raw.length < 240 ? raw : null) ??
+          `Status update rejected (HTTP ${res.status} ${res.statusText || ""}).`.trim();
+        setError(message);
         if (res.status === 401) {
-          // session expired
           await refreshSession();
         }
         return;
       }
+
+      if (!data?.proposal) {
+        setError("Server returned an empty response.");
+        return;
+      }
+
       setProposals((curr) =>
         curr
           ? curr.map((x) =>
               x.category === p.category && x.slug === p.slug
                 ? {
                     ...x,
-                    status: data.proposal.status,
-                    updated: data.proposal.updated,
+                    status: data!.proposal!.status,
+                    updated: data!.proposal!.updated,
                   }
                 : x
             )
@@ -245,18 +266,11 @@ export function AdminPanel() {
                     <StatusPill status={p.status} />
                   </td>
                   <td className="px-4 py-3 text-right whitespace-nowrap">
-                    <select
+                    <StatusSelect
                       value={p.status}
                       disabled={pendingSlug === p.slug}
-                      onChange={(e) => changeStatus(p, e.target.value as Status)}
-                      className="bg-paper border border-rule px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] hover:border-accent focus:border-accent outline-none disabled:opacity-50"
-                    >
-                      {STATUSES.map((s) => (
-                        <option key={s} value={s}>
-                          {s}
-                        </option>
-                      ))}
-                    </select>
+                      onChange={(next) => changeStatus(p, next)}
+                    />
                   </td>
                 </tr>
               ))}
