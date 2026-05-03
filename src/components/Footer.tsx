@@ -15,8 +15,8 @@ function FooterInner() {
   return (
     <footer className="border-t border-rule">
       <div className="border-t-[3px] border-accent" />
-      <div className="mx-auto max-w-[1440px] px-6 lg:px-10 py-12">
-        <div className="grid grid-cols-12 gap-8">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 py-10 sm:py-12">
+        <div className="grid grid-cols-12 gap-6 sm:gap-8">
           <div className="col-span-12 md:col-span-4">
             <h3 className="font-display font-semibold text-2xl tracking-[-0.02em]">
               Norvyx <span className="text-accent">Proposals</span>
@@ -70,7 +70,7 @@ function FooterInner() {
             </p>
           </div>
         </div>
-        <div className="mt-12 pt-6 border-t border-rule flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
+        <div className="mt-10 sm:mt-12 pt-6 border-t border-rule flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
           <span>© {new Date().getFullYear()} Norvyx Proposals</span>
           <span>
             Edited from a desk somewhere · No tracking, no autoplay, no AI slop
