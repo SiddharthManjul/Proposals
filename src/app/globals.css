@@ -92,27 +92,47 @@ a {
 .dropcap::first-letter {
   font-family: var(--font-display);
   float: left;
-  font-size: 4.6em;
+  font-size: 3.6em;
   line-height: 0.85;
   padding: 0.08em 0.12em 0 0;
   color: var(--accent);
   font-weight: 600;
 }
 
+@media (min-width: 640px) {
+  .dropcap::first-letter {
+    font-size: 4.6em;
+  }
+}
+
 .prose-body p {
   margin-bottom: 1.1em;
-  font-size: 1.0625rem;
+  font-size: 1rem;
   line-height: 1.72;
   color: var(--ink);
+}
+
+@media (min-width: 640px) {
+  .prose-body p {
+    font-size: 1.0625rem;
+  }
 }
 
 .prose-body h2 {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 1.45rem;
+  font-size: 1.25rem;
   letter-spacing: -0.015em;
-  margin-top: 2.4em;
-  margin-bottom: 0.6em;
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+
+@media (min-width: 640px) {
+  .prose-body h2 {
+    font-size: 1.45rem;
+    margin-top: 2.4em;
+    margin-bottom: 0.6em;
+  }
 }
 
 .prose-body h3 {
@@ -131,10 +151,18 @@ a {
 
 .prose-body ul li {
   position: relative;
-  padding-left: 1.4em;
+  padding-left: 1.2em;
   margin-bottom: 0.55em;
-  font-size: 1.0625rem;
-  line-height: 1.7;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+@media (min-width: 640px) {
+  .prose-body ul li {
+    padding-left: 1.4em;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
 }
 
 .prose-body ul li::before {
@@ -147,13 +175,21 @@ a {
 
 .prose-body blockquote {
   border-left: 2px solid var(--accent);
-  padding: 0.4em 0 0.4em 1.2em;
-  margin: 1.6em 0;
+  padding: 0.4em 0 0.4em 1em;
+  margin: 1.4em 0;
   font-family: var(--font-display);
-  font-size: 1.18rem;
+  font-size: 1.05rem;
   font-style: italic;
   color: var(--ink);
   line-height: 1.45;
+}
+
+@media (min-width: 640px) {
+  .prose-body blockquote {
+    padding: 0.4em 0 0.4em 1.2em;
+    margin: 1.6em 0;
+    font-size: 1.18rem;
+  }
 }
 
 .prose-body code {
