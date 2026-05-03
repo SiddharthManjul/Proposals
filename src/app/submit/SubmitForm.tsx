@@ -102,11 +102,16 @@ export function SubmitForm() {
 
   const submitting = status === "submitting";
 
+  const bodyPlaceholder =
+    category === "SIP"
+      ? `One-sentence framing of the wedge.\n\n## Problem\nThe specific failure mode this addresses.\n\n## Wedge\nWhy this team or shape can take it.\n\n## Why now\nWhat changed in the last 12 months that makes this fundable.\n\n## What's already been tried\n- A previous attempt and what stopped it\n- Another shape and why it didn't work\n\n## Open questions\nThe honest ones — not rhetorical.`
+      : `The first paragraph reads like a lede.\n\n## Specification\n- Bullet one\n- Bullet two\n\n## Open questions\n\nA paragraph here.`;
+
   return (
     <form className="space-y-8" onSubmit={handleSubmit}>
       <div>
         <div className="kicker mb-3">Step 01 — Category</div>
-        <div className="grid grid-cols-1 sm:grid-cols-4 border border-rule">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 border border-rule">
           {CATEGORIES.map((c, i) => (
             <label
               key={c.code}
@@ -179,7 +184,7 @@ export function SubmitForm() {
             required
             value={body}
             onChange={(e) => setBody(e.target.value)}
-            placeholder={`The first paragraph reads like a lede.\n\n## Specification\n- Bullet one\n- Bullet two\n\n## Open questions\n\nA paragraph here.`}
+            placeholder={bodyPlaceholder}
             className="block w-full bg-paper border border-rule focus:border-accent outline-none p-4 text-[15px] leading-[1.7] resize-y font-mono"
           />
         ) : (
