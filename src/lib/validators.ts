@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const categorySchema = z.enum(["CIP", "EIP", "CMIP", "PIP"]);
+export const categorySchema = z.enum(["SIP", "CIP", "EIP", "CMIP", "PIP"]);
 export const statusSchema = z.enum([
   "Idea",
   "Execution",

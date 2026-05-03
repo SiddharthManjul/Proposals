@@ -16,6 +16,7 @@ import {
 import type { ProposalSection } from "@/lib/proposals";
 
 export const categoryEnum = pgEnum("category", [
+  "SIP",
   "CIP",
   "EIP",
   "CMIP",

@@ -1,4 +1,4 @@
-export type Category = "CIP" | "EIP" | "CMIP" | "PIP";
+export type Category = "SIP" | "CIP" | "EIP" | "CMIP" | "PIP";
 
 export type Status =
   | "Idea"
@@ -45,6 +45,13 @@ export const CATEGORIES: {
   full: string;
   blurb: string;
 }[] = [
+  {
+    code: "SIP",
+    label: "SIPs",
+    full: "Startup Idea Proposals",
+    blurb:
+      "Specific startup ideas argued in public — problem, wedge, why now, what's been tried. The writing test before the meeting room.",
+  },
   {
     code: "CIP",
     label: "CIPs",
