@@ -17,17 +17,22 @@ export function CategoryNav({ active }: Props) {
 
   return (
     <nav className="border-y border-rule bg-paper sticky top-0 z-20">
-      <div className="mx-auto max-w-[1440px] px-6 lg:px-10">
-        <ul className="flex items-stretch overflow-x-auto -mx-6 px-6 lg:mx-0 lg:px-0">
-          {items.map((item) => {
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10">
+        <ul className="flex items-stretch overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6 lg:mx-0 lg:px-0">
+          {items.map((item, i) => {
             const isActive =
               (item.code === "ALL" && !active) || item.code === active;
+            const isLast = i === items.length - 1;
             return (
-              <li key={item.code} className="shrink-0">
+              <li
+                key={item.code}
+                className="flex-1 min-w-[68px] sm:min-w-[88px] lg:min-w-[112px]"
+              >
                 <Link
                   href={item.href}
                   className={[
-                    "block py-3.5 px-5 text-sm font-mono uppercase tracking-[0.14em] border-r border-rule transition-colors",
+                    "block py-3 px-2 sm:py-3.5 sm:px-5 text-center text-[12px] sm:text-sm font-mono uppercase tracking-[0.12em] sm:tracking-[0.14em] transition-colors",
+                    isLast ? "" : "border-r border-rule",
                     isActive
                       ? "text-accent bg-accent-wash"
                       : "text-ink-soft hover:text-ink hover:bg-tint",
