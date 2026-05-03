@@ -38,16 +38,16 @@ export default async function ProposalPage({
     <>
       <Masthead />
       <CategoryNav active={cat.code} />
-      <main className="mx-auto max-w-360 px-6 lg:px-10 pt-10 pb-16">
+      <main className="mx-auto max-w-360 px-4 sm:px-6 lg:px-10 pt-8 sm:pt-10 pb-12 sm:pb-16">
         {/* Breadcrumb */}
-        <nav className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint mb-8 flex items-center gap-2">
+        <nav className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint mb-6 sm:mb-8 flex items-center gap-2 flex-wrap">
           <Link href="/" className="link-underline">
             Archive
           </Link>
           <span>/</span>
           <Link
             href={`/${cat.code.toLowerCase()}`}
-            className="link-underline"
+            className="link-underline truncate max-w-[40ch]"
           >
             {cat.full}
           </Link>
@@ -55,10 +55,10 @@ export default async function ProposalPage({
           <span className="text-ink">{proposalRef(proposal)}</span>
         </nav>
 
-        <article className="grid grid-cols-12 gap-10">
+        <article className="grid grid-cols-12 gap-6 md:gap-10">
           {/* Title block */}
-          <header className="col-span-12 pb-10 border-b border-rule">
-            <div className="flex items-center gap-4 mb-5 flex-wrap">
+          <header className="col-span-12 pb-8 sm:pb-10 border-b border-rule">
+            <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-5 flex-wrap">
               <span className="font-mono text-[12px] uppercase tracking-[0.18em] text-accent">
                 {proposalRef(proposal)}
               </span>
@@ -68,15 +68,15 @@ export default async function ProposalPage({
               </span>
             </div>
             <h1
-              className="font-display font-semibold text-ink leading-[0.98] tracking-[-0.035em] max-w-[24ch]"
-              style={{ fontSize: "clamp(2.4rem, 5.6vw, 4.4rem)" }}
+              className="font-display font-semibold text-ink leading-none sm:leading-[0.98] tracking-[-0.03em] sm:tracking-[-0.035em] max-w-[24ch]"
+              style={{ fontSize: "clamp(1.85rem, 5.6vw, 4.4rem)" }}
             >
               {proposal.title}
             </h1>
-            <p className="mt-7 max-w-[60ch] text-[19px] leading-[1.55] text-ink-soft font-display italic">
+            <p className="mt-5 sm:mt-7 max-w-[60ch] text-[16px] sm:text-[19px] leading-[1.55] text-ink-soft font-display italic">
               {renderInline(proposal.abstract)}
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
+            <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
               <span>
                 <span className="text-ink-soft">By</span>{" "}
                 <span className="text-ink normal-case tracking-normal text-[13px] font-body">
@@ -84,15 +84,15 @@ export default async function ProposalPage({
                 </span>{" "}
                 <span className="text-ink-faint">@{proposal.authorHandle}</span>
               </span>
-              <span>·</span>
+              <span className="hidden sm:inline">·</span>
               <span>Posted {formatDate(proposal.posted)}</span>
-              <span>·</span>
+              <span className="hidden sm:inline">·</span>
               <span>Updated {formatDate(proposal.updated)}</span>
             </div>
           </header>
 
           {/* Body + sidebar */}
-          <div className="col-span-12 md:col-span-8 pt-10">
+          <div className="col-span-12 md:col-span-8 pt-8 md:pt-10">
             <div className="prose-body">
               {proposal.body.map((section, i) => (
                 <section key={i} className="mb-2">
@@ -122,7 +122,7 @@ export default async function ProposalPage({
             </div>
           </div>
 
-          <aside className="col-span-12 md:col-span-4 pt-10 md:border-l md:border-rule md:pl-8">
+          <aside className="col-span-12 md:col-span-4 pt-2 md:pt-10 md:border-l md:border-rule md:pl-8">
             <div className="kicker mb-3">Metadata</div>
             <dl className="font-mono text-[12px] space-y-2.5">
               <Meta term="Reference" value={proposalRef(proposal)} />
@@ -159,11 +159,11 @@ export default async function ProposalPage({
         </article>
 
         {/* Discussion */}
-        <section className="mt-16 pt-10 border-t border-rule">
+        <section className="mt-12 sm:mt-16 pt-8 sm:pt-10 border-t border-rule">
           <div className="flex items-end justify-between mb-2 flex-wrap gap-3">
             <div>
               <div className="kicker mb-2">The conversation</div>
-              <h2 className="headline text-[2rem] md:text-[2.4rem]">
+              <h2 className="headline text-[1.6rem] sm:text-[2rem] md:text-[2.4rem]">
                 {replyCount === 0
                   ? "No replies yet"
                   : replyCount === 1
@@ -171,7 +171,7 @@ export default async function ProposalPage({
                     : `${replyCount} replies`}
               </h2>
             </div>
-            <p className="font-display italic text-ink-soft text-[15px] max-w-[42ch]">
+            <p className="font-display italic text-ink-soft text-[14px] sm:text-[15px] max-w-[42ch]">
               Read first, then reply. Disagreement is welcome — performance
               isn&apos;t.
             </p>
