@@ -9,25 +9,25 @@ export default function AboutPage() {
     <>
       <Masthead />
       <CategoryNav />
-      <main className="mx-auto max-w-[1440px] px-6 lg:px-10 pt-12 pb-16">
-        <article className="grid grid-cols-12 gap-10">
-          <header className="col-span-12 pb-10 border-b border-rule">
+      <main className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 pt-8 sm:pt-12 pb-12 sm:pb-16">
+        <article className="grid grid-cols-12 gap-6 md:gap-10">
+          <header className="col-span-12 pb-8 sm:pb-10 border-b border-rule">
             <div className="kicker mb-3">About the archive</div>
             <h1
-              className="font-display font-semibold text-ink leading-[0.98] tracking-[-0.035em] max-w-[18ch]"
-              style={{ fontSize: "clamp(2.6rem, 6vw, 4.6rem)" }}
+              className="font-display font-semibold text-ink leading-[1] sm:leading-[0.98] tracking-[-0.03em] sm:tracking-[-0.035em] max-w-[18ch]"
+              style={{ fontSize: "clamp(2rem, 6vw, 4.6rem)" }}
             >
               A working <span className="text-accent">archive</span>, edited in
               the open.
             </h1>
-            <p className="mt-7 max-w-[60ch] text-[19px] leading-[1.55] text-ink-soft font-display italic">
+            <p className="mt-5 sm:mt-7 max-w-[60ch] text-[16px] sm:text-[19px] leading-[1.55] text-ink-soft font-display italic">
               Norvyx Proposals is where founders, the communities around them,
               and the investors who read both write things down — and argue
               about them in public, with their names attached.
             </p>
           </header>
 
-          <div className="col-span-12 md:col-span-8 pt-8 prose-body">
+          <div className="col-span-12 md:col-span-8 pt-6 md:pt-8 prose-body">
             <p className="dropcap">
               Most decisions in most ecosystems happen in private channels and
               are announced afterwards. The choices look inevitable in
@@ -89,7 +89,7 @@ export default function AboutPage() {
 
             <h2>What lives here</h2>
             <p>
-              Four categories, all run on the same format. Each proposal has
+              Five categories, all run on the same format. Each proposal has
               an abstract, a body, a status, and a discussion thread. Authors
               are credited. Editors do not rewrite voice.
             </p>
@@ -167,7 +167,7 @@ export default function AboutPage() {
             </blockquote>
           </div>
 
-          <aside className="col-span-12 md:col-span-4 pt-8 md:border-l md:border-rule md:pl-8">
+          <aside className="col-span-12 md:col-span-4 pt-2 md:pt-8 md:border-l md:border-rule md:pl-8">
             <div className="kicker mb-3">Three rules</div>
             <ol className="space-y-5">
               {[
