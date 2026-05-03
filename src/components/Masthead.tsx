@@ -6,13 +6,13 @@ export function Masthead() {
   return (
     <header className="border-b border-rule">
       <div className="border-t-[3px] border-accent" />
-      <div className="mx-auto max-w-[1440px] px-6 lg:px-10">
-        <div className="flex items-center justify-between pt-3 pb-2 text-[11px] uppercase tracking-[0.16em] text-ink-faint font-mono">
-          <span>{ISSUE_DATE}</span>
-          <span className="hidden sm:inline">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10">
+        <div className="flex items-center justify-between pt-3 pb-2 gap-3 text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.16em] text-ink-faint font-mono">
+          <span className="truncate min-w-0">{ISSUE_DATE}</span>
+          <span className="hidden lg:inline truncate">
             For builders, founders, and the investors who read them
           </span>
-          <span className="flex items-center gap-4">
+          <span className="flex items-center gap-3 sm:gap-4 shrink-0">
             <Link href="/about" className="link-underline">
               About
             </Link>
@@ -20,21 +20,22 @@ export function Masthead() {
               Admin
             </Link>
             <Link href="/submit" className="link-underline">
-              Submit a proposal →
+              <span className="hidden sm:inline">Submit a proposal →</span>
+              <span className="sm:hidden">Submit →</span>
             </Link>
           </span>
         </div>
         <div className="divider-dashed" />
-        <div className="flex flex-col items-center pt-7 pb-6 text-center">
+        <div className="flex flex-col items-center pt-5 pb-4 sm:pt-7 sm:pb-6 text-center">
           <Link href="/" className="block group">
             <h1
               className="font-blanka text-ink leading-[0.95]"
-              style={{ fontSize: "clamp(2.6rem, 6vw, 4.6rem)" }}
+              style={{ fontSize: "clamp(2rem, 6vw, 4.6rem)" }}
             >
               Norvyx <span className="text-accent">Proposals</span>
             </h1>
           </Link>
-          <p className="mt-3 max-w-2xl font-display italic text-[15px] md:text-base text-ink-soft">
+          <p className="mt-3 max-w-2xl font-display italic text-[14px] sm:text-[15px] md:text-base text-ink-soft px-2">
             An archive of ideas, debate, and decisions from the people building
             real companies — across tech, science, capital, and the slow work
             in between.
