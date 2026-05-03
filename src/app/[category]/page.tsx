@@ -28,8 +28,8 @@ export default async function CategoryPage({
     <>
       <Masthead />
       <CategoryNav active={cat.code} />
-      <main className="mx-auto max-w-[1440px] px-6 lg:px-10 pt-12 pb-12">
-        <section className="grid grid-cols-12 gap-10 pb-10 border-b border-rule">
+      <main className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 pt-8 sm:pt-12 pb-10 sm:pb-12">
+        <section className="grid grid-cols-12 gap-6 md:gap-10 pb-8 sm:pb-10 border-b border-rule">
           <div className="col-span-12 md:col-span-9">
             <div className="flex items-baseline gap-3 mb-3">
               <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-accent">
@@ -40,16 +40,16 @@ export default async function CategoryPage({
               </span>
             </div>
             <h1
-              className="font-display font-semibold text-ink leading-[0.98] tracking-[-0.035em]"
-              style={{ fontSize: "clamp(2.4rem, 5.4vw, 4rem)" }}
+              className="font-display font-semibold text-ink leading-[1] sm:leading-[0.98] tracking-[-0.03em] sm:tracking-[-0.035em]"
+              style={{ fontSize: "clamp(1.85rem, 5.4vw, 4rem)" }}
             >
               {cat.full}
             </h1>
-            <p className="mt-5 max-w-[55ch] text-[17px] leading-[1.6] text-ink-soft font-display italic">
+            <p className="mt-4 sm:mt-5 max-w-[55ch] text-[15px] sm:text-[17px] leading-[1.6] text-ink-soft font-display italic">
               {cat.blurb}
             </p>
           </div>
-          <aside className="col-span-12 md:col-span-3 md:border-l md:border-rule md:pl-8">
+          <aside className="col-span-12 md:col-span-3 pt-2 md:pt-0 md:border-l md:border-rule md:pl-8">
             <div className="kicker mb-3">Status breakdown</div>
             <ul className="space-y-1.5">
               {counts.map(({ status, n }) => (
@@ -73,8 +73,8 @@ export default async function CategoryPage({
           </aside>
         </section>
 
-        <section className="pt-10">
-          <div className="flex items-end justify-between mb-4">
+        <section className="pt-8 sm:pt-10">
+          <div className="flex items-end justify-between gap-3 flex-wrap mb-4">
             <div className="kicker">All {cat.label}</div>
             <Link
               href="/submit"
