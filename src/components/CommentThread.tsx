@@ -87,23 +87,23 @@ function CommentItem({
     : String(index).padStart(2, "0");
 
   return (
-    <div className="grid grid-cols-12 gap-4">
-      <div className="col-span-12 md:col-span-2 md:text-right">
+    <div className="grid grid-cols-12 gap-3 md:gap-4">
+      <div className="col-span-12 md:col-span-2 md:text-right flex md:block items-baseline gap-3 flex-wrap">
         <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
           §{ref}
         </div>
-        <div className="mt-1 text-[14px] text-ink font-medium">
+        <div className="text-[14px] text-ink font-medium md:mt-1">
           {comment.author}
         </div>
-        <div className="font-mono text-[11px] text-ink-faint mt-0.5">
+        <div className="font-mono text-[11px] text-ink-faint md:mt-0.5">
           @{comment.handle}
         </div>
-        <div className="font-mono text-[11px] text-ink-faint mt-2">
+        <div className="font-mono text-[11px] text-ink-faint md:mt-2">
           {formatDate(comment.date)}
         </div>
       </div>
       <div className="col-span-12 md:col-span-10">
-        <p className={`text-[15.5px] leading-[1.7] text-ink ${reply ? "" : ""}`}>
+        <p className={`text-[15px] sm:text-[15.5px] leading-[1.7] text-ink ${reply ? "" : ""}`}>
           {renderInline(comment.body)}
         </p>
         {!reply && onReply && (
