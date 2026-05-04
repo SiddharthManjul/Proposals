@@ -40,6 +40,15 @@ export const updateStatusSchema = z.object({
   status: statusSchema,
 });
 
+export const updateProposalSchema = z
+  .object({
+    status: statusSchema.optional(),
+    hidden: z.boolean().optional(),
+  })
+  .refine((d) => d.status !== undefined || d.hidden !== undefined, {
+    message: "Provide at least one of: status, hidden.",
+  });
+
 export const createCommentSchema = z.object({
   author: z.string().min(2).max(120),
   handle: z.string().min(2).max(80),
