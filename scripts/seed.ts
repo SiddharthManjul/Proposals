@@ -22,6 +22,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     posted: "2026-01-12",
     updated: "2026-04-02",
     readingMinutes: 5,
+    hidden: false,
     body: [
       {
         paragraphs: [
@@ -70,6 +71,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     posted: "2026-02-08",
     updated: "2026-03-15",
     readingMinutes: 4,
+    hidden: false,
     body: [
       {
         paragraphs: [
@@ -113,6 +115,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     posted: "2026-04-19",
     updated: "2026-04-23",
     readingMinutes: 3,
+    hidden: false,
     body: [
       {
         paragraphs: [
@@ -137,6 +140,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     posted: "2026-04-12",
     updated: "2026-04-22",
     readingMinutes: 3,
+    hidden: false,
     body: [
       {
         paragraphs: [
@@ -170,6 +174,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     posted: "2026-02-26",
     updated: "2026-03-30",
     readingMinutes: 4,
+    hidden: false,
     body: [
       {
         paragraphs: [
@@ -213,6 +218,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     posted: "2026-04-05",
     updated: "2026-04-21",
     readingMinutes: 4,
+    hidden: false,
     body: [
       {
         paragraphs: [
@@ -252,6 +258,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     posted: "2026-04-23",
     updated: "2026-04-26",
     readingMinutes: 3,
+    hidden: false,
     body: [
       {
         paragraphs: [
@@ -276,6 +283,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     posted: "2025-11-04",
     updated: "2026-02-18",
     readingMinutes: 3,
+    hidden: false,
     body: [
       {
         paragraphs: [
@@ -300,6 +308,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     posted: "2026-02-14",
     updated: "2026-03-28",
     readingMinutes: 4,
+    hidden: false,
     body: [
       {
         paragraphs: [
@@ -341,6 +350,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     posted: "2026-04-02",
     updated: "2026-04-24",
     readingMinutes: 5,
+    hidden: false,
     body: [
       {
         paragraphs: [
@@ -386,6 +396,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     posted: "2026-04-18",
     updated: "2026-04-25",
     readingMinutes: 4,
+    hidden: false,
     body: [
       {
         paragraphs: [
@@ -418,6 +429,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     posted: "2026-03-08",
     updated: "2026-03-22",
     readingMinutes: 2,
+    hidden: false,
     body: [
       {
         paragraphs: [
@@ -450,6 +462,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     posted: "2026-03-11",
     updated: "2026-04-22",
     readingMinutes: 6,
+    hidden: false,
     body: [
       {
         paragraphs: [
@@ -514,6 +527,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     posted: "2026-02-19",
     updated: "2026-03-26",
     readingMinutes: 4,
+    hidden: false,
     body: [
       {
         paragraphs: [
@@ -546,6 +560,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     posted: "2026-04-17",
     updated: "2026-04-26",
     readingMinutes: 3,
+    hidden: false,
     body: [
       {
         paragraphs: [
@@ -570,6 +585,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
     posted: "2026-04-08",
     updated: "2026-04-24",
     readingMinutes: 4,
+    hidden: false,
     body: [
       {
         paragraphs: [
