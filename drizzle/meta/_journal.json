@@ -36,6 +36,13 @@
       "when": 1777917313999,
       "tag": "0004_add_kind_field",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1777918648537,
+      "tag": "0005_add_hidden_field",
+      "breakpoints": true
     }
   ]
 }
