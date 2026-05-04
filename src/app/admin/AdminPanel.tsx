@@ -14,6 +14,7 @@ import {
 import { StatusPill } from "@/components/StatusPill";
 import { StatusSelect } from "@/components/StatusSelect";
 import { KindBadge } from "@/components/KindBadge";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 type SessionInfo = {
   authenticated: boolean;
@@ -29,6 +30,8 @@ export function AdminPanel() {
   const [filter, setFilter] = useState<Category | "all">("all");
   const [pendingSlug, setPendingSlug] = useState<string | null>(null);
   const [flash, setFlash] = useState<string | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Proposal | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const refreshSession = useCallback(async () => {
     try {
@@ -50,7 +53,7 @@ export function AdminPanel() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/proposals?sort=updated", {
+      const res = await fetch("/api/proposals?sort=updated&includeHidden=1", {
         cache: "no-store",
       });
       const data = await res.json();
@@ -78,7 +81,11 @@ export function AdminPanel() {
     setProposals(null);
   }
 
-  async function changeStatus(p: Proposal, status: Status) {
+  async function patchProposal(
+    p: Proposal,
+    body: { status?: Status; hidden?: boolean },
+    flashMessage: string
+  ) {
     setPendingSlug(p.slug);
     setFlash(null);
     setError(null);
@@ -88,39 +95,29 @@ export function AdminPanel() {
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status }),
+          body: JSON.stringify(body),
         }
       );
-
-      // Read as text first so an empty / non-JSON response doesn't crash
-      // the client with "Unexpected end of JSON input".
       const raw = await res.text();
       let data: { error?: string; proposal?: Proposal } | null = null;
       if (raw) {
         try {
           data = JSON.parse(raw);
-        } catch {
-          // body wasn't JSON — leave data null and use status text below
-        }
+        } catch {}
       }
-
       if (!res.ok) {
         const message =
           data?.error ??
           (raw && raw.length < 240 ? raw : null) ??
-          `Status update rejected (HTTP ${res.status} ${res.statusText || ""}).`.trim();
+          `Update rejected (HTTP ${res.status} ${res.statusText || ""}).`.trim();
         setError(message);
-        if (res.status === 401) {
-          await refreshSession();
-        }
+        if (res.status === 401) await refreshSession();
         return;
       }
-
       if (!data?.proposal) {
         setError("Server returned an empty response.");
         return;
       }
-
       setProposals((curr) =>
         curr
           ? curr.map((x) =>
@@ -128,19 +125,82 @@ export function AdminPanel() {
                 ? {
                     ...x,
                     status: data!.proposal!.status,
+                    hidden: data!.proposal!.hidden,
                     updated: data!.proposal!.updated,
                   }
                 : x
             )
           : curr
       );
-      setFlash(`${proposalRef(p)} → ${status}`);
+      setFlash(flashMessage);
       setTimeout(() => setFlash(null), 2500);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Network error.");
     } finally {
       setPendingSlug(null);
     }
+  }
+
+  function deleteThis(p: Proposal) {
+    setDeleteTarget(p);
+  }
+
+  async function confirmDelete() {
+    const p = deleteTarget;
+    if (!p) return;
+    setDeleteLoading(true);
+    setPendingSlug(p.slug);
+    setFlash(null);
+    setError(null);
+    try {
+      const res = await fetch(
+        `/api/proposals/${p.category.toLowerCase()}/${encodeURIComponent(p.slug)}`,
+        { method: "DELETE" }
+      );
+      const raw = await res.text();
+      let data: { error?: string; ok?: boolean } | null = null;
+      if (raw) {
+        try {
+          data = JSON.parse(raw);
+        } catch {}
+      }
+      if (!res.ok) {
+        setError(data?.error ?? `Delete failed (HTTP ${res.status}).`);
+        if (res.status === 401) await refreshSession();
+        return;
+      }
+      setProposals((curr) =>
+        curr
+          ? curr.filter((x) => !(x.category === p.category && x.slug === p.slug))
+          : curr
+      );
+      setFlash(`${proposalRef(p)} deleted`);
+      setTimeout(() => setFlash(null), 2500);
+      setDeleteTarget(null);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Network error.");
+    } finally {
+      setDeleteLoading(false);
+      setPendingSlug(null);
+    }
+  }
+
+  function cancelDelete() {
+    if (deleteLoading) return;
+    setDeleteTarget(null);
+  }
+
+  function changeStatus(p: Proposal, status: Status) {
+    return patchProposal(p, { status }, `${proposalRef(p)} → ${status}`);
+  }
+
+  function toggleHidden(p: Proposal) {
+    const next = !p.hidden;
+    return patchProposal(
+      p,
+      { hidden: next },
+      `${proposalRef(p)} ${next ? "hidden" : "unhidden"}`
+    );
   }
 
   const filtered = useMemo(() => {
@@ -239,14 +299,22 @@ export function AdminPanel() {
             </thead>
             <tbody className="divide-y divide-rule">
               {filtered!.map((p) => (
-                <tr key={`${p.category}-${p.slug}`} className="align-top">
+                <tr
+                  key={`${p.category}-${p.slug}`}
+                  className={`align-top ${p.hidden ? "bg-tint/40" : ""}`}
+                >
                   <td className="px-4 py-3 font-mono text-[11px] tracking-[0.14em] text-accent whitespace-nowrap">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <span>{proposalRef(p)}</span>
                       <KindBadge kind={p.kind} />
+                      {p.hidden && (
+                        <span className="font-mono uppercase tracking-[0.14em] text-[10px] text-ink-faint border border-rule px-1.5 py-px">
+                          Hidden
+                        </span>
+                      )}
                     </div>
                   </td>
-                  <td className="px-4 py-3">
+                  <td className={`px-4 py-3 ${p.hidden ? "opacity-60" : ""}`}>
                     <Link
                       href={`/${p.category.toLowerCase()}/${p.slug}`}
                       className="font-display font-medium text-ink hover:text-accent-deep tracking-[-0.01em]"
@@ -270,11 +338,31 @@ export function AdminPanel() {
                     <StatusPill status={p.status} />
                   </td>
                   <td className="px-4 py-3 text-right whitespace-nowrap">
-                    <StatusSelect
-                      value={p.status}
-                      disabled={pendingSlug === p.slug}
-                      onChange={(next) => changeStatus(p, next)}
-                    />
+                    <div className="flex items-center justify-end gap-2 flex-wrap">
+                      <StatusSelect
+                        value={p.status}
+                        disabled={pendingSlug === p.slug}
+                        onChange={(next) => changeStatus(p, next)}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => toggleHidden(p)}
+                        disabled={pendingSlug === p.slug}
+                        className="border border-rule px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-soft hover:text-ink hover:bg-tint hover:border-accent transition-colors disabled:opacity-50"
+                        aria-label={p.hidden ? "Unhide proposal" : "Hide proposal"}
+                      >
+                        {p.hidden ? "Unhide" : "Hide"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => deleteThis(p)}
+                        disabled={pendingSlug === p.slug}
+                        className="border border-rule px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint hover:text-paper hover:bg-accent-deep hover:border-accent-deep transition-colors disabled:opacity-50"
+                        aria-label="Delete proposal"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -282,6 +370,36 @@ export function AdminPanel() {
           </table>
         </div>
       )}
+
+      <ConfirmDialog
+        open={deleteTarget !== null}
+        kicker="Delete proposal"
+        destructive
+        confirmLabel="Delete permanently"
+        cancelLabel="Cancel"
+        loading={deleteLoading}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+        title={
+          deleteTarget
+            ? `Delete ${proposalRef(deleteTarget)} — "${deleteTarget.title}"?`
+            : ""
+        }
+        body={
+          <>
+            <p>
+              This removes the proposal and{" "}
+              <span className="text-ink">every comment under it</span>. The
+              archive entry, the URL, and the discussion thread all disappear.
+            </p>
+            <p className="mt-3 font-display italic">
+              This cannot be undone. If you only want to take it off public
+              surfaces, use <span className="text-ink not-italic">Hide</span>{" "}
+              instead.
+            </p>
+          </>
+        }
+      />
     </div>
   );
 }
