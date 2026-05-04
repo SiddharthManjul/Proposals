@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Proposal, proposalRef, shortDate } from "@/lib/proposals";
 import { StatusPill } from "./StatusPill";
+import { KindBadge } from "./KindBadge";
 
 type Props = {
   proposal: Proposal;
@@ -25,19 +26,20 @@ export function ProposalRow({ proposal, index, showCategory = true }: Props) {
               : proposalRef(proposal)}
           </span>
         </div>
-        <div className="col-span-12 md:col-span-8">
-          <div className="flex items-center gap-3 mb-2 flex-wrap">
+        <div className="col-span-12 md:col-span-8 min-w-0">
+          <div className="flex items-center gap-2 sm:gap-3 mb-2 flex-wrap">
             {showCategory && (
               <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-accent">
                 {proposalRef(proposal)}
               </span>
             )}
+            <KindBadge kind={proposal.kind} />
             <StatusPill status={proposal.status} />
           </div>
-          <h2 className="font-display font-semibold text-ink leading-[1.12] tracking-[-0.02em] text-[1.25rem] sm:text-[1.55rem] md:text-[1.7rem] group-hover:text-accent-deep transition-colors">
+          <h2 className="font-display font-semibold text-ink leading-[1.12] tracking-[-0.02em] text-[1.25rem] sm:text-[1.55rem] md:text-[1.7rem] group-hover:text-accent-deep transition-colors wrap-anywhere hyphens-auto">
             {proposal.title}
           </h2>
-          <p className="mt-2 sm:mt-3 max-w-[58ch] text-[14px] sm:text-[15px] leading-[1.6] text-ink-soft">
+          <p className="mt-2 sm:mt-3 max-w-[58ch] text-[14px] sm:text-[15px] leading-[1.6] text-ink-soft wrap-anywhere">
             {proposal.abstract}
           </p>
         </div>
