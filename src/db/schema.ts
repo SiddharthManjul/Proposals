@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import {
+  boolean,
   pgEnum,
   pgTable,
   uuid,
@@ -54,6 +55,7 @@ export const proposals = pgTable(
       .default(sql`now()`),
     readingMinutes: integer("reading_minutes").notNull().default(3),
     body: jsonb("body").$type<ProposalSection[]>().notNull(),
+    hidden: boolean("hidden").notNull().default(false),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .default(sql`now()`),
