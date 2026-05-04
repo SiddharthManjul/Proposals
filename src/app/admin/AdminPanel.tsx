@@ -13,6 +13,7 @@ import {
 } from "@/lib/proposals";
 import { StatusPill } from "@/components/StatusPill";
 import { StatusSelect } from "@/components/StatusSelect";
+import { KindBadge } from "@/components/KindBadge";
 
 type SessionInfo = {
   authenticated: boolean;
@@ -240,7 +241,10 @@ export function AdminPanel() {
               {filtered!.map((p) => (
                 <tr key={`${p.category}-${p.slug}`} className="align-top">
                   <td className="px-4 py-3 font-mono text-[11px] tracking-[0.14em] text-accent whitespace-nowrap">
-                    {proposalRef(p)}
+                    <div className="flex items-center gap-2">
+                      <span>{proposalRef(p)}</span>
+                      <KindBadge kind={p.kind} />
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <Link

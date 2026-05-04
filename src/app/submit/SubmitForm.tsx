@@ -3,9 +3,10 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
-import { CATEGORIES, type Category } from "@/lib/proposals";
+import { CATEGORIES, KINDS, type Category, type Kind } from "@/lib/proposals";
 import { parseBody } from "@/lib/parseBody";
 import { BodyPreview, PreviewTabs } from "@/components/BodyPreview";
+import { EditorialSelect } from "@/components/EditorialSelect";
 
 const READING_WORDS_PER_MIN = 220;
 
@@ -30,6 +31,7 @@ export function SubmitForm() {
   const router = useRouter();
   const [, startTransition] = useTransition();
   const [category, setCategory] = useState<Category>(CATEGORIES[0].code);
+  const [kind, setKind] = useState<Kind>("Idea");
   const [title, setTitle] = useState("");
   const [abstract, setAbstract] = useState("");
   const [body, setBody] = useState("");
@@ -55,6 +57,7 @@ export function SubmitForm() {
 
     const payload = {
       category,
+      kind,
       slug: slugify(title),
       title: title.trim(),
       abstract: abstract.trim(),
@@ -103,9 +106,9 @@ export function SubmitForm() {
   const submitting = status === "submitting";
 
   const bodyPlaceholder =
-    category === "SIP"
-      ? `One-sentence framing of the wedge.\n\n## Problem\nThe specific failure mode this addresses.\n\n## Wedge\nWhy this team or shape can take it.\n\n## Why now\nWhat changed in the last 12 months that makes this fundable.\n\n## What's already been tried\n- A previous attempt and what stopped it\n- Another shape and why it didn't work\n\n## Open questions\nThe honest ones — not rhetorical.`
-      : `The first paragraph reads like a lede.\n\n## Specification\n- Bullet one\n- Bullet two\n\n## Open questions\n\nA paragraph here.`;
+    kind === "Idea"
+      ? `One-sentence framing of the idea.\n\n## Problem\nThe specific failure mode this addresses.\n\n## Wedge\nWhy this team or shape can take it.\n\n## Why now\nWhat changed in the last 12 months that makes this fundable / shippable.\n\n## What's already been tried\n- A previous attempt and what stopped it\n- Another shape and why it didn't work\n\n## Open questions\nThe honest ones — not rhetorical.`
+      : `The first paragraph names the existing thing and what's wrong with it.\n\n## Current state\nWhat's there today, with a number when possible.\n\n## Proposed change\nConcrete enough to argue with.\n\n## Mechanics\nWho does the work, on what cadence, with what guardrails.\n\n## Open questions\nIncluding the strongest counter-argument.`;
 
   return (
     <form className="space-y-8" onSubmit={handleSubmit}>
@@ -145,7 +148,27 @@ export function SubmitForm() {
       </div>
 
       <div>
-        <div className="kicker mb-3">Step 02 — Title</div>
+        <div className="flex items-baseline justify-between gap-3 mb-3 flex-wrap">
+          <div className="kicker">Step 02 — Kind</div>
+          <span className="font-display italic text-ink-soft text-[13px] max-w-[42ch]">
+            Is this a new thing, or a change to an existing thing? Both are
+            valid in any category.
+          </span>
+        </div>
+        <EditorialSelect
+          value={kind}
+          onChange={setKind}
+          ariaLabel="Proposal kind"
+          options={KINDS.map((k) => ({
+            value: k.code,
+            label: k.label,
+            hint: k.blurb,
+          }))}
+        />
+      </div>
+
+      <div>
+        <div className="kicker mb-3">Step 03 — Title</div>
         <input
           type="text"
           required
@@ -162,7 +185,7 @@ export function SubmitForm() {
       </div>
 
       <div>
-        <div className="kicker mb-3">Step 03 — Abstract</div>
+        <div className="kicker mb-3">Step 04 — Abstract</div>
         <textarea
           rows={4}
           required
@@ -176,7 +199,7 @@ export function SubmitForm() {
       </div>
 
       <div>
-        <div className="kicker mb-3">Step 04 — Body</div>
+        <div className="kicker mb-3">Step 05 — Body</div>
         <PreviewTabs mode={bodyMode} onChange={setBodyMode} />
         {bodyMode === "write" ? (
           <textarea
