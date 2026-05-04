@@ -5,6 +5,7 @@ import { CategoryNav } from "@/components/CategoryNav";
 import { Footer } from "@/components/Footer";
 import { CommentThread } from "@/components/CommentThread";
 import { StatusPill } from "@/components/StatusPill";
+import { KindBadge } from "@/components/KindBadge";
 import { categoryByCode, formatDate, proposalRef } from "@/lib/proposals";
 import { getProposalBySlug, listProposals } from "@/db/queries";
 import { renderInline } from "@/lib/inlineMarkdown";
@@ -62,18 +63,19 @@ export default async function ProposalPage({
               <span className="font-mono text-[12px] uppercase tracking-[0.18em] text-accent">
                 {proposalRef(proposal)}
               </span>
+              <KindBadge kind={proposal.kind} size="md" />
               <StatusPill status={proposal.status} size="md" />
               <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
                 {proposal.readingMinutes} min read
               </span>
             </div>
             <h1
-              className="font-display font-semibold text-ink leading-none sm:leading-[0.98] tracking-[-0.03em] sm:tracking-[-0.035em] max-w-[24ch]"
+              className="font-display font-semibold text-ink leading-none sm:leading-[0.98] tracking-[-0.03em] sm:tracking-[-0.035em] max-w-[24ch] wrap-anywhere hyphens-auto"
               style={{ fontSize: "clamp(1.85rem, 5.6vw, 4.4rem)" }}
             >
               {proposal.title}
             </h1>
-            <p className="mt-5 sm:mt-7 max-w-[60ch] text-[16px] sm:text-[19px] leading-[1.55] text-ink-soft font-display italic">
+            <p className="mt-5 sm:mt-7 max-w-[60ch] text-[16px] sm:text-[19px] leading-[1.55] text-ink-soft font-display italic wrap-anywhere">
               {renderInline(proposal.abstract)}
             </p>
             <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
@@ -127,6 +129,7 @@ export default async function ProposalPage({
             <dl className="font-mono text-[12px] space-y-2.5">
               <Meta term="Reference" value={proposalRef(proposal)} />
               <Meta term="Category" value={cat.full} />
+              <Meta term="Kind" value={proposal.kind} />
               <Meta term="Status" value={proposal.status} />
               <Meta term="Author" value={proposal.author} />
               <Meta term="Handle" value={`@${proposal.authorHandle}`} />

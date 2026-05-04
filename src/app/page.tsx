@@ -4,6 +4,7 @@ import { CategoryNav } from "@/components/CategoryNav";
 import { Footer } from "@/components/Footer";
 import { ProposalRow } from "@/components/ProposalRow";
 import { StatusPill } from "@/components/StatusPill";
+import { KindBadge } from "@/components/KindBadge";
 import {
   CATEGORIES,
   STATUSES,
@@ -147,7 +148,7 @@ export default async function HomePage() {
 
         {/* DESKTOP LAYOUT — unchanged */}
         <section className="hidden md:grid grid-cols-12 gap-8 md:gap-10 pb-10 sm:pb-12 border-b border-rule">
-          <aside className="col-span-12 md:col-span-3">
+          <aside className="col-span-12 md:col-span-3 min-w-0">
             <div className="kicker mb-3">From the editors</div>
             <p className="font-display italic text-ink leading-normal text-[18px]">
               The archive of record for founders thinking out loud, the
@@ -170,16 +171,16 @@ export default async function HomePage() {
               </div>
             </dl>
           </aside>
-          <article className="col-span-12 md:col-span-5 md:border-l md:border-rule md:pl-8">
+          <article className="col-span-12 md:col-span-5 min-w-0 md:border-l md:border-rule md:pl-8">
             <FeaturedArticleInner p={featured} />
           </article>
-          <aside className="col-span-12 md:col-span-4 md:border-l md:border-rule md:pl-8">
+          <aside className="col-span-12 md:col-span-4 min-w-0 md:border-l md:border-rule md:pl-8">
             <SectionsBlock proposals={sorted} />
           </aside>
         </section>
 
         <section className="hidden md:grid grid-cols-12 gap-8 md:gap-10 pt-10 sm:pt-12">
-          <div className="col-span-12 md:col-span-9">
+          <div className="col-span-12 md:col-span-9 min-w-0">
             <div className="flex items-end justify-between gap-3 flex-wrap mb-5 sm:mb-6">
               <div>
                 <div className="kicker mb-2">The list</div>
@@ -201,7 +202,7 @@ export default async function HomePage() {
               ))}
             </div>
           </div>
-          <aside className="col-span-12 md:col-span-3 md:border-l md:border-rule md:pl-8">
+          <aside className="col-span-12 md:col-span-3 min-w-0 md:border-l md:border-rule md:pl-8">
             <div className="kicker mb-3">Lifecycle</div>
             <ul className="space-y-3">
               {STATUSES.map((s) => (
@@ -247,14 +248,15 @@ function FeaturedArticle({ p }: { p: Proposal }) {
 function FeaturedArticleInner({ p }: { p: Proposal }) {
   return (
     <>
-      <div className="flex items-center gap-3 mb-3">
+      <div className="flex items-center gap-2 sm:gap-3 mb-3 flex-wrap">
         <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-accent">
           Featured · {proposalRef(p)}
         </span>
+        <KindBadge kind={p.kind} />
         <StatusPill status={p.status} />
       </div>
       <h2
-        className="font-display font-semibold text-ink leading-[1.04] tracking-[-0.03em]"
+        className="font-display font-semibold text-ink leading-[1.04] tracking-[-0.03em] wrap-anywhere hyphens-auto"
         style={{ fontSize: "clamp(1.65rem, 3.2vw, 2.6rem)" }}
       >
         <Link
@@ -264,7 +266,7 @@ function FeaturedArticleInner({ p }: { p: Proposal }) {
           {p.title}
         </Link>
       </h2>
-      <p className="mt-4 sm:mt-5 text-[15px] sm:text-[16px] leading-[1.65] text-ink-soft">
+      <p className="mt-4 sm:mt-5 text-[15px] sm:text-[16px] leading-[1.65] text-ink-soft wrap-anywhere">
         {p.abstract}
       </p>
       <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-x-4 sm:gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
