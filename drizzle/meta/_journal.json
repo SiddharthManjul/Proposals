@@ -29,6 +29,13 @@
       "when": 1777754804037,
       "tag": "0003_add_sip_category",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1777917313999,
+      "tag": "0004_add_kind_field",
+      "breakpoints": true
     }
   ]
 }
