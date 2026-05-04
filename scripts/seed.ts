@@ -10,6 +10,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
   {
     number: 1,
     category: "CIP",
+    kind: "Improvement",
     slug: "translate-docs-mandarin-korean-vietnamese-turkish",
     title:
       "Translate the developer docs into Mandarin, Korean, Vietnamese, and Turkish",
@@ -58,6 +59,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
   {
     number: 2,
     category: "CIP",
+    kind: "Improvement",
     slug: "weekly-written-digest-rotating-authors",
     title: "A weekly written digest authored by a rotating community member",
     abstract:
@@ -100,6 +102,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
   {
     number: 3,
     category: "CIP",
+    kind: "Improvement",
     slug: "replace-long-tutorials-with-chaptered-shorts",
     title: "Replace tutorial videos longer than 12 minutes with chaptered shorts",
     abstract:
@@ -123,6 +126,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
   {
     number: 4,
     category: "CIP",
+    kind: "Improvement",
     slug: "rfc-of-the-month-newsletter",
     title: "An 'RFC of the Month' highlight in the newsletter",
     abstract:
@@ -154,6 +158,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
   {
     number: 1,
     category: "EIP",
+    kind: "Improvement",
     slug: "quarterly-open-house-team-office-hours",
     title:
       "Quarterly Open House — 90 minutes of team office hours, on the record",
@@ -197,6 +202,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
   {
     number: 2,
     category: "EIP",
+    kind: "Improvement",
     slug: "side-stage-conference-small-builders",
     title: "Side stage at major conferences dedicated to small builders",
     abstract:
@@ -235,6 +241,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
   {
     number: 3,
     category: "EIP",
+    kind: "Improvement",
     slug: "annual-builders-retreat",
     title: "Annual Builder's Retreat outside the conference circuit",
     abstract:
@@ -258,6 +265,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
   {
     number: 4,
     category: "EIP",
+    kind: "Improvement",
     slug: "monthly-demo-night-five-cities",
     title: "Monthly Demo Night hosted in five rotating cities",
     abstract:
@@ -281,6 +289,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
   {
     number: 1,
     category: "CMIP",
+    kind: "Improvement",
     slug: "mentorship-pairing-first-time-builders",
     title: "Mentorship pairing for first-time builders",
     abstract:
@@ -321,6 +330,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
   {
     number: 2,
     category: "CMIP",
+    kind: "Improvement",
     slug: "discord-moderation-handbook-refresh",
     title: "Refresh the Discord moderation handbook",
     abstract:
@@ -365,6 +375,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
   {
     number: 3,
     category: "CMIP",
+    kind: "Improvement",
     slug: "community-grants-committee-public-minutes",
     title: "A community-run grants committee with public minutes",
     abstract:
@@ -396,6 +407,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
   {
     number: 4,
     category: "CMIP",
+    kind: "Improvement",
     slug: "retire-general-channel",
     title: "Retire the catch-all 'general' channel",
     abstract:
@@ -427,6 +439,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
   {
     number: 1,
     category: "PIP",
+    kind: "Improvement",
     slug: "human-readable-names-explorer",
     title: "Human-readable names in block explorers",
     abstract:
@@ -490,6 +503,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
   {
     number: 2,
     category: "PIP",
+    kind: "Improvement",
     slug: "wallet-onboarding-tutorial-starter-kit",
     title: "Wallet onboarding tutorial in the starter kit",
     abstract:
@@ -521,6 +535,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
   {
     number: 3,
     category: "PIP",
+    kind: "Improvement",
     slug: "native-batched-transactions-explorer",
     title: "Native batched-transactions UI in block explorers",
     abstract:
@@ -544,6 +559,7 @@ const SAMPLE_PROPOSALS: Proposal[] = [
   {
     number: 4,
     category: "PIP",
+    kind: "Improvement",
     slug: "public-rpc-gateway-sandbox",
     title: "Public RPC gateway for sandbox testing",
     abstract:
@@ -597,6 +613,7 @@ async function main() {
       .values({
         number: p.number,
         category: p.category,
+        kind: p.kind,
         slug: p.slug,
         title: p.title,
         abstract: p.abstract,
