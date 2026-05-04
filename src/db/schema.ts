@@ -31,12 +31,15 @@ export const statusEnum = pgEnum("status", [
   "Production",
 ]);
 
+export const kindEnum = pgEnum("kind", ["Idea", "Improvement"]);
+
 export const proposals = pgTable(
   "proposals",
   {
     id: uuid("id").primaryKey().defaultRandom(),
     number: integer("number").notNull(),
     category: categoryEnum("category").notNull(),
+    kind: kindEnum("kind").notNull().default("Idea"),
     slug: varchar("slug", { length: 200 }).notNull(),
     title: text("title").notNull(),
     abstract: text("abstract").notNull(),

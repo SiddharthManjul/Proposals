@@ -5,6 +5,7 @@ import { admins, comments, proposals } from "./schema";
 import type {
   Category,
   Comment,
+  Kind,
   Proposal,
   ProposalSection,
   Status,
@@ -19,6 +20,7 @@ function rowToProposal(row: ProposalRow, discussion: Comment[]): Proposal {
   return {
     number: row.number,
     category: row.category as Category,
+    kind: row.kind as Kind,
     slug: row.slug,
     title: row.title,
     abstract: row.abstract,
@@ -144,6 +146,7 @@ export async function nextNumberForCategory(
 
 export async function createProposal(input: {
   category: Category;
+  kind?: Kind;
   slug: string;
   title: string;
   abstract: string;
@@ -165,6 +168,7 @@ export async function createProposal(input: {
       .values({
         number: nextNumber,
         category: input.category,
+        kind: input.kind ?? "Idea",
         slug: input.slug,
         title: input.title,
         abstract: input.abstract,
