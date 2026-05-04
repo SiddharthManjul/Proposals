@@ -1,5 +1,7 @@
 export type Category = "SIP" | "CIP" | "EIP" | "CMIP" | "PIP";
 
+export type Kind = "Idea" | "Improvement";
+
 export type Status =
   | "Idea"
   | "Execution"
@@ -19,6 +21,7 @@ export type Comment = {
 export type Proposal = {
   number: number;
   category: Category;
+  kind: Kind;
   slug: string;
   title: string;
   abstract: string;
@@ -90,10 +93,26 @@ export const STATUSES: Status[] = [
   "Production",
 ];
 
+export const KINDS: { code: Kind; label: string; blurb: string }[] = [
+  {
+    code: "Idea",
+    label: "Idea",
+    blurb:
+      "A new thing to build, run, or argue for. Nothing like it exists yet — or what exists is so different it's effectively a different proposal.",
+  },
+  {
+    code: "Improvement",
+    label: "Improvement",
+    blurb:
+      "A change to something that already exists. Replaces, refactors, or refines an existing format, rule, product surface, or piece of content.",
+  },
+];
+
 export const PROPOSALS: Proposal[] = [
   {
     number: 1,
     category: "CIP",
+    kind: "Improvement",
     slug: "translate-docs-mandarin-korean-vietnamese-turkish",
     title:
       "Translate the developer docs into Mandarin, Korean, Vietnamese, and Turkish",
@@ -142,6 +161,7 @@ export const PROPOSALS: Proposal[] = [
   {
     number: 2,
     category: "CIP",
+    kind: "Improvement",
     slug: "weekly-written-digest-rotating-authors",
     title: "A weekly written digest authored by a rotating community member",
     abstract:
@@ -184,6 +204,7 @@ export const PROPOSALS: Proposal[] = [
   {
     number: 3,
     category: "CIP",
+    kind: "Improvement",
     slug: "replace-long-tutorials-with-chaptered-shorts",
     title: "Replace tutorial videos longer than 12 minutes with chaptered shorts",
     abstract:
@@ -207,6 +228,7 @@ export const PROPOSALS: Proposal[] = [
   {
     number: 4,
     category: "CIP",
+    kind: "Improvement",
     slug: "rfc-of-the-month-newsletter",
     title: "An 'RFC of the Month' highlight in the newsletter",
     abstract:
@@ -238,6 +260,7 @@ export const PROPOSALS: Proposal[] = [
   {
     number: 1,
     category: "EIP",
+    kind: "Idea",
     slug: "quarterly-open-house-team-office-hours",
     title:
       "Quarterly Open House — 90 minutes of team office hours, on the record",
@@ -281,6 +304,7 @@ export const PROPOSALS: Proposal[] = [
   {
     number: 2,
     category: "EIP",
+    kind: "Idea",
     slug: "side-stage-conference-small-builders",
     title: "Side stage at major conferences dedicated to small builders",
     abstract:
@@ -319,6 +343,7 @@ export const PROPOSALS: Proposal[] = [
   {
     number: 3,
     category: "EIP",
+    kind: "Idea",
     slug: "annual-builders-retreat",
     title: "Annual Builder's Retreat outside the conference circuit",
     abstract:
@@ -342,6 +367,7 @@ export const PROPOSALS: Proposal[] = [
   {
     number: 4,
     category: "EIP",
+    kind: "Improvement",
     slug: "monthly-demo-night-five-cities",
     title: "Monthly Demo Night hosted in five rotating cities",
     abstract:
@@ -365,6 +391,7 @@ export const PROPOSALS: Proposal[] = [
   {
     number: 1,
     category: "CMIP",
+    kind: "Idea",
     slug: "mentorship-pairing-first-time-builders",
     title: "Mentorship pairing for first-time builders",
     abstract:
@@ -405,6 +432,7 @@ export const PROPOSALS: Proposal[] = [
   {
     number: 2,
     category: "CMIP",
+    kind: "Improvement",
     slug: "discord-moderation-handbook-refresh",
     title: "Refresh the Discord moderation handbook",
     abstract:
@@ -449,6 +477,7 @@ export const PROPOSALS: Proposal[] = [
   {
     number: 3,
     category: "CMIP",
+    kind: "Idea",
     slug: "community-grants-committee-public-minutes",
     title: "A community-run grants committee with public minutes",
     abstract:
@@ -480,6 +509,7 @@ export const PROPOSALS: Proposal[] = [
   {
     number: 4,
     category: "CMIP",
+    kind: "Improvement",
     slug: "retire-general-channel",
     title: "Retire the catch-all 'general' channel",
     abstract:
@@ -511,6 +541,7 @@ export const PROPOSALS: Proposal[] = [
   {
     number: 1,
     category: "PIP",
+    kind: "Improvement",
     slug: "human-readable-names-explorer",
     title: "Human-readable names in block explorers",
     abstract:
@@ -574,6 +605,7 @@ export const PROPOSALS: Proposal[] = [
   {
     number: 2,
     category: "PIP",
+    kind: "Improvement",
     slug: "wallet-onboarding-tutorial-starter-kit",
     title: "Wallet onboarding tutorial in the starter kit",
     abstract:
@@ -605,6 +637,7 @@ export const PROPOSALS: Proposal[] = [
   {
     number: 3,
     category: "PIP",
+    kind: "Improvement",
     slug: "native-batched-transactions-explorer",
     title: "Native batched-transactions UI in block explorers",
     abstract:
@@ -628,6 +661,7 @@ export const PROPOSALS: Proposal[] = [
   {
     number: 4,
     category: "PIP",
+    kind: "Improvement",
     slug: "public-rpc-gateway-sandbox",
     title: "Public RPC gateway for sandbox testing",
     abstract:

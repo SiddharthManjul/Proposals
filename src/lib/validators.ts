@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const categorySchema = z.enum(["SIP", "CIP", "EIP", "CMIP", "PIP"]);
+export const kindSchema = z.enum(["Idea", "Improvement"]);
 export const statusSchema = z.enum([
   "Idea",
   "Execution",
@@ -20,6 +21,7 @@ const slugRe = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export const createProposalSchema = z.object({
   category: categorySchema,
+  kind: kindSchema.optional(),
   slug: z
     .string()
     .min(3)
