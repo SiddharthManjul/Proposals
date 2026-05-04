@@ -30,6 +30,7 @@ function rowToProposal(row: ProposalRow, discussion: Comment[]): Proposal {
     posted: toIso(row.posted),
     updated: toIso(row.updated),
     readingMinutes: row.readingMinutes,
+    hidden: row.hidden,
     body: row.body as ProposalSection[],
     discussion,
   };
@@ -91,8 +92,17 @@ async function loadDiscussionsByProposalIds(
 
 export async function listProposals(opts?: {
   category?: Category;
+  includeHidden?: boolean;
 }): Promise<Proposal[]> {
-  const where = opts?.category ? eq(proposals.category, opts.category) : undefined;
+  const filters = [];
+  if (opts?.category) filters.push(eq(proposals.category, opts.category));
+  if (!opts?.includeHidden) filters.push(eq(proposals.hidden, false));
+  const where =
+    filters.length === 0
+      ? undefined
+      : filters.length === 1
+        ? filters[0]
+        : and(...filters);
 
   const rows = await db
     .select()
@@ -106,8 +116,15 @@ export async function listProposals(opts?: {
   return rows.map((r) => rowToProposal(r, discussions.get(r.id) ?? []));
 }
 
-export async function listProposalsSortedByUpdated(): Promise<Proposal[]> {
-  const rows = await db.select().from(proposals).orderBy(desc(proposals.updated));
+export async function listProposalsSortedByUpdated(opts?: {
+  includeHidden?: boolean;
+}): Promise<Proposal[]> {
+  const where = opts?.includeHidden ? undefined : eq(proposals.hidden, false);
+  const rows = await db
+    .select()
+    .from(proposals)
+    .where(where)
+    .orderBy(desc(proposals.updated));
   const ids = rows.map((r) => r.id);
   const discussions = await loadDiscussionsByProposalIds(ids);
   return rows.map((r) => rowToProposal(r, discussions.get(r.id) ?? []));
@@ -115,13 +132,16 @@ export async function listProposalsSortedByUpdated(): Promise<Proposal[]> {
 
 export async function getProposalBySlug(
   category: string,
-  slug: string
+  slug: string,
+  opts?: { includeHidden?: boolean }
 ): Promise<Proposal | null> {
   const upper = category.toUpperCase() as Category;
+  const filters = [eq(proposals.category, upper), eq(proposals.slug, slug)];
+  if (!opts?.includeHidden) filters.push(eq(proposals.hidden, false));
   const [row] = await db
     .select()
     .from(proposals)
-    .where(and(eq(proposals.category, upper), eq(proposals.slug, slug)))
+    .where(and(...filters))
     .limit(1);
   if (!row) return null;
 
@@ -202,6 +222,38 @@ export async function updateProposalStatus(
     .where(eq(comments.proposalId, row.id))
     .orderBy(asc(comments.createdAt));
   return rowToProposal(row, buildThread(cmts));
+}
+
+export async function setProposalHidden(
+  category: string,
+  slug: string,
+  hidden: boolean
+): Promise<Proposal | null> {
+  const upper = category.toUpperCase() as Category;
+  const [row] = await db
+    .update(proposals)
+    .set({ hidden, updated: new Date() })
+    .where(and(eq(proposals.category, upper), eq(proposals.slug, slug)))
+    .returning();
+  if (!row) return null;
+  const cmts = await db
+    .select()
+    .from(comments)
+    .where(eq(comments.proposalId, row.id))
+    .orderBy(asc(comments.createdAt));
+  return rowToProposal(row, buildThread(cmts));
+}
+
+export async function deleteProposal(
+  category: string,
+  slug: string
+): Promise<boolean> {
+  const upper = category.toUpperCase() as Category;
+  const result = await db
+    .delete(proposals)
+    .where(and(eq(proposals.category, upper), eq(proposals.slug, slug)))
+    .returning({ id: proposals.id });
+  return result.length > 0;
 }
 
 export async function addComment(
