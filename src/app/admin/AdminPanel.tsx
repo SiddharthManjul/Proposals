@@ -15,6 +15,7 @@ import { StatusPill } from "@/components/StatusPill";
 import { StatusSelect } from "@/components/StatusSelect";
 import { KindBadge } from "@/components/KindBadge";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { parseContact } from "@/lib/contact";
 
 type SessionInfo = {
   authenticated: boolean;
@@ -327,8 +328,27 @@ export function AdminPanel() {
                   </td>
                   <td className="px-4 py-3 text-[12px] text-ink-soft whitespace-nowrap">
                     {p.author}
-                    <div className="text-ink-faint font-mono text-[11px]">
-                      @{p.authorHandle}
+                    <div className="text-ink-faint font-mono text-[11px] break-all">
+                      {(() => {
+                        const c = parseContact(p.authorHandle);
+                        if (!c.handle) return "—";
+                        const display =
+                          c.platform === "twitter" || c.platform === "telegram"
+                            ? `@${c.handle}`
+                            : c.handle;
+                        return c.url ? (
+                          <a
+                            href={c.url}
+                            target={c.platform === "email" ? undefined : "_blank"}
+                            rel={c.platform === "email" ? undefined : "noreferrer"}
+                            className="hover:text-accent"
+                          >
+                            {display}
+                          </a>
+                        ) : (
+                          display
+                        );
+                      })()}
                     </div>
                   </td>
                   <td className="px-4 py-3 font-mono text-[11px] text-ink-faint whitespace-nowrap">
