@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Masthead } from "@/components/Masthead";
@@ -9,6 +10,7 @@ import { KindBadge } from "@/components/KindBadge";
 import { categoryByCode, formatDate, proposalRef } from "@/lib/proposals";
 import { getProposalBySlug, listProposals } from "@/db/queries";
 import { renderInline } from "@/lib/inlineMarkdown";
+import { parseContact } from "@/lib/contact";
 import { CommentForm } from "./CommentForm";
 
 export const dynamic = "force-dynamic";
@@ -84,7 +86,26 @@ export default async function ProposalPage({
                 <span className="text-ink normal-case tracking-normal text-[13px] font-body">
                   {proposal.author}
                 </span>{" "}
-                <span className="text-ink-faint">@{proposal.authorHandle}</span>
+                {(() => {
+                  const c = parseContact(proposal.authorHandle);
+                  if (!c.handle) return null;
+                  const display =
+                    c.platform === "twitter" || c.platform === "telegram"
+                      ? `@${c.handle}`
+                      : c.handle;
+                  return c.url ? (
+                    <a
+                      href={c.url}
+                      target={c.platform === "email" ? undefined : "_blank"}
+                      rel={c.platform === "email" ? undefined : "noreferrer"}
+                      className="text-ink-faint hover:text-accent transition-colors"
+                    >
+                      {display}
+                    </a>
+                  ) : (
+                    <span className="text-ink-faint">{display}</span>
+                  );
+                })()}
               </span>
               <span className="hidden sm:inline">·</span>
               <span>Posted {formatDate(proposal.posted)}</span>
@@ -132,7 +153,7 @@ export default async function ProposalPage({
               <Meta term="Kind" value={proposal.kind} />
               <Meta term="Status" value={proposal.status} />
               <Meta term="Author" value={proposal.author} />
-              <Meta term="Handle" value={`@${proposal.authorHandle}`} />
+              <Meta term="Contact" value={renderContactMeta(proposal.authorHandle)} />
               <Meta term="Posted" value={formatDate(proposal.posted)} />
               <Meta term="Last edit" value={formatDate(proposal.updated)} />
               <Meta term="Replies" value={String(replyCount)} />
@@ -196,7 +217,54 @@ export default async function ProposalPage({
   );
 }
 
-function Meta({ term, value }: { term: string; value: string }) {
+function renderContactMeta(stored: string): ReactNode {
+  const c = parseContact(stored);
+  if (!c.handle) return "—";
+  const display =
+    c.platform === "twitter" || c.platform === "telegram"
+      ? `@${c.handle}`
+      : c.handle;
+  const platformLabel =
+    c.platform === "twitter"
+      ? "X"
+      : c.platform === "telegram"
+      ? "Telegram"
+      : c.platform === "github"
+      ? "GitHub"
+      : c.platform === "email"
+      ? "Email"
+      : null;
+  const inner = platformLabel ? (
+    <>
+      <span className="text-ink-faint mr-1.5 normal-case tracking-normal">
+        {platformLabel}
+      </span>
+      {display}
+    </>
+  ) : (
+    display
+  );
+  return c.url ? (
+    <a
+      href={c.url}
+      target={c.platform === "email" ? undefined : "_blank"}
+      rel={c.platform === "email" ? undefined : "noreferrer"}
+      className="text-ink hover:text-accent transition-colors break-all"
+    >
+      {inner}
+    </a>
+  ) : (
+    <span className="break-all">{inner}</span>
+  );
+}
+
+function Meta({
+  term,
+  value,
+}: {
+  term: string;
+  value: ReactNode;
+}) {
   return (
     <div className="flex justify-between gap-3 border-b border-rule-soft pb-2.5">
       <dt className="text-ink-faint uppercase tracking-[0.12em]">{term}</dt>
