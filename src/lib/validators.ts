@@ -30,7 +30,7 @@ export const createProposalSchema = z.object({
   title: z.string().min(8).max(200),
   abstract: z.string().min(40).max(800),
   author: z.string().min(2).max(120),
-  authorHandle: z.string().min(2).max(80),
+  authorHandle: z.string().min(2).max(200),
   body: z.array(proposalSectionSchema).min(1).max(40),
   status: statusSchema.optional(),
   readingMinutes: z.number().int().min(1).max(60).optional(),
