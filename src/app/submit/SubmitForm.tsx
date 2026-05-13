@@ -7,6 +7,11 @@ import { CATEGORIES, KINDS, type Category, type Kind } from "@/lib/proposals";
 import { parseBody } from "@/lib/parseBody";
 import { BodyPreview, PreviewTabs } from "@/components/BodyPreview";
 import { EditorialSelect } from "@/components/EditorialSelect";
+import {
+  CONTACT_PLATFORMS,
+  buildContactUrl,
+  type ContactPlatform,
+} from "@/lib/contact";
 
 const READING_WORDS_PER_MIN = 220;
 
@@ -36,7 +41,9 @@ export function SubmitForm() {
   const [abstract, setAbstract] = useState("");
   const [body, setBody] = useState("");
   const [author, setAuthor] = useState("");
-  const [handle, setHandle] = useState("");
+  const [contactPlatform, setContactPlatform] =
+    useState<ContactPlatform>("twitter");
+  const [contactValue, setContactValue] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [issues, setIssues] = useState<{ path: string; message: string }[]>([]);
@@ -55,6 +62,21 @@ export function SubmitForm() {
       return;
     }
 
+    const trimmedContact = contactValue.trim().replace(/^@/, "");
+    if (!trimmedContact) {
+      setStatus("error");
+      setErrorMsg("Add a contact handle so editors can reach you.");
+      return;
+    }
+    if (
+      contactPlatform === "email" &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedContact)
+    ) {
+      setStatus("error");
+      setErrorMsg("That doesn't look like a valid email address.");
+      return;
+    }
+
     const payload = {
       category,
       kind,
@@ -62,7 +84,7 @@ export function SubmitForm() {
       title: title.trim(),
       abstract: abstract.trim(),
       author: author.trim(),
-      authorHandle: handle.trim().replace(/^@/, ""),
+      authorHandle: buildContactUrl(contactPlatform, trimmedContact),
       body: sections,
       readingMinutes: estimateReadingMinutes(body),
     };
@@ -229,7 +251,7 @@ export function SubmitForm() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="space-y-6">
         <label className="block">
           <div className="kicker mb-2">Your name</div>
           <input
@@ -243,19 +265,52 @@ export function SubmitForm() {
             className="block w-full bg-paper border-b border-rule focus:border-accent outline-none py-2 text-[15px]"
           />
         </label>
-        <label className="block">
-          <div className="kicker mb-2">Handle</div>
-          <input
-            type="text"
-            required
-            minLength={2}
-            maxLength={80}
-            value={handle}
-            onChange={(e) => setHandle(e.target.value)}
-            placeholder="ENS, GitHub, or whatever you'd be reached at"
-            className="block w-full bg-paper border-b border-rule focus:border-accent outline-none py-2 text-[15px]"
-          />
-        </label>
+
+        <div className="grid grid-cols-1 md:grid-cols-[minmax(0,16rem)_minmax(0,1fr)] gap-6">
+          <div>
+            <div className="kicker mb-2">Contact via</div>
+            <EditorialSelect
+              value={contactPlatform}
+              onChange={setContactPlatform}
+              ariaLabel="Contact platform"
+              options={CONTACT_PLATFORMS.map((p) => ({
+                value: p.code,
+                label: p.label,
+                hint: p.hint,
+              }))}
+            />
+          </div>
+          <label className="block">
+            <div className="kicker mb-2">
+              {contactPlatform === "email" ? "Email address" : "Handle"}
+            </div>
+            <input
+              type={contactPlatform === "email" ? "email" : "text"}
+              required
+              minLength={2}
+              maxLength={120}
+              value={contactValue}
+              onChange={(e) => setContactValue(e.target.value)}
+              placeholder={
+                CONTACT_PLATFORMS.find((p) => p.code === contactPlatform)
+                  ?.placeholder ?? ""
+              }
+              className="block w-full bg-paper border-b border-rule focus:border-accent outline-none py-2 text-[15px]"
+              autoComplete="off"
+            />
+            <p className="mt-2 text-[12px] text-ink-faint italic">
+              {contactPlatform === "email"
+                ? "Shown as a mailto link on your proposal."
+                : `Shown as a link to ${
+                    contactPlatform === "twitter"
+                      ? "x.com"
+                      : contactPlatform === "github"
+                      ? "github.com"
+                      : "t.me"
+                  }/${contactValue.trim().replace(/^@/, "") || "<handle>"}.`}
+            </p>
+          </label>
+        </div>
       </div>
 
       {status === "error" && errorMsg && (
