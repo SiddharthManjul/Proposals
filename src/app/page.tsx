@@ -18,8 +18,13 @@ import { listProposalsSortedByUpdated } from "@/db/queries";
 export const dynamic = "force-dynamic";
 
 const MOBILE_LATEST_LIMIT = 5;
+const DESKTOP_PAGE_SIZE = 6;
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
   const sorted = await listProposalsSortedByUpdated();
 
   if (sorted.length === 0) {
@@ -28,6 +33,21 @@ export default async function HomePage() {
 
   const featured = sorted[0];
   const rest = sorted.slice(1);
+
+  const { page: pageParam } = await searchParams;
+  const totalPages = Math.max(
+    1,
+    Math.ceil(rest.length / DESKTOP_PAGE_SIZE)
+  );
+  const currentPage = Math.min(
+    totalPages,
+    Math.max(1, parseInt(pageParam ?? "1", 10) || 1)
+  );
+  const pagedRest = rest.slice(
+    (currentPage - 1) * DESKTOP_PAGE_SIZE,
+    currentPage * DESKTOP_PAGE_SIZE
+  );
+  const pageStartIndex = (currentPage - 1) * DESKTOP_PAGE_SIZE;
 
   const liveCount = sorted.filter(
     (p) => p.status === "Execution" || p.status === "MVP"
@@ -193,14 +213,22 @@ export default async function HomePage() {
               </div>
             </div>
             <div>
-              {rest.map((p, i) => (
+              {pagedRest.map((p, i) => (
                 <ProposalRow
                   key={`${p.category}-${p.number}`}
                   proposal={p}
-                  index={i}
+                  index={pageStartIndex + i}
                 />
               ))}
             </div>
+            {totalPages > 1 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                pageSize={DESKTOP_PAGE_SIZE}
+                totalItems={rest.length}
+              />
+            )}
           </div>
           <aside className="col-span-12 md:col-span-3 min-w-0 md:border-l md:border-rule md:pl-8">
             <div className="kicker mb-3">Lifecycle</div>
@@ -234,6 +262,60 @@ export default async function HomePage() {
       </main>
       <Footer />
     </>
+  );
+}
+
+function Pagination({
+  currentPage,
+  totalPages,
+  pageSize,
+  totalItems,
+}: {
+  currentPage: number;
+  totalPages: number;
+  pageSize: number;
+  totalItems: number;
+}) {
+  const firstItem = (currentPage - 1) * pageSize + 1;
+  const lastItem = Math.min(currentPage * pageSize, totalItems);
+  const prevHref = currentPage <= 2 ? "/" : `/?page=${currentPage - 1}`;
+  const nextHref = `/?page=${currentPage + 1}`;
+  const hasPrev = currentPage > 1;
+  const hasNext = currentPage < totalPages;
+
+  return (
+    <nav
+      aria-label="Latest activity pages"
+      className="mt-8 pt-6 border-t border-rule flex items-center justify-between gap-4 flex-wrap"
+    >
+      {hasPrev ? (
+        <Link
+          href={prevHref}
+          className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink hover:text-accent transition-colors"
+        >
+          ← Previous
+        </Link>
+      ) : (
+        <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-faint cursor-default">
+          ← Previous
+        </span>
+      )}
+      <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint tabular-nums">
+        {firstItem}–{lastItem} of {totalItems} · Page {currentPage} of {totalPages}
+      </span>
+      {hasNext ? (
+        <Link
+          href={nextHref}
+          className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink hover:text-accent transition-colors"
+        >
+          Next →
+        </Link>
+      ) : (
+        <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-faint cursor-default">
+          Next →
+        </span>
+      )}
+    </nav>
   );
 }
 
