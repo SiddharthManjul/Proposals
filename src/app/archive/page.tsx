@@ -15,7 +15,7 @@ export default async function ArchivePage() {
   return (
     <>
       <Masthead />
-      <CategoryNav />
+      <CategoryNav active="ARCHIVE" />
       <main className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10 pt-8 sm:pt-12 pb-12 sm:pb-16">
         <header className="pb-8 sm:pb-10 border-b border-rule">
           <div className="kicker mb-3">The archive</div>
