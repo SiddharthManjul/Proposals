@@ -13,6 +13,7 @@ export function CategoryNav({ active }: Props) {
       label: c.label,
       href: `/${c.code.toLowerCase()}`,
     })),
+    { code: "ARCHIVE", label: "Archive", href: "/archive" },
   ];
 
   return (
