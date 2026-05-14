@@ -14,10 +14,10 @@ export function ProposalRow({ proposal, index, showCategory = true }: Props) {
   const replyCount = countComments(proposal.discussion);
 
   return (
-    <article className="group border-b border-rule last:border-b-0">
+    <article className="group border-b border-rule last:border-b-0 -mx-3 sm:-mx-5">
       <Link
         href={href}
-        className="block py-5 sm:py-7 grid grid-cols-12 gap-3 sm:gap-4 transition-colors hover:bg-tint/60"
+        className="block py-5 sm:py-7 px-3 sm:px-5 grid grid-cols-12 gap-3 sm:gap-4 transition-colors hover:bg-tint/60"
       >
         <div className="col-span-12 md:col-span-1 flex md:block items-center gap-3">
           <span className="font-mono text-[12px] text-ink-faint tabular-nums">
