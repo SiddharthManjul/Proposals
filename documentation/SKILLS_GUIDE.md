@@ -269,7 +269,9 @@ The model **must not** produce any of the following. If a draft contains them, r
 - Round-numbered lists when the real number is 4 or 7. Use the real number.
 - Exclamation marks. Anywhere. Even in quotes from happy users — paraphrase.
 - Emojis. Anywhere in body text. (UI chrome may use a small ornament; body text doesn't.)
-- Em-dashes used as decoration. (Em-dashes for sentence structure are fine — like this — but not three em-dashes in five sentences for vibes.)
+- Em dashes (the `—` character, U+2014). Any use, including structural. Reach for a colon, a comma, a period or parentheses instead. En dashes (`–`) for numeric ranges like `100–400` are fine. Em dashes are not.
+- Oxford commas. In any list of three or more, no comma before the final *and* / *or*. Write `red, white and blue`, not `red, white, and blue`.
+- Heavy semicolon use. Real human prose uses semicolons rarely. A tight proposal (600–900 words) should have zero. A medium one (1200–1800 words) should have one or two at most. When the em-dash impulse would normally fire, do not reach for a semicolon as the substitute. Use a period (start a new sentence), a comma, parentheses or a colon, depending on what the dash was doing. Reserve semicolons for the rare case where a period would be too strong AND a comma would create a splice AND the two clauses are genuinely too tightly coupled for separate sentences.
 
 ### 7.4 Forbidden tonal moves
 
