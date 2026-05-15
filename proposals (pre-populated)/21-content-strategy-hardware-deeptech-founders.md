@@ -1,0 +1,48 @@
+CATEGORY: CIP
+TITLE: Build in public on the operational half and stay private on the IP half
+
+ABSTRACT: Hardware and deep-tech founders default to two failure modes. The first is total silence until launch, which leaves the company with no audience to launch into. The second is over-sharing that compromises proprietary advantage or unsettles investors who expected confidentiality. The wedge is the deliberate middle: a biweekly long-form newsletter that builds in public on the *operational* side of the company (supply chain, manufacturing, hiring, regulatory, capital efficiency) while staying private on the *IP* side (specific technology choices, design files, performance specs). Operational transparency builds an audience of suppliers, future employees, future customers and adjacent founders. The audience compounds.
+
+BODY:
+Hardware companies have always struggled with marketing. Software companies can demo their product in a blog post and get thousands of trials by lunch. Hardware companies cannot, because the product takes eighteen to thirty months to build and another year to manufacture at volume. The audience question for hardware is harder: how do you build an audience for a product that does not yet exist, without giving away the thing that makes it valuable?
+
+## What's wrong now
+
+Look at the typical Series A deep-tech company. They have a glossy homepage, a one-paragraph "about us" page, a press release on the funding round and silence. Three years pass. The company emerges from stealth with a product launch and discovers there is no audience to launch to. The hardware press cycle gives them one writeup. The technical-audience response is muted, because no one has been watching the company evolve. The customer pipeline is built entirely by direct enterprise sales, which is expensive and slow.
+
+The alternative pattern (full build-in-public, every detail public) creates different problems. Competitors see strategic moves a year early. Investors get uncomfortable when commercial decisions are debated in newsletters. Suppliers refuse to discuss pricing once it becomes public. Hardware build-in-public taken to the SaaS extreme runs into structural limits the SaaS playbook does not have.
+
+By my count, looking at deep-tech companies that have shipped meaningful products in the last five years, the founders who built durable audiences during the development phase all chose a middle path. Anduril published occasional operational essays from leadership without revealing weapon-system architecture. Boom Supersonic ran a long-form blog about supply chain and certification, not aerodynamic specifics. The pattern works. The numbers behind it: a hardware company that publishes one substantial operational essay every two weeks for two years accumulates roughly `20,000 to 50,000` newsletter subscribers (founders, engineers, suppliers, journalists, adjacent operators) and `~5 to 12` significant press writeups over the period. The audience is small by SaaS standards but the conversion to enterprise customers, qualified hires and supplier introductions is far above what cold outreach produces.
+
+## The proposed change
+
+Stand up a biweekly long-form publication (Substack or self-hosted, doesn't matter) authored by the founder. Topic mix: 40% operational lessons (the supply chain decision, the manufacturing partner negotiation, the regulatory submission), 25% domain education for non-specialists (what the technology category is, why it matters, what the current state of the art is), 20% specific company milestones (you raised a round, you signed a customer, you opened a facility, in factual terms), 10% commentary on industry trends or adjacent companies, 5% recruiting (the kind of engineer you are looking for and why).
+
+What changes versus today: the cadence (regular biweekly publication vs unpredictable press cycles), the voice (founder-authored operational voice vs PR-team marketing voice), the asymmetry (operational openness, IP discipline) and the audience composition (compound subscribers, not impressions).
+
+What stays private: the technology approach, design files, specific performance numbers (relative to competitors), the exact roadmap, customer names without permission, supplier terms and any information whose disclosure would compromise the company's competitive position. Founders should write each post with a discipline question: *if a competitor read this, would they learn something they could use against us?* If yes, cut that part.
+
+## Mechanics
+
+- **Cadence.** One post every two weeks. `1,500 to 3,000 words`. Skip a beat only for major company events (launch week, fundraise close). Predictability matters more than maximum frequency.
+- **Author.** The founder, in their own voice. Most operational newsletters written by communications hires sound like marketing and lose the audience. The audience for hardware build-in-public reads the founder voice specifically. Once the cadence is established at month 9 or 12, a chief of staff or senior comms person can ghost-draft and the founder edits. The audience tends to notice when the voice changes.
+- **Topic selection.** Maintain a running list of operational topics. Recent decisions, near-future challenges, lessons from failed experiments. Cross off topics that fail the IP-leak check. Write the most informative remaining one.
+- **Distribution.** Substack with email subscription is the default. Cross-post to LinkedIn (operational content performs unusually well there). Selectively cross-post to relevant subreddits (`r/hardware`, `r/engineering`, vertical-specific subs). The Hacker News submission per post is optional; submit only when the topic genuinely fits HN's audience.
+- **Cost.** Founder time, `4 to 8 hours per post` for writing and editing. Optional `$1,000 to $2,500/month` for an editor who polishes drafts without altering voice. Annual cost: `$15 to $30K`. Trivial compared to a PR retainer.
+- **Recruiting integration.** Each post has a small footer mentioning open roles. By month 12, expect `~25 to 40%` of qualified inbound candidates to cite the newsletter as how they heard of the company.
+- **Supplier and partner integration.** Some posts will be written about specific operational challenges where naming a partner would help them (a contract manufacturer you genuinely value, a regulatory consultant who saved you weeks). Get permission. Name them. The relationship deepens, and the partner often republishes to their audience.
+- **Smallest viable version.** Commit to four posts over two months. Do not optimize for subscriber growth in this phase; optimize for whether you can sustain the cadence. If the four posts ship on time and you have not run out of topics, the strategy is viable. If you missed deadlines or struggled for topics, the cadence is too aggressive.
+- **Traction metric.** Newsletter subscribers, sorted by qualified type (engineer, supplier, customer, journalist). Floor by month 12: `5,000 subscribers` with `>40%` open rate. Stretch: `15,000+ subscribers`.
+- **Retention metric.** Long-term engagement of subscribers across category transitions (engineer subscribers who become candidates, journalist subscribers who write multiple stories over time). Harder to instrument but the durable measurement.
+
+## Open questions
+
+How much operational detail is safe to share? A useful test: *if our biggest competitor's CEO read this paragraph, would they learn something useful for their company?* If yes, cut the paragraph. If no, keep it. Most operational lessons (negotiating with suppliers, hiring patterns, regulatory navigation) pass this test easily. Specific technology choices and specific numerical performance data generally do not.
+
+For B2B and B2G hardware where the buyer is a procurement officer at a defense prime, oil major or telecom carrier, does build-in-public help or hurt the sales conversation? Mixed. The procurement officer rarely reads the newsletter, but their engineering counterparts often do, and the engineering counterparts influence the procurement decision more than the procurement officer realizes. The risk is that the newsletter occasionally publishes something that the customer's competitor wants weaponized in the deal. The mitigation is to give customers a quiet preview of any post that mentions their category and adjust if asked.
+
+When does this strategy stop being founder-authored and start being a team-authored publication? Around Series B or C, when the founder cannot sustain the cadence personally. The transition is tricky. Most attempts to shift voice fail visibly. The cleanest patterns are: (a) the founder retains 6 to 8 posts per year as deeply personal essays and a team adds operational case studies in between or (b) the founder hands off entirely and the publication shifts to a more traditional company-blog format, accepting some audience loss.
+
+How does the newsletter interact with the press cycle? The newsletter audience overlaps significantly with the journalists who cover the category. Many founder newsletters have triggered press writeups that would not have happened from a cold pitch. The relationship between the founder and the technology journalist becomes the founder's direct relationship, which compounds over time.
+
+For deep-tech companies in stealth-by-investor-mandate phases (some defense, some pharma), is this strategy viable at all? Sometimes a delayed-publication version works: the founder writes the same content but only publishes posts older than `18 months`. The audience builds slower but the relationship discipline still develops. For companies where any public writing is forbidden, none of this applies and the strategy is wrong.
