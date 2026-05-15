@@ -120,7 +120,7 @@ The skill refuses any draft containing **universal blocklist material** plus **E
 **Universal (Section 7):**
 - Any Section 7.1 word: *empower, revolutionize, leverage, unlock, drive, facilitate, enable, seamless, holistic, synergies, best-in-class, world-class, cutting-edge, next-generation, transformative, disruptive, paradigm, ecosystem* (as marketing word), *robust, scalable* (as marketing), *comprehensive, powerful, intuitive, innovative*.
 - Any Section 7.2 phrase: *In today's rapidly evolving landscape*, *In an era of*, *In the modern world*, *More than ever before*, *Game-changing*, *At the forefront of*, *Pushing the boundaries of*, *Unleashing the potential of*, *We are excited to announce*, *Don't miss out*, *Act now*, *Limited time*.
-- Any Section 7.3 structural move: three-sentence frame-before-point preamble, closing summary paragraph, *Conclusion* heading, *Furthermore / Moreover / In conclusion* paragraph openers, triadic adjectives, round-numbered lists when the real count is 4 or 7, exclamation marks, emojis in body, decorative em-dashes.
+- Any Section 7.3 structural move: three-sentence frame-before-point preamble, closing summary paragraph, *Conclusion* heading, *Furthermore / Moreover / In conclusion* paragraph openers, triadic adjectives, round-numbered lists when the real count is 4 or 7, exclamation marks, emojis in body, em dashes (`—`, any use), Oxford commas (no comma before the final *and* / *or* in a list of three or more), heavy semicolon use (a tight proposal should have zero, a medium one one or two at most).
 - Any Section 7.4 tonal move: performative humility, performative confidence, heading alliteration, made-up statistics.
 
 **EIP-specific traps (refuse these in addition):**
