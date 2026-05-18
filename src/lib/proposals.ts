@@ -1,4 +1,7 @@
-export type Category = "SIP" | "CIP" | "EIP" | "CMIP" | "PIP";
+export type Category = "SIP" | "CIP" | "EIP" | "CMIP" | "PIP" | "UP";
+
+export type ProposalCategory = "SIP" | "CIP" | "EIP" | "CMIP" | "PIP";
+export type UpdateCategory = "UP";
 
 export type Kind = "Idea" | "Improvement";
 
@@ -32,6 +35,7 @@ export type Proposal = {
   updated: string;
   readingMinutes: number;
   hidden: boolean;
+  source?: string | null;
   body: ProposalSection[];
   discussion: Comment[];
 };
@@ -84,7 +88,32 @@ export const CATEGORIES: {
     blurb:
       "Tools and surfaces builders depend on: explorers, RPC, starter kits, wallet flows, documentation sites.",
   },
+  {
+    code: "UP",
+    label: "UPs",
+    full: "Update Proposals",
+    blurb:
+      "News and announcements from VCs and other startup-ecosystem organizations. Cohort applications, list publications, summit dates, program launches.",
+  },
 ];
+
+export const PROPOSAL_CATEGORIES: ProposalCategory[] = [
+  "SIP",
+  "CIP",
+  "EIP",
+  "CMIP",
+  "PIP",
+];
+
+export const UPDATE_CATEGORIES: UpdateCategory[] = ["UP"];
+
+export function isUpdate(c: Category): c is UpdateCategory {
+  return c === "UP";
+}
+
+export function isProposal(c: Category): c is ProposalCategory {
+  return !isUpdate(c);
+}
 
 export const STATUSES: Status[] = [
   "Idea",
