@@ -22,6 +22,7 @@ export const categoryEnum = pgEnum("category", [
   "EIP",
   "CMIP",
   "PIP",
+  "UP",
 ]);
 
 export const statusEnum = pgEnum("status", [
@@ -56,6 +57,7 @@ export const proposals = pgTable(
     readingMinutes: integer("reading_minutes").notNull().default(3),
     body: jsonb("body").$type<ProposalSection[]>().notNull(),
     hidden: boolean("hidden").notNull().default(false),
+    source: text("source"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .default(sql`now()`),
