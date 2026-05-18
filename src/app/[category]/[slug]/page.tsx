@@ -7,7 +7,7 @@ import { Footer } from "@/components/Footer";
 import { CommentThread } from "@/components/CommentThread";
 import { StatusPill } from "@/components/StatusPill";
 import { KindBadge } from "@/components/KindBadge";
-import { categoryByCode, formatDate, proposalRef } from "@/lib/proposals";
+import { categoryByCode, formatDate, isUpdate, proposalRef } from "@/lib/proposals";
 import { getProposalBySlug, listProposals } from "@/db/queries";
 import { renderInline } from "@/lib/inlineMarkdown";
 import { parseContact } from "@/lib/contact";
@@ -37,25 +37,36 @@ export default async function ProposalPage({
     .filter((p) => p.slug !== proposal.slug)
     .slice(0, 4);
 
+  const upMode = isUpdate(proposal.category);
+
   return (
     <>
       <Masthead />
-      <CategoryNav active={cat.code} />
+      <CategoryNav active={upMode ? "UPDATES" : cat.code} />
       <main className="mx-auto max-w-360 px-4 sm:px-6 lg:px-10 pt-8 sm:pt-10 pb-12 sm:pb-16">
         {/* Breadcrumb */}
         <nav className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint mb-6 sm:mb-8 flex items-center gap-2 flex-wrap">
-          <Link href="/" className="link-underline">
-            Archive
-          </Link>
-          <span>/</span>
           <Link
-            href={`/${cat.code.toLowerCase()}`}
-            className="link-underline truncate max-w-[40ch]"
+            href={upMode ? "/updates" : "/"}
+            className="link-underline"
           >
-            {cat.full}
+            {upMode ? "Updates" : "Archive"}
           </Link>
           <span>/</span>
-          <span className="text-ink">{proposalRef(proposal)}</span>
+          {upMode ? (
+            <span className="text-ink">{proposalRef(proposal)}</span>
+          ) : (
+            <>
+              <Link
+                href={`/${cat.code.toLowerCase()}`}
+                className="link-underline truncate max-w-[40ch]"
+              >
+                {cat.full}
+              </Link>
+              <span>/</span>
+              <span className="text-ink">{proposalRef(proposal)}</span>
+            </>
+          )}
         </nav>
 
         <article className="grid grid-cols-12 gap-6 md:gap-10">
@@ -65,8 +76,23 @@ export default async function ProposalPage({
               <span className="font-mono text-[12px] uppercase tracking-[0.18em] text-accent">
                 {proposalRef(proposal)}
               </span>
-              <KindBadge kind={proposal.kind} size="md" />
-              <StatusPill status={proposal.status} size="md" />
+              {upMode ? (
+                <>
+                  {proposal.source && (
+                    <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-accent border border-accent px-2 py-0.5">
+                      {proposal.source}
+                    </span>
+                  )}
+                  <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink border border-rule px-2 py-0.5">
+                    Update
+                  </span>
+                </>
+              ) : (
+                <>
+                  <KindBadge kind={proposal.kind} size="md" />
+                  <StatusPill status={proposal.status} size="md" />
+                </>
+              )}
               <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
                 {proposal.readingMinutes} min read
               </span>
@@ -150,8 +176,16 @@ export default async function ProposalPage({
             <dl className="font-mono text-[12px] space-y-2.5">
               <Meta term="Reference" value={proposalRef(proposal)} />
               <Meta term="Category" value={cat.full} />
-              <Meta term="Kind" value={proposal.kind} />
-              <Meta term="Status" value={proposal.status} />
+              {upMode ? (
+                proposal.source ? (
+                  <Meta term="Source" value={proposal.source} />
+                ) : null
+              ) : (
+                <>
+                  <Meta term="Kind" value={proposal.kind} />
+                  <Meta term="Status" value={proposal.status} />
+                </>
+              )}
               <Meta term="Author" value={proposal.author} />
               <Meta term="Contact" value={renderContactMeta(proposal.authorHandle)} />
               <Meta term="Posted" value={formatDate(proposal.posted)} />
