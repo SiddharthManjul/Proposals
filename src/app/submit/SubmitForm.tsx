@@ -3,7 +3,13 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
-import { CATEGORIES, KINDS, type Category, type Kind } from "@/lib/proposals";
+import {
+  CATEGORIES,
+  KINDS,
+  PROPOSAL_CATEGORIES,
+  type Category,
+  type Kind,
+} from "@/lib/proposals";
 import { parseBody } from "@/lib/parseBody";
 import { BodyPreview, PreviewTabs } from "@/components/BodyPreview";
 import { EditorialSelect } from "@/components/EditorialSelect";
@@ -32,11 +38,26 @@ function estimateReadingMinutes(text: string): number {
 
 type Status = "idle" | "submitting" | "ok" | "error";
 
-export function SubmitForm() {
+type SubmissionType = "proposal" | "update";
+
+const proposalCategoryList = CATEGORIES.filter((c) =>
+  (PROPOSAL_CATEGORIES as readonly string[]).includes(c.code)
+);
+
+export function SubmitForm({
+  initialType = "proposal",
+}: {
+  initialType?: SubmissionType;
+}) {
   const router = useRouter();
   const [, startTransition] = useTransition();
-  const [category, setCategory] = useState<Category>(CATEGORIES[0].code);
+  const [submissionType, setSubmissionType] =
+    useState<SubmissionType>(initialType);
+  const [category, setCategory] = useState<Category>(
+    initialType === "update" ? "UP" : proposalCategoryList[0].code
+  );
   const [kind, setKind] = useState<Kind>("Idea");
+  const [source, setSource] = useState("");
   const [title, setTitle] = useState("");
   const [abstract, setAbstract] = useState("");
   const [body, setBody] = useState("");
@@ -77,17 +98,36 @@ export function SubmitForm() {
       return;
     }
 
-    const payload = {
-      category,
-      kind,
-      slug: slugify(title),
-      title: title.trim(),
-      abstract: abstract.trim(),
-      author: author.trim(),
-      authorHandle: buildContactUrl(contactPlatform, trimmedContact),
-      body: sections,
-      readingMinutes: estimateReadingMinutes(body),
-    };
+    if (submissionType === "update" && !source.trim()) {
+      setStatus("error");
+      setErrorMsg("Name the source organization (the VC or org announcing this).");
+      return;
+    }
+
+    const payload =
+      submissionType === "update"
+        ? {
+            category: "UP" as Category,
+            slug: slugify(title),
+            title: title.trim(),
+            abstract: abstract.trim(),
+            author: author.trim(),
+            authorHandle: buildContactUrl(contactPlatform, trimmedContact),
+            source: source.trim(),
+            body: sections,
+            readingMinutes: estimateReadingMinutes(body),
+          }
+        : {
+            category,
+            kind,
+            slug: slugify(title),
+            title: title.trim(),
+            abstract: abstract.trim(),
+            author: author.trim(),
+            authorHandle: buildContactUrl(contactPlatform, trimmedContact),
+            body: sections,
+            readingMinutes: estimateReadingMinutes(body),
+          };
 
     try {
       const res = await fetch("/api/proposals", {
@@ -128,38 +168,64 @@ export function SubmitForm() {
   const submitting = status === "submitting";
 
   const bodyPlaceholder =
-    kind === "Idea"
-      ? `One-sentence framing of the idea.\n\n## Problem\nThe specific failure mode this addresses.\n\n## Wedge\nWhy this team or shape can take it.\n\n## Why now\nWhat changed in the last 12 months that makes this fundable / shippable.\n\n## What's already been tried\n- A previous attempt and what stopped it\n- Another shape and why it didn't work\n\n## Open questions\nThe honest ones — not rhetorical.`
-      : `The first paragraph names the existing thing and what's wrong with it.\n\n## Current state\nWhat's there today, with a number when possible.\n\n## Proposed change\nConcrete enough to argue with.\n\n## Mechanics\nWho does the work, on what cadence, with what guardrails.\n\n## Open questions\nIncluding the strongest counter-argument.`;
+    submissionType === "update"
+      ? `One-paragraph lede stating what is being announced.\n\n## What it is\nThe factual description of the update.\n\n## Key dates and eligibility\nApplication open / close dates, who can apply, how to apply.\n\n## Why it matters now\nThe editorial context. What changed, why this matters this cycle.\n\n## Open questions\nWhat is unclear. What is contestable.\n\n## Reference\n[Official link](https://example.com)`
+      : kind === "Idea"
+        ? `One-sentence framing of the idea.\n\n## Problem\nThe specific failure mode this addresses.\n\n## Wedge\nWhy this team or shape can take it.\n\n## Why now\nWhat changed in the last 12 months that makes this fundable / shippable.\n\n## What's already been tried\n- A previous attempt and what stopped it\n- Another shape and why it didn't work\n\n## Open questions\nThe honest ones, not rhetorical.`
+        : `The first paragraph names the existing thing and what's wrong with it.\n\n## Current state\nWhat's there today, with a number when possible.\n\n## Proposed change\nConcrete enough to argue with.\n\n## Mechanics\nWho does the work, on what cadence, with what guardrails.\n\n## Open questions\nIncluding the strongest counter-argument.`;
 
   return (
     <form className="space-y-8" onSubmit={handleSubmit}>
+      {/* Step 00 — Type */}
       <div>
-        <div className="kicker mb-3">Step 01 — Category</div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 border border-rule">
-          {CATEGORIES.map((c, i) => (
+        <div className="kicker mb-3">Step 00 — What are you submitting?</div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 border border-rule">
+          {[
+            {
+              code: "proposal" as const,
+              label: "Proposal",
+              full: "An argument for change",
+              blurb:
+                "A SIP, CIP, EIP, CMIP, or PIP. You argue a problem and a proposed change.",
+            },
+            {
+              code: "update" as const,
+              label: "Update",
+              full: "An announcement or news",
+              blurb:
+                "A UP. You announce a cohort, a list, a summit date, or another factual update from a VC or ecosystem organization.",
+            },
+          ].map((opt, i) => (
             <label
-              key={c.code}
+              key={opt.code}
               className={`relative cursor-pointer p-4 hover:bg-accent-wash transition-colors ${
-                i < CATEGORIES.length - 1
-                  ? "border-b sm:border-b-0 sm:border-r border-rule"
-                  : ""
+                i === 0 ? "border-b sm:border-b-0 sm:border-r border-rule" : ""
               }`}
             >
               <input
                 type="radio"
-                name="category"
-                value={c.code}
+                name="submissionType"
+                value={opt.code}
                 className="sr-only peer"
-                checked={category === c.code}
-                onChange={() => setCategory(c.code)}
+                checked={submissionType === opt.code}
+                onChange={() => {
+                  setSubmissionType(opt.code);
+                  if (opt.code === "update") {
+                    setCategory("UP");
+                  } else {
+                    setCategory(proposalCategoryList[0].code);
+                  }
+                }}
               />
               <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-accent mb-2">
-                {c.code}
+                {opt.label}
               </div>
               <div className="font-display font-semibold text-[14px] tracking-[-0.01em] text-ink leading-tight">
-                {c.full}
+                {opt.full}
               </div>
+              <p className="mt-2 text-[12px] text-ink-soft leading-[1.5]">
+                {opt.blurb}
+              </p>
               <div
                 aria-hidden
                 className="absolute inset-0 border-2 border-accent opacity-0 peer-checked:opacity-100 pointer-events-none"
@@ -169,25 +235,81 @@ export function SubmitForm() {
         </div>
       </div>
 
-      <div>
-        <div className="flex items-baseline justify-between gap-3 mb-3 flex-wrap">
-          <div className="kicker">Step 02 — Kind</div>
-          <span className="font-display italic text-ink-soft text-[13px] max-w-[42ch]">
-            Is this a new thing, or a change to an existing thing? Both are
-            valid in any category.
-          </span>
+      {submissionType === "proposal" ? (
+        <>
+          <div>
+            <div className="kicker mb-3">Step 01 — Category</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 border border-rule">
+              {proposalCategoryList.map((c, i) => (
+                <label
+                  key={c.code}
+                  className={`relative cursor-pointer p-4 hover:bg-accent-wash transition-colors ${
+                    i < proposalCategoryList.length - 1
+                      ? "border-b sm:border-b-0 sm:border-r border-rule"
+                      : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="category"
+                    value={c.code}
+                    className="sr-only peer"
+                    checked={category === c.code}
+                    onChange={() => setCategory(c.code)}
+                  />
+                  <div className="font-mono text-[11px] uppercase tracking-[0.16em] text-accent mb-2">
+                    {c.code}
+                  </div>
+                  <div className="font-display font-semibold text-[14px] tracking-[-0.01em] text-ink leading-tight">
+                    {c.full}
+                  </div>
+                  <div
+                    aria-hidden
+                    className="absolute inset-0 border-2 border-accent opacity-0 peer-checked:opacity-100 pointer-events-none"
+                  />
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <div className="flex items-baseline justify-between gap-3 mb-3 flex-wrap">
+              <div className="kicker">Step 02 — Kind</div>
+              <span className="font-display italic text-ink-soft text-[13px] max-w-[42ch]">
+                Is this a new thing, or a change to an existing thing? Both are
+                valid in any category.
+              </span>
+            </div>
+            <EditorialSelect
+              value={kind}
+              onChange={setKind}
+              ariaLabel="Proposal kind"
+              options={KINDS.map((k) => ({
+                value: k.code,
+                label: k.label,
+                hint: k.blurb,
+              }))}
+            />
+          </div>
+        </>
+      ) : (
+        <div>
+          <div className="kicker mb-3">Step 01 — Source organization</div>
+          <input
+            type="text"
+            required
+            minLength={2}
+            maxLength={160}
+            value={source}
+            onChange={(e) => setSource(e.target.value)}
+            placeholder="Y Combinator, Andreessen Horowitz, Sequoia, Bessemer, etc."
+            className="block w-full bg-paper border-b border-rule focus:border-accent outline-none py-3 text-[1.1rem] font-display"
+          />
+          <p className="mt-2 text-[12px] text-ink-faint italic">
+            The org doing the announcing. Shown prominently on the update page.
+          </p>
         </div>
-        <EditorialSelect
-          value={kind}
-          onChange={setKind}
-          ariaLabel="Proposal kind"
-          options={KINDS.map((k) => ({
-            value: k.code,
-            label: k.label,
-            hint: k.blurb,
-          }))}
-        />
-      </div>
+      )}
 
       <div>
         <div className="kicker mb-3">Step 03 — Title</div>
