@@ -4,13 +4,13 @@ import { Masthead } from "@/components/Masthead";
 import { CategoryNav } from "@/components/CategoryNav";
 import { Footer } from "@/components/Footer";
 import { ProposalRow } from "@/components/ProposalRow";
-import { CATEGORIES } from "@/lib/proposals";
+import { PROPOSAL_CATEGORIES } from "@/lib/proposals";
 import { listProposalsSortedByUpdated } from "@/db/queries";
 
 export const dynamic = "force-dynamic";
 
 export default async function ArchivePage() {
-  const all = await listProposalsSortedByUpdated();
+  const all = await listProposalsSortedByUpdated({ onlyProposals: true });
 
   return (
     <>
@@ -28,7 +28,7 @@ export default async function ArchivePage() {
           </h1>
           <p className="mt-5 sm:mt-7 max-w-[60ch] text-[15px] sm:text-[18px] leading-[1.55] text-ink-soft font-display italic">
             <span className="tabular-nums">{all.length}</span> proposal
-            {all.length === 1 ? "" : "s"} across {CATEGORIES.length}{" "}
+            {all.length === 1 ? "" : "s"} across {PROPOSAL_CATEGORIES.length}{" "}
             categories. The whole record, oldest edits at the bottom.
           </p>
         </header>
