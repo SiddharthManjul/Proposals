@@ -25,7 +25,10 @@ export default async function HomePage({
 }: {
   searchParams: Promise<{ page?: string }>;
 }) {
-  const sorted = await listProposalsSortedByUpdated();
+  const [sorted, recentUpdates] = await Promise.all([
+    listProposalsSortedByUpdated({ onlyProposals: true }),
+    listProposalsSortedByUpdated({ onlyUpdates: true }),
+  ]);
 
   if (sorted.length === 0) {
     return <EmptyState />;
@@ -231,6 +234,45 @@ export default async function HomePage({
             )}
           </div>
           <aside className="col-span-12 md:col-span-3 min-w-0 md:border-l md:border-rule md:pl-8">
+            {recentUpdates.length > 0 && (
+              <>
+                <div className="flex items-baseline justify-between mb-3">
+                  <div className="kicker">From updates</div>
+                  <Link
+                    href="/updates"
+                    className="font-mono text-[10px] uppercase tracking-[0.16em] text-accent hover:text-accent-deep transition-colors"
+                  >
+                    See all →
+                  </Link>
+                </div>
+                <ul className="space-y-3 mb-8">
+                  {recentUpdates.slice(0, 4).map((u) => (
+                    <li
+                      key={`${u.category}-${u.number}`}
+                      className="border-b border-rule-soft pb-3 last:border-b-0"
+                    >
+                      <Link
+                        href={`/${u.category.toLowerCase()}/${u.slug}`}
+                        className="block hover:text-accent transition-colors"
+                      >
+                        {u.source && (
+                          <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-accent mb-1">
+                            {u.source}
+                          </div>
+                        )}
+                        <div className="text-[13px] text-ink leading-tight font-display font-medium">
+                          {u.title}
+                        </div>
+                        <div className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-faint mt-1.5">
+                          {shortDate(u.updated)}
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <div className="divider-dashed mb-8" />
+              </>
+            )}
             <div className="kicker mb-3">Lifecycle</div>
             <ul className="space-y-3">
               {STATUSES.map((s) => (
