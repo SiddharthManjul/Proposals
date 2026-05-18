@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, max, sql } from "drizzle-orm";
+import { and, asc, desc, eq, max, ne, sql } from "drizzle-orm";
 
 import { db } from "./index";
 import { admins, comments, proposals } from "./schema";
@@ -31,6 +31,7 @@ function rowToProposal(row: ProposalRow, discussion: Comment[]): Proposal {
     updated: toIso(row.updated),
     readingMinutes: row.readingMinutes,
     hidden: row.hidden,
+    source: row.source ?? null,
     body: row.body as ProposalSection[],
     discussion,
   };
@@ -118,8 +119,19 @@ export async function listProposals(opts?: {
 
 export async function listProposalsSortedByUpdated(opts?: {
   includeHidden?: boolean;
+  onlyProposals?: boolean;
+  onlyUpdates?: boolean;
 }): Promise<Proposal[]> {
-  const where = opts?.includeHidden ? undefined : eq(proposals.hidden, false);
+  const filters = [];
+  if (!opts?.includeHidden) filters.push(eq(proposals.hidden, false));
+  if (opts?.onlyProposals) filters.push(ne(proposals.category, "UP"));
+  if (opts?.onlyUpdates) filters.push(eq(proposals.category, "UP"));
+  const where =
+    filters.length === 0
+      ? undefined
+      : filters.length === 1
+        ? filters[0]
+        : and(...filters);
   const rows = await db
     .select()
     .from(proposals)
@@ -172,6 +184,7 @@ export async function createProposal(input: {
   abstract: string;
   author: string;
   authorHandle: string;
+  source?: string | null;
   body: ProposalSection[];
   status?: Status;
   readingMinutes?: number;
@@ -194,6 +207,7 @@ export async function createProposal(input: {
         abstract: input.abstract,
         author: input.author,
         authorHandle: input.authorHandle,
+        source: input.source ?? null,
         body: input.body,
         status: input.status ?? "Idea",
         readingMinutes: input.readingMinutes ?? 3,
