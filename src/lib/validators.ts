@@ -1,6 +1,13 @@
 import { z } from "zod";
 
-export const categorySchema = z.enum(["SIP", "CIP", "EIP", "CMIP", "PIP"]);
+export const categorySchema = z.enum([
+  "SIP",
+  "CIP",
+  "EIP",
+  "CMIP",
+  "PIP",
+  "UP",
+]);
 export const kindSchema = z.enum(["Idea", "Improvement"]);
 export const statusSchema = z.enum([
   "Idea",
@@ -31,6 +38,7 @@ export const createProposalSchema = z.object({
   abstract: z.string().min(40).max(800),
   author: z.string().min(2).max(120),
   authorHandle: z.string().min(2).max(200),
+  source: z.string().min(2).max(160).optional(),
   body: z.array(proposalSectionSchema).min(1).max(40),
   status: statusSchema.optional(),
   readingMinutes: z.number().int().min(1).max(60).optional(),
