@@ -4,6 +4,7 @@ import { CategoryNav } from "@/components/CategoryNav";
 import { Footer } from "@/components/Footer";
 import { ProposalRow } from "@/components/ProposalRow";
 import { FilteredProposalsList } from "@/components/FilteredProposalsList";
+import { HeroSearchBar, HeroSearchHints } from "@/components/HeroSearchBar";
 import { StatusPill } from "@/components/StatusPill";
 import { KindBadge } from "@/components/KindBadge";
 import {
@@ -125,8 +126,18 @@ export default async function HomePage() {
           </section>
         </div>
 
+        {/* DESKTOP HERO SEARCH — prominent above the editorial grid */}
+        <section className="hidden md:block pb-8 sm:pb-10 border-b border-rule">
+          <div className="kicker mb-3">Find a proposal or update</div>
+          <HeroSearchBar
+            proposalCount={sorted.length}
+            updateCount={recentUpdates.length}
+          />
+          <HeroSearchHints />
+        </section>
+
         {/* DESKTOP LAYOUT — unchanged */}
-        <section className="hidden md:grid grid-cols-12 gap-8 md:gap-10 pb-10 sm:pb-12 border-b border-rule">
+        <section className="hidden md:grid grid-cols-12 gap-8 md:gap-10 pt-8 sm:pt-10 pb-10 sm:pb-12 border-b border-rule">
           <aside className="col-span-12 md:col-span-3 min-w-0">
             <div className="kicker mb-3">From the editors</div>
             <p className="font-display italic text-ink leading-normal text-[18px]">
