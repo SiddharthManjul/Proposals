@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Masthead } from "@/components/Masthead";
 import { CategoryNav } from "@/components/CategoryNav";
 import { Footer } from "@/components/Footer";
-import { ProposalRow } from "@/components/ProposalRow";
+import { FilteredProposalsList } from "@/components/FilteredProposalsList";
 import { PROPOSAL_CATEGORIES } from "@/lib/proposals";
 import { listProposalsSortedByUpdated } from "@/db/queries";
 
@@ -35,7 +35,7 @@ export default async function ArchivePage() {
 
         <section className="pt-6 sm:pt-10">
           <div className="flex items-end justify-between gap-3 flex-wrap mb-4 sm:mb-6">
-            <div className="kicker">All proposals</div>
+            <div className="kicker">Search the archive</div>
             <Link
               href="/submit"
               className="font-mono text-[11px] uppercase tracking-[0.14em] link-underline"
@@ -48,13 +48,7 @@ export default async function ArchivePage() {
               The archive is empty. Submit the first proposal.
             </p>
           ) : (
-            all.map((p, i) => (
-              <ProposalRow
-                key={`${p.category}-${p.number}`}
-                proposal={p}
-                index={i}
-              />
-            ))
+            <FilteredProposalsList proposals={all} pageSize={15} />
           )}
         </section>
       </main>
