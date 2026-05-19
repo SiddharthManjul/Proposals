@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Masthead } from "@/components/Masthead";
 import { CategoryNav } from "@/components/CategoryNav";
 import { Footer } from "@/components/Footer";
-import { ProposalRow } from "@/components/ProposalRow";
+import { FilteredProposalsList } from "@/components/FilteredProposalsList";
 import { categoryByCode, STATUSES } from "@/lib/proposals";
 import { listProposals } from "@/db/queries";
 
@@ -75,7 +75,7 @@ export default async function CategoryPage({
 
         <section className="pt-8 sm:pt-10">
           <div className="flex items-end justify-between gap-3 flex-wrap mb-4">
-            <div className="kicker">All {cat.label}</div>
+            <div className="kicker">Search {cat.label}</div>
             <Link
               href="/submit"
               className="font-mono text-[11px] uppercase tracking-[0.14em] link-underline"
@@ -83,22 +83,17 @@ export default async function CategoryPage({
               Submit a {cat.code} →
             </Link>
           </div>
-          <div>
-            {list.length === 0 ? (
-              <p className="py-12 font-display italic text-ink-soft">
-                No proposals in this section yet. Submit the first one.
-              </p>
-            ) : (
-              list.map((p, i) => (
-                <ProposalRow
-                  key={`${p.category}-${p.number}`}
-                  proposal={p}
-                  index={i}
-                  showCategory={false}
-                />
-              ))
-            )}
-          </div>
+          {list.length === 0 ? (
+            <p className="py-12 font-display italic text-ink-soft">
+              No proposals in this section yet. Submit the first one.
+            </p>
+          ) : (
+            <FilteredProposalsList
+              proposals={list}
+              pageSize={12}
+              hideCategoryFilter
+            />
+          )}
         </section>
       </main>
       <Footer />
