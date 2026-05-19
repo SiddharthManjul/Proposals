@@ -3,30 +3,13 @@ import Link from "next/link";
 import { Masthead } from "@/components/Masthead";
 import { CategoryNav } from "@/components/CategoryNav";
 import { Footer } from "@/components/Footer";
-import { UpdateRow } from "@/components/UpdateRow";
+import { FilteredUpdatesList } from "@/components/FilteredUpdatesList";
 import { listProposalsSortedByUpdated } from "@/db/queries";
 
 export const dynamic = "force-dynamic";
 
-const PAGE_SIZE = 12;
-
-export default async function UpdatesPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ page?: string }>;
-}) {
+export default async function UpdatesPage() {
   const all = await listProposalsSortedByUpdated({ onlyUpdates: true });
-
-  const { page: pageParam } = await searchParams;
-  const totalPages = Math.max(1, Math.ceil(all.length / PAGE_SIZE));
-  const currentPage = Math.min(
-    totalPages,
-    Math.max(1, parseInt(pageParam ?? "1", 10) || 1)
-  );
-  const paged = all.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE
-  );
 
   return (
     <>
@@ -56,14 +39,7 @@ export default async function UpdatesPage({
 
         <section className="pt-6 sm:pt-10">
           <div className="flex items-end justify-between gap-3 flex-wrap mb-4 sm:mb-6">
-            <div>
-              <div className="kicker mb-1">All updates</div>
-              <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
-                Sorted by recent edit ·{" "}
-                <span className="tabular-nums">{all.length}</span> update
-                {all.length === 1 ? "" : "s"}
-              </p>
-            </div>
+            <div className="kicker">Search the wire</div>
             <Link
               href="/submit?kind=update"
               className="font-mono text-[11px] uppercase tracking-[0.14em] link-underline"
@@ -76,81 +52,11 @@ export default async function UpdatesPage({
               No updates yet. Submit the first one.
             </p>
           ) : (
-            paged.map((u, i) => (
-              <UpdateRow
-                key={`${u.category}-${u.number}`}
-                update={u}
-                index={(currentPage - 1) * PAGE_SIZE + i}
-              />
-            ))
-          )}
-          {totalPages > 1 && (
-            <UpdatesPagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              pageSize={PAGE_SIZE}
-              totalItems={all.length}
-            />
+            <FilteredUpdatesList updates={all} pageSize={12} />
           )}
         </section>
       </main>
       <Footer />
     </>
-  );
-}
-
-function UpdatesPagination({
-  currentPage,
-  totalPages,
-  pageSize,
-  totalItems,
-}: {
-  currentPage: number;
-  totalPages: number;
-  pageSize: number;
-  totalItems: number;
-}) {
-  const firstItem = (currentPage - 1) * pageSize + 1;
-  const lastItem = Math.min(currentPage * pageSize, totalItems);
-  const prevHref =
-    currentPage <= 2 ? "/updates" : `/updates?page=${currentPage - 1}`;
-  const nextHref = `/updates?page=${currentPage + 1}`;
-  const hasPrev = currentPage > 1;
-  const hasNext = currentPage < totalPages;
-
-  return (
-    <nav
-      aria-label="Updates pages"
-      className="mt-8 pt-6 border-t border-rule flex items-center justify-between gap-4 flex-wrap"
-    >
-      {hasPrev ? (
-        <Link
-          href={prevHref}
-          className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink hover:text-accent transition-colors"
-        >
-          ← Previous
-        </Link>
-      ) : (
-        <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-faint cursor-default">
-          ← Previous
-        </span>
-      )}
-      <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint tabular-nums">
-        {firstItem}–{lastItem} of {totalItems} · Page {currentPage} of{" "}
-        {totalPages}
-      </span>
-      {hasNext ? (
-        <Link
-          href={nextHref}
-          className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink hover:text-accent transition-colors"
-        >
-          Next →
-        </Link>
-      ) : (
-        <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-faint cursor-default">
-          Next →
-        </span>
-      )}
-    </nav>
   );
 }
