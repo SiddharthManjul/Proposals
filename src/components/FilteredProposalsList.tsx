@@ -22,6 +22,12 @@ type Props = {
   // When this filter bar is embedded inside a single-category page,
   // hide the Category chips since they're redundant.
   hideCategoryFilter?: boolean;
+  // Pre-populate state from URL when arriving from the hero search.
+  initialQuery?: string;
+  initialCategories?: Category[];
+  initialStatuses?: Status[];
+  initialKind?: Kind | "all";
+  initialSort?: SortKey;
 };
 
 const SORT_OPTIONS: { value: SortKey; label: string }[] = [
@@ -46,16 +52,32 @@ export function FilteredProposalsList({
   proposals,
   pageSize = 12,
   hideCategoryFilter = false,
+  initialQuery = "",
+  initialCategories,
+  initialStatuses,
+  initialKind = "all",
+  initialSort = "recent",
 }: Props) {
-  const [query, setQuery] = useState("");
+  const hasInitialFilters =
+    Boolean(initialQuery) ||
+    (initialCategories && initialCategories.length > 0) ||
+    (initialStatuses && initialStatuses.length > 0) ||
+    initialKind !== "all" ||
+    initialSort !== "recent";
+
+  const [query, setQuery] = useState(initialQuery);
   const [activeCategories, setActiveCategories] = useState<Set<Category>>(
-    new Set()
+    new Set(initialCategories ?? [])
   );
-  const [activeStatuses, setActiveStatuses] = useState<Set<Status>>(new Set());
-  const [kindFilter, setKindFilter] = useState<Kind | "all">("all");
-  const [sort, setSort] = useState<SortKey>("recent");
+  const [activeStatuses, setActiveStatuses] = useState<Set<Status>>(
+    new Set(initialStatuses ?? [])
+  );
+  const [kindFilter, setKindFilter] = useState<Kind | "all">(initialKind);
+  const [sort, setSort] = useState<SortKey>(initialSort);
   const [page, setPage] = useState(1);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  // When the page loads with filters already applied (from hero search),
+  // open the filter panel so users can see what's active.
+  const [mobileOpen, setMobileOpen] = useState(hasInitialFilters);
 
   const activeFilterCount =
     (query.trim() ? 1 : 0) +
