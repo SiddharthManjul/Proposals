@@ -103,7 +103,7 @@ export function HeroSearchBar({ proposalCount, updateCount }: Props) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={`Search ${proposalCount} proposals and ${updateCount} updates`}
-          className="flex-1 bg-transparent outline-none px-4 sm:px-2 py-4 sm:py-5 text-[15px] sm:text-[17px] placeholder:text-ink-faint min-w-0"
+          className="flex-1 bg-transparent outline-none px-4 sm:px-2 py-3 sm:py-3 text-[14px] sm:text-[15px] placeholder:text-ink-faint min-w-0"
           aria-label="Search proposals and updates"
         />
         <button
