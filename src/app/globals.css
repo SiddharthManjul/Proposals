@@ -233,3 +233,11 @@ input, textarea, select, button {
   font-family: inherit;
   color: inherit;
 }
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
