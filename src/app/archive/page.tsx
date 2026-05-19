@@ -4,13 +4,64 @@ import { Masthead } from "@/components/Masthead";
 import { CategoryNav } from "@/components/CategoryNav";
 import { Footer } from "@/components/Footer";
 import { FilteredProposalsList } from "@/components/FilteredProposalsList";
-import { PROPOSAL_CATEGORIES } from "@/lib/proposals";
+import {
+  PROPOSAL_CATEGORIES,
+  STATUSES,
+  type Category,
+  type Kind,
+  type Status,
+} from "@/lib/proposals";
 import { listProposalsSortedByUpdated } from "@/db/queries";
 
 export const dynamic = "force-dynamic";
 
-export default async function ArchivePage() {
+type SortKey = "recent" | "oldest" | "most-replies" | "reference";
+const VALID_SORTS: readonly SortKey[] = [
+  "recent",
+  "oldest",
+  "most-replies",
+  "reference",
+];
+
+function parseList<T extends string>(
+  raw: string | undefined,
+  allowed: readonly T[]
+): T[] {
+  if (!raw) return [];
+  return raw
+    .split(",")
+    .map((s) => s.trim())
+    .filter((s): s is T => (allowed as readonly string[]).includes(s));
+}
+
+export default async function ArchivePage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    q?: string;
+    category?: string;
+    status?: string;
+    kind?: string;
+    sort?: string;
+  }>;
+}) {
   const all = await listProposalsSortedByUpdated({ onlyProposals: true });
+  const params = await searchParams;
+  const initialQuery = (params.q ?? "").trim();
+  const initialCategories = parseList<Category>(
+    params.category,
+    PROPOSAL_CATEGORIES
+  );
+  const initialStatuses = parseList<Status>(params.status, STATUSES);
+  const kindParam = (params.kind ?? "").trim();
+  const initialKind: Kind | "all" =
+    kindParam === "Idea" || kindParam === "Improvement" ? kindParam : "all";
+  const sortParam = (params.sort ?? "").trim() as SortKey;
+  const initialSort: SortKey = (VALID_SORTS as readonly string[]).includes(
+    sortParam
+  )
+    ? sortParam
+    : "recent";
 
   return (
     <>
@@ -48,7 +99,15 @@ export default async function ArchivePage() {
               The archive is empty. Submit the first proposal.
             </p>
           ) : (
-            <FilteredProposalsList proposals={all} pageSize={15} />
+            <FilteredProposalsList
+              proposals={all}
+              pageSize={15}
+              initialQuery={initialQuery}
+              initialCategories={initialCategories}
+              initialStatuses={initialStatuses}
+              initialKind={initialKind}
+              initialSort={initialSort}
+            />
           )}
         </section>
       </main>
