@@ -3,6 +3,7 @@ import { Masthead } from "@/components/Masthead";
 import { CategoryNav } from "@/components/CategoryNav";
 import { Footer } from "@/components/Footer";
 import { ProposalRow } from "@/components/ProposalRow";
+import { FilteredProposalsList } from "@/components/FilteredProposalsList";
 import { StatusPill } from "@/components/StatusPill";
 import { KindBadge } from "@/components/KindBadge";
 import {
@@ -18,13 +19,9 @@ import { listProposalsSortedByUpdated } from "@/db/queries";
 export const dynamic = "force-dynamic";
 
 const MOBILE_LATEST_LIMIT = 5;
-const DESKTOP_PAGE_SIZE = 6;
+const DESKTOP_PAGE_SIZE = 8;
 
-export default async function HomePage({
-  searchParams,
-}: {
-  searchParams: Promise<{ page?: string }>;
-}) {
+export default async function HomePage() {
   const [sorted, recentUpdates] = await Promise.all([
     listProposalsSortedByUpdated({ onlyProposals: true }),
     listProposalsSortedByUpdated({ onlyUpdates: true }),
@@ -36,21 +33,6 @@ export default async function HomePage({
 
   const featured = sorted[0];
   const rest = sorted.slice(1);
-
-  const { page: pageParam } = await searchParams;
-  const totalPages = Math.max(
-    1,
-    Math.ceil(rest.length / DESKTOP_PAGE_SIZE)
-  );
-  const currentPage = Math.min(
-    totalPages,
-    Math.max(1, parseInt(pageParam ?? "1", 10) || 1)
-  );
-  const pagedRest = rest.slice(
-    (currentPage - 1) * DESKTOP_PAGE_SIZE,
-    currentPage * DESKTOP_PAGE_SIZE
-  );
-  const pageStartIndex = (currentPage - 1) * DESKTOP_PAGE_SIZE;
 
   const liveCount = sorted.filter(
     (p) => p.status === "Execution" || p.status === "MVP"
@@ -72,37 +54,11 @@ export default async function HomePage({
           <FeaturedArticle p={featured} />
 
           <section className="mt-10 pt-8 border-t border-rule">
-            <div className="flex items-end justify-between gap-3 flex-wrap mb-5">
-              <div>
-                <div className="kicker mb-2">The list</div>
-                <h2 className="headline text-[1.6rem]">Latest activity</h2>
-              </div>
-              <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
-                Sorted by recent edit
-              </div>
+            <div className="mb-5">
+              <div className="kicker mb-2">The list</div>
+              <h2 className="headline text-[1.6rem]">Latest activity</h2>
             </div>
-            <div>
-              {rest.slice(0, MOBILE_LATEST_LIMIT).map((p, i) => (
-                <ProposalRow
-                  key={`${p.category}-${p.number}`}
-                  proposal={p}
-                  index={i}
-                />
-              ))}
-            </div>
-            {rest.length > MOBILE_LATEST_LIMIT && (
-              <div className="mt-6 pt-5 border-t border-rule flex items-center justify-between gap-3 flex-wrap">
-                <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">
-                  {rest.length - MOBILE_LATEST_LIMIT} more in the archive
-                </span>
-                <Link
-                  href="/archive"
-                  className="bg-accent text-paper px-5 py-2.5 font-mono text-[11px] uppercase tracking-[0.16em] hover:bg-accent-deep transition-colors"
-                >
-                  See all proposals →
-                </Link>
-              </div>
-            )}
+            <FilteredProposalsList proposals={rest} pageSize={6} />
           </section>
 
           {/* Strong distinction between the feed and the supporting matter */}
@@ -215,23 +171,10 @@ export default async function HomePage({
                 Sorted by recent edit
               </div>
             </div>
-            <div>
-              {pagedRest.map((p, i) => (
-                <ProposalRow
-                  key={`${p.category}-${p.number}`}
-                  proposal={p}
-                  index={pageStartIndex + i}
-                />
-              ))}
-            </div>
-            {totalPages > 1 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                pageSize={DESKTOP_PAGE_SIZE}
-                totalItems={rest.length}
-              />
-            )}
+            <FilteredProposalsList
+              proposals={rest}
+              pageSize={DESKTOP_PAGE_SIZE}
+            />
           </div>
           <aside className="col-span-12 md:col-span-3 min-w-0 md:border-l md:border-rule md:pl-8">
             {recentUpdates.length > 0 && (
